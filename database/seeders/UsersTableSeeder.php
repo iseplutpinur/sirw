@@ -14,13 +14,13 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('users')->delete();
-        
-        \DB::table('users')->insert(array (
-            0 => 
-            array (
+
+        \DB::table('users')->insert(array(
+            0 =>
+            array(
                 'id' => 1,
                 'name' => 'ISEP LUTPI NUR',
                 'whatsapp' => '85798132505',
@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
                 'role' => 'admin',
                 'angkatan' => '2019',
                 'date_of_birth' => '2000-08-10',
-                'email' => 'iseplutpinur7@gmail.com',
+                'email' => 'admin@gmail.com',
                 'gender' => 'laki-laki',
                 'username' => 'iseplutpinur',
                 'email_verified_at' => NULL,
@@ -51,8 +51,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-07 01:44:19',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
                 'id' => 16,
                 'name' => 'HILAL MUHAMMAD FATURAHMAN',
                 'whatsapp' => NULL,
@@ -83,8 +83,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-02 09:05:03',
             ),
-            2 => 
-            array (
+            2 =>
+            array(
                 'id' => 17,
                 'name' => 'NITA HALIMATUSSA’DIYAH',
                 'whatsapp' => NULL,
@@ -115,8 +115,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-02 09:05:48',
             ),
-            3 => 
-            array (
+            3 =>
+            array(
                 'id' => 19,
                 'name' => 'ABDUL MUHLIS',
                 'whatsapp' => NULL,
@@ -147,8 +147,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-02 09:05:35',
             ),
-            4 => 
-            array (
+            4 =>
+            array(
                 'id' => 20,
                 'name' => 'ANDI TAUFIK PERMADI',
                 'whatsapp' => NULL,
@@ -179,8 +179,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            5 => 
-            array (
+            5 =>
+            array(
                 'id' => 21,
                 'name' => 'SUKIRMAN MAULANA',
                 'whatsapp' => NULL,
@@ -211,8 +211,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-02 09:06:05',
             ),
-            6 => 
-            array (
+            6 =>
+            array(
                 'id' => 22,
                 'name' => 'DEWI',
                 'whatsapp' => NULL,
@@ -243,8 +243,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            7 => 
-            array (
+            7 =>
+            array(
                 'id' => 23,
                 'name' => 'WIWIT AWALIYAH',
                 'whatsapp' => NULL,
@@ -275,8 +275,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            8 => 
-            array (
+            8 =>
+            array(
                 'id' => 24,
                 'name' => 'SAEPUL ROHMAN',
                 'whatsapp' => NULL,
@@ -307,8 +307,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            9 => 
-            array (
+            9 =>
+            array(
                 'id' => 25,
                 'name' => 'RADEN BINTANG',
                 'whatsapp' => NULL,
@@ -339,8 +339,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            10 => 
-            array (
+            10 =>
+            array(
                 'id' => 26,
                 'name' => 'HILMI FITRIANI',
                 'whatsapp' => NULL,
@@ -371,8 +371,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            11 => 
-            array (
+            11 =>
+            array(
                 'id' => 27,
                 'name' => 'SAMSUL MAARIP',
                 'whatsapp' => NULL,
@@ -403,8 +403,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            12 => 
-            array (
+            12 =>
+            array(
                 'id' => 28,
                 'name' => 'MUHAMAD RAIHAN RAHMAN',
                 'whatsapp' => NULL,
@@ -435,8 +435,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            13 => 
-            array (
+            13 =>
+            array(
                 'id' => 29,
                 'name' => 'AKBAR MUHAMAD ASHONI',
                 'whatsapp' => NULL,
@@ -467,8 +467,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            14 => 
-            array (
+            14 =>
+            array(
                 'id' => 30,
                 'name' => 'WAHID NURSIDIK',
                 'whatsapp' => NULL,
@@ -499,8 +499,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            15 => 
-            array (
+            15 =>
+            array(
                 'id' => 31,
                 'name' => 'M FAISAL L',
                 'whatsapp' => NULL,
@@ -531,8 +531,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            16 => 
-            array (
+            16 =>
+            array(
                 'id' => 32,
                 'name' => 'SALAFIA AL ZAHRA FAUZIA',
                 'whatsapp' => NULL,
@@ -563,8 +563,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            17 => 
-            array (
+            17 =>
+            array(
                 'id' => 33,
                 'name' => 'YUSI YUSFITA',
                 'whatsapp' => NULL,
@@ -595,8 +595,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            18 => 
-            array (
+            18 =>
+            array(
                 'id' => 34,
                 'name' => 'CUCU MARYAM NURPADILAH',
                 'whatsapp' => NULL,
@@ -627,8 +627,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            19 => 
-            array (
+            19 =>
+            array(
                 'id' => 35,
                 'name' => 'RIFKI ALFAIZAR',
                 'whatsapp' => NULL,
@@ -659,8 +659,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            20 => 
-            array (
+            20 =>
+            array(
                 'id' => 36,
                 'name' => 'M. RIDWAN ABDUL AZIZ',
                 'whatsapp' => NULL,
@@ -691,8 +691,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            21 => 
-            array (
+            21 =>
+            array(
                 'id' => 37,
                 'name' => 'NOVIANTI',
                 'whatsapp' => NULL,
@@ -723,8 +723,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            22 => 
-            array (
+            22 =>
+            array(
                 'id' => 38,
                 'name' => 'AYU PRATIWI ISMAN',
                 'whatsapp' => NULL,
@@ -755,8 +755,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            23 => 
-            array (
+            23 =>
+            array(
                 'id' => 39,
                 'name' => 'AI RAHMA ALIA',
                 'whatsapp' => NULL,
@@ -787,8 +787,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            24 => 
-            array (
+            24 =>
+            array(
                 'id' => 40,
                 'name' => 'ANDI AULIANSYAH',
                 'whatsapp' => NULL,
@@ -819,8 +819,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            25 => 
-            array (
+            25 =>
+            array(
                 'id' => 41,
                 'name' => 'KHORIDARUL ANISA',
                 'whatsapp' => NULL,
@@ -851,8 +851,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            26 => 
-            array (
+            26 =>
+            array(
                 'id' => 42,
                 'name' => 'ALWAN A F',
                 'whatsapp' => NULL,
@@ -883,8 +883,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            27 => 
-            array (
+            27 =>
+            array(
                 'id' => 43,
                 'name' => 'MUHAMMAD CAHYADI',
                 'whatsapp' => NULL,
@@ -915,8 +915,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            28 => 
-            array (
+            28 =>
+            array(
                 'id' => 44,
                 'name' => 'AHMAD KAMIL',
                 'whatsapp' => NULL,
@@ -947,8 +947,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            29 => 
-            array (
+            29 =>
+            array(
                 'id' => 45,
                 'name' => 'SRI AYUNI WAHYUDIN',
                 'whatsapp' => NULL,
@@ -979,8 +979,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            30 => 
-            array (
+            30 =>
+            array(
                 'id' => 46,
                 'name' => 'ENCEP ABDUL HAKIM',
                 'whatsapp' => NULL,
@@ -1011,8 +1011,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            31 => 
-            array (
+            31 =>
+            array(
                 'id' => 47,
                 'name' => 'LINDAWATI RUSLIHA',
                 'whatsapp' => NULL,
@@ -1043,8 +1043,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            32 => 
-            array (
+            32 =>
+            array(
                 'id' => 48,
                 'name' => 'MOH SYAHRUL RAMDAN',
                 'whatsapp' => NULL,
@@ -1075,8 +1075,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            33 => 
-            array (
+            33 =>
+            array(
                 'id' => 49,
                 'name' => 'LINA HERLINA',
                 'whatsapp' => NULL,
@@ -1107,8 +1107,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            34 => 
-            array (
+            34 =>
+            array(
                 'id' => 50,
                 'name' => 'AGUSTIANI SRI RAHAYU',
                 'whatsapp' => NULL,
@@ -1139,8 +1139,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            35 => 
-            array (
+            35 =>
+            array(
                 'id' => 51,
                 'name' => 'RURI C. HETIAWATI',
                 'whatsapp' => NULL,
@@ -1171,8 +1171,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            36 => 
-            array (
+            36 =>
+            array(
                 'id' => 52,
                 'name' => 'RINRIN IRMAYANI',
                 'whatsapp' => NULL,
@@ -1203,8 +1203,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            37 => 
-            array (
+            37 =>
+            array(
                 'id' => 53,
                 'name' => 'AI DIAN HAERANI',
                 'whatsapp' => NULL,
@@ -1235,8 +1235,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            38 => 
-            array (
+            38 =>
+            array(
                 'id' => 54,
                 'name' => 'APRILIA UTAMI HERDI',
                 'whatsapp' => NULL,
@@ -1267,8 +1267,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            39 => 
-            array (
+            39 =>
+            array(
                 'id' => 55,
                 'name' => 'SITI BASIROH',
                 'whatsapp' => NULL,
@@ -1299,8 +1299,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            40 => 
-            array (
+            40 =>
+            array(
                 'id' => 57,
                 'name' => 'NU’MAN BASIR',
                 'whatsapp' => NULL,
@@ -1331,8 +1331,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            41 => 
-            array (
+            41 =>
+            array(
                 'id' => 58,
                 'name' => 'MAULANA YUSUF',
                 'whatsapp' => NULL,
@@ -1363,8 +1363,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            42 => 
-            array (
+            42 =>
+            array(
                 'id' => 59,
                 'name' => 'INDRA KURNIA',
                 'whatsapp' => NULL,
@@ -1395,8 +1395,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-02 09:06:17',
             ),
-            43 => 
-            array (
+            43 =>
+            array(
                 'id' => 60,
                 'name' => 'EGI',
                 'whatsapp' => NULL,
@@ -1427,8 +1427,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            44 => 
-            array (
+            44 =>
+            array(
                 'id' => 61,
                 'name' => 'M RIDWANAN',
                 'whatsapp' => NULL,
@@ -1459,8 +1459,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            45 => 
-            array (
+            45 =>
+            array(
                 'id' => 62,
                 'name' => 'WITA DEWI LESTARI',
                 'whatsapp' => NULL,
@@ -1491,8 +1491,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            46 => 
-            array (
+            46 =>
+            array(
                 'id' => 63,
                 'name' => 'M SYAHRUL RAMADHAN',
                 'whatsapp' => NULL,
@@ -1523,8 +1523,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            47 => 
-            array (
+            47 =>
+            array(
                 'id' => 64,
                 'name' => 'ILHAM FAOZ',
                 'whatsapp' => NULL,
@@ -1555,8 +1555,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            48 => 
-            array (
+            48 =>
+            array(
                 'id' => 65,
                 'name' => 'ADRIAN SYAMSYUL RAMLI',
                 'whatsapp' => NULL,
@@ -1587,8 +1587,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            49 => 
-            array (
+            49 =>
+            array(
                 'id' => 67,
                 'name' => 'AGUNG SETIABUDI',
                 'whatsapp' => NULL,
@@ -1619,8 +1619,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            50 => 
-            array (
+            50 =>
+            array(
                 'id' => 68,
                 'name' => 'MOCH YUSUF MUGNI',
                 'whatsapp' => NULL,
@@ -1651,8 +1651,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2022-05-02 19:51:23',
             ),
-            51 => 
-            array (
+            51 =>
+            array(
                 'id' => 69,
                 'name' => 'SITI SUROH HOLISOH',
                 'whatsapp' => NULL,
@@ -1683,8 +1683,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            52 => 
-            array (
+            52 =>
+            array(
                 'id' => 70,
                 'name' => 'SAEPUL FIKRI',
                 'whatsapp' => NULL,
@@ -1715,8 +1715,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            53 => 
-            array (
+            53 =>
+            array(
                 'id' => 71,
                 'name' => 'MUHAMMAD FIKI NUGRAHA',
                 'whatsapp' => NULL,
@@ -1748,7 +1748,5 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
         ));
-        
-        
     }
 }

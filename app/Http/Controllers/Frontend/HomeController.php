@@ -14,6 +14,11 @@ use App\Repository\Frontend\HomeRepository;
 
 class HomeController extends Controller
 {
+    public function index1(Request $request)
+    {
+        return view('templates.frontend1.master');
+    }
+
     public function index(Request $request)
     {
         $periode = Periode::where('status', '=', '1')

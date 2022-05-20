@@ -107,7 +107,7 @@ $page_attr_title = ($page_attr->title == '' ? '' : $page_attr->title . ' | ') . 
                             <img src="{{ asset('assets/templates/admin/images/brand/logo-white.png') }}"
                                 class="header-brand-img" alt="Logo Karmapack" id="logo">
                         </div>
-                        <p class="text-center mt-5">Sistem Informasi Anggota (SIA)</p>
+                        <p class="text-center mt-5">Sistem Informasi Rukun Warga (SIRW)</p>
                         <div class="panel panel-primary">
                             <div class="panel-body tabs-menu-body p-0">
                                 <div class="tab-content">
@@ -147,11 +147,7 @@ $page_attr_title = ($page_attr->title == '' ? '' : $page_attr->title . ' | ') . 
                 <div class="col col-login mx-auto">
                     <div class="text-center d-md-flex  justify-content-center">
                         <div>
-                            © <span id="year"></span> Karmapack.
-                        </div>
-                        <div>
-                            Persembahan Dari <a href="http://github.com/iseplutpinur" class="text-light">Isep Lutpi
-                                Nur</a> Bidang Kominfo.
+                            © <span id="year"></span> Sistem Informasi RW. 
                         </div>
                     </div>
                 </div>

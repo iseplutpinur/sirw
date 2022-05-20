@@ -85,7 +85,8 @@ Route::controller(LoginController::class)->group(function () {
 
 // home default =======================================================================================================
 Route::controller(HomeController::class)->group(function () {
-    Route::get('/', 'index')->name('home');
+    // Route::get('/', 'index')->name('home');
+    Route::get('/', 'index1')->name('home');
     Route::get('/periode/{model:slug}', 'periode')->name('periode');
     Route::get('/artikel/{model:slug}', 'artikel')->name('artikel');
 });
