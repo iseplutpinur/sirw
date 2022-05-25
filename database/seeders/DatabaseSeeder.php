@@ -14,20 +14,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::create([
-        //     'name' => 'Isep Lutpi Nur',
-        //     'email' => 'iseplutpinur7@gmail.com',
-        //     'password' => bcrypt('123456'),
-        //     'role' => User::ROLE_ADMIN,
-        //     'active' => '1'
-        // ]);
+        \App\Models\User::create([
+            'name' => 'Isep Lutpi Nur',
+            'email' => 'administrator@gmail.com',
+            'password' => bcrypt('123456'),
+            'role' => User::ROLE_ADMINISTRATOR,
+            'active' => '1'
+        ]);
+
         // \App\Models\User::factory(150)->create();
 
         // address seeders
-        AddressProvinceSeeders::run();
-        AddressRegenciesSeeder::run();
-        AddressDistrictSeeders::run();
-        AddressVillageSeeders::run();
+        // AddressProvinceSeeders::run();
+        // AddressRegenciesSeeder::run();
+        // AddressDistrictSeeders::run();
+        // AddressVillageSeeders::run();
 
         // ============================================================================================================
         // ============================================================================================================
@@ -53,53 +54,53 @@ class DatabaseSeeder extends Seeder
         // ============================================================================================================
         // ============================================================================================================
 
-        // master
-        $this->call(UsersTableSeeder::class);
+        // // master
+        // $this->call(UsersTableSeeder::class);
 
-        // artikel
-        $this->call(ArtikelTableSeeder::class);
+        // // artikel
+        // $this->call(ArtikelTableSeeder::class);
 
-        // artikel kategori
-        $this->call(ArtikelKategoriTableSeeder::class);
-        $this->call(ArtikelKategoriItemTableSeeder::class);
+        // // artikel kategori
+        // $this->call(ArtikelKategoriTableSeeder::class);
+        // $this->call(ArtikelKategoriItemTableSeeder::class);
 
-        // artikel tag
-        $this->call(ArtikelTagTableSeeder::class);
-        $this->call(ArtikelTagItemTableSeeder::class);
+        // // artikel tag
+        // $this->call(ArtikelTagTableSeeder::class);
+        // $this->call(ArtikelTagItemTableSeeder::class);
 
-        // galeri
-        $this->call(GaleriTableSeeder::class);
+        // // galeri
+        // $this->call(GaleriTableSeeder::class);
 
-        // Pengurus
-        $this->call(PengurusPeriodeTableSeeder::class);
-        $this->call(PengurusPeriodeMemberTableSeeder::class);
+        // // Pengurus
+        // $this->call(PengurusPeriodeTableSeeder::class);
+        // $this->call(PengurusPeriodeMemberTableSeeder::class);
 
-        // pengurus jabatan
-        $this->call(PengurusPeriodeJabatanTableSeeder::class);
-        $this->call(PengurusPeriodeJabatanMemberTableSeeder::class);
+        // // pengurus jabatan
+        // $this->call(PengurusPeriodeJabatanTableSeeder::class);
+        // $this->call(PengurusPeriodeJabatanMemberTableSeeder::class);
 
-        // profile kontak
-        $this->call(PengurusProfileKontakTipeTableSeeder::class);
-        $this->call(PengurusProfileKontakTableSeeder::class);
+        // // profile kontak
+        // $this->call(PengurusProfileKontakTipeTableSeeder::class);
+        // $this->call(PengurusProfileKontakTableSeeder::class);
 
-        // profile pendidikan
-        $this->call(PengurusProfilePendidikanJenisTableSeeder::class);
-        $this->call(PengurusProfilePendidikanTableSeeder::class);
+        // // profile pendidikan
+        // $this->call(PengurusProfilePendidikanJenisTableSeeder::class);
+        // $this->call(PengurusProfilePendidikanTableSeeder::class);
 
-        // profile pengalaman
-        $this->call(PengurusProfilePengalamanLainTableSeeder::class);
-        $this->call(PengurusProfilePengalamanOrganisasiTableSeeder::class);
+        // // profile pengalaman
+        // $this->call(PengurusProfilePengalamanLainTableSeeder::class);
+        // $this->call(PengurusProfilePengalamanOrganisasiTableSeeder::class);
 
-        // profiel hobbies
-        $this->call(HobbiesTableSeeder::class);
+        // // profiel hobbies
+        // $this->call(HobbiesTableSeeder::class);
 
-        // Lainnya
-        $this->call(SocialMediaTableSeeder::class);
-        $this->call(ContactsTableSeeder::class);
-        $this->call(FooterInstagramsTableSeeder::class);
-        $this->call(UsernameValidationsTableSeeder::class);
-        $this->call(GaleriTagMemberTableSeeder::class);
-        $this->call(PendaftaransTableSeeder::class);
-        $this->call(PendSensusTableSeeder::class);
+        // // Lainnya
+        // $this->call(SocialMediaTableSeeder::class);
+        // $this->call(ContactsTableSeeder::class);
+        // $this->call(FooterInstagramsTableSeeder::class);
+        // $this->call(UsernameValidationsTableSeeder::class);
+        // $this->call(GaleriTagMemberTableSeeder::class);
+        // $this->call(PendaftaransTableSeeder::class);
+        // $this->call(PendSensusTableSeeder::class);
     }
 }

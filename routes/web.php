@@ -176,6 +176,10 @@ Route::get('/dashboard', function () {
             return Redirect::route('member.dashboard');
             break;
 
+        case User::ROLE_ADMINISTRATOR:
+            return Redirect::route('administrator.dashboard');
+            break;
+
         default:
             return view('auth.login');
             break;
@@ -185,6 +189,23 @@ Route::get('/dashboard', function () {
 
 
 
+
+
+
+
+// Admin route ========================================================================================================
+Route::group(['prefix' => 'administrator', 'middleware' => ['auth:sanctum', 'verified', 'administrator']], function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('administrator.dashboard');
+    // user
+    Route::controller(UserController::class)->prefix('user')->group(function () {
+        Route::get('/', 'index')->name('administrator.user');
+        Route::get('/excel', 'excel')->name('administrator.user.excel');
+        Route::post('/', 'store')->name('administrator.user.store');
+        Route::delete('/{id}', 'delete')->name('administrator.user.delete');
+        Route::post('/update', 'update')->name('administrator.user.update');
+    });
+});
+// ====================================================================================================================
 
 
 // Admin route ========================================================================================================

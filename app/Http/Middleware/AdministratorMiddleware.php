@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class AdminMiddleware
+class AdministratorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (($request->user()->role == User::ROLE_ADMIN || $request->user()->role == User::ROLE_ADMINISTRATOR) && $request->user()->active) {
+        if ($request->user()->role == User::ROLE_ADMINISTRATOR && $request->user()->active) {
             return $next($request);
         }
         abort(404);

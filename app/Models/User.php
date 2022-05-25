@@ -22,14 +22,21 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-
+    // role
     const ROLE_ADMIN = 'admin';
     const ROLE_MEMBER = 'member';
+
+    const ROLE_ADMINISTRATOR = 'administrator';
+    const ROLE_RT = 'rt';
+    const ROLE_RW = 'rw';
+    const ROLE_PKK = 'pkk';
+    const ROLE_POSYANDU = 'posyandu';
+    const ROLE_POSKB = 'poskb';
+
     const tableName = 'users';
     const image_default = 'assets/image/anggota_default.png';
     const image_folder = '/assets/pengurus/profile';
     protected $table = 'users';
-
 
     /**
      * The attributes that are mass assignable.
@@ -74,8 +81,14 @@ class User extends Authenticatable
     public static function getAllRole(): array
     {
         return [
-            self::ROLE_MEMBER,
-            self::ROLE_ADMIN,
+            // self::ROLE_MEMBER,
+            // self::ROLE_ADMIN,
+            self::ROLE_ADMINISTRATOR,
+            self::ROLE_RT,
+            self::ROLE_RW,
+            self::ROLE_PKK,
+            self::ROLE_POSYANDU,
+            self::ROLE_POSKB,
         ];
     }
 

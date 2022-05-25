@@ -91,7 +91,8 @@ class SidebarMenu
                             <span class=\"side-menu__label\">Log In</span>
                         </a>
                     </li>";
-        $menu_footer = (auth()->user() ? $dashboard : $login) . '</ul>';
+        // $menu_footer = (auth()->user() ? $dashboard : $login) . '</ul>';
+        $menu_footer =  '</ul>';
         return $menu_head . $menu_body . $menu_footer;
     }
 

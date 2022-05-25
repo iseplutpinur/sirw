@@ -1,4 +1,14 @@
 <?php
+$administrator = [
+    ['title' => 'Administrator Menu', 'separator' => true],
+    ['title' => 'Dashboard', 'route' => 'administrator.dashboard', 'icon' => 'fe fe-home'],
+    [
+        'title' => 'User',
+        'icon' => 'fe fe-users',
+        'route' => 'administrator.user',
+    ]
+];
+
 $admin = [
     ['title' => 'Administrator Menu', 'separator' => true],
     ['title' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'fe fe-home'],
@@ -82,4 +92,5 @@ return [
     'admin' => array_merge($admin, [['title' => 'Member Menu', 'separator' => true]], $member),
     'member' => $member,
     'frontend' => $frontend,
+    'administrator' => $administrator
 ];
