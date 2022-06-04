@@ -1,0 +1,39 @@
+- = table
+# = constrain
+
+1. Data master
+    - Agama
+    - Pekerjaan
+    - Pendidikan
+    - Status Kawin
+    - Status Penduduk
+
+    - Hubunagn Dengan KK
+    - Status Tamu
+
+2. Kependudukan
+    - Warga
+        # warga -> data master
+    - rukun tetangga
+        # ketua -> warga
+    - Kartu Keluarga
+        # rt_id -> rt
+        # kepala_keluarga -> warga
+    - Kartu Keluarga List
+        # hubungan dengan kk -> data master
+        # warga_id -> warga
+        # kk_id -> kk
+    - Rumah
+        # pemilik_id -> warga
+    - Rumah Penghuni
+        # warga_id -> warga
+        # rumah_id -> rumah
+    - Tanah
+        # pemilik -> warga
+
+    - Tamu
+        tamu_ke_warga -> warga
+        status tamu -> data master
+
+
+
