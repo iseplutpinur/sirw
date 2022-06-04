@@ -84,11 +84,11 @@ class User extends Authenticatable
             // self::ROLE_MEMBER,
             // self::ROLE_ADMIN,
             self::ROLE_ADMINISTRATOR,
-            self::ROLE_RT,
-            self::ROLE_RW,
-            self::ROLE_PKK,
-            self::ROLE_POSYANDU,
-            self::ROLE_POSKB,
+            // self::ROLE_RT,
+            // self::ROLE_RW,
+            // self::ROLE_PKK,
+            // self::ROLE_POSYANDU,
+            // self::ROLE_POSKB,
         ];
     }
 

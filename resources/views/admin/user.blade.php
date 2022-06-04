@@ -8,9 +8,9 @@
                 <div class="card-header d-md-flex flex-row justify-content-between">
                     <h3 class="card-title">User Table</h3>
                     <div>
-                        <button class="btn btn-success" onclick="exportExcel()">
+                        {{-- <button class="btn btn-success" onclick="exportExcel()">
                             <i class="fa fa-file-excel-o"></i> Excel
-                        </button>
+                        </button> --}}
                         <button type="button" class="btn btn-rounded btn-primary" data-bs-effect="effect-scale"
                             data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
                             <i class="bi bi-plus-lg"></i> Add
@@ -48,14 +48,11 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Generation</th>
+                                    <th>Action</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Role</th>
-                                    <th>DOB</th>
-                                    <th>BIRTHDAY</th>
                                     <th>Active</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -78,13 +75,6 @@
                         enctype="multipart/form-data">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label class="form-label" for="angkatan">Generation <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="angkatan" name="angkatan"
-                                placeholder="Enter Generation" required="" min="2003" max="2999" />
-
-                        </div>
-                        <div class="form-group">
                             <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name"
                                 required="" />
@@ -94,13 +84,6 @@
                             <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
                             <input type="email" id="email" name="email" class="form-control" placeholder="Email Address"
                                 required="" />
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="date_of_birth">Date Of Birth <span
-                                    class="text-danger">*</span></label>
-                            <input type="date" id="date_of_birth" name="date_of_birth" class="form-control"
-                                placeholder="Date Of Birth" required="" />
                             <div class="help-block"></div>
                         </div>
                         <div class="form-group ">
@@ -145,16 +128,11 @@
 
 @section('javascript')
     <!-- DATA TABLE JS-->
-    <script src="{{ asset('assets/templates/admin/plugins/datatable/js/jquery.dataTables.min.js') }}">
-    </script>
-    <script src="{{ asset('assets/templates/admin/plugins/datatable/js/dataTables.bootstrap5.js') }}">
-    </script>
-    <script src="{{ asset('assets/templates/admin/plugins/datatable/dataTables.responsive.min.js') }}">
-    </script>
-    <script src="{{ asset('assets/templates/admin/plugins/datatable/responsive.bootstrap5.min.js') }}">
-    </script>
-    <script src="{{ asset('assets/templates/admin/plugins/datatable/responsive.bootstrap5.min.js') }}">
-    </script>
+    <script src="{{ asset('assets/templates/admin/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/templates/admin/plugins/datatable/js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/templates/admin/plugins/datatable/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/templates/admin/plugins/datatable/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/templates/admin/plugins/datatable/responsive.bootstrap5.min.js') }}"></script>
 
 
     {{-- sweetalert --}}
@@ -179,7 +157,7 @@
                 bAutoWidth: false,
                 type: 'GET',
                 ajax: {
-                    url: "{{ route('admin.user') }}",
+                    url: "{{ route('administrator.user') }}",
                     data: function(d) {
                         d['filter[active]'] = $('#filter_active').val();
                         d['filter[role]'] = $('#filter_role').val();
@@ -189,10 +167,26 @@
                         data: null,
                         name: 'id',
                         orderable: false,
-                    },
-                    {
-                        data: 'angkatan',
-                        name: 'angkatan'
+                    }, {
+                        data: 'id',
+                        name: 'id',
+                        render(data, type, full, meta) {
+                            return `
+                                <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data"
+                                data-id="${full.id}"
+                                data-name="${full.name}"
+                                data-email="${full.email}"
+                                data-role="${full.role}"
+                                data-active="${full.active}"
+                                onClick="editFunc(this)">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                </button>
+                                <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')">
+                                <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                </button>
+                                `;
+                        },
+                        orderable: false
                     },
                     {
                         data: 'name',
@@ -207,17 +201,6 @@
                         name: 'role_str'
                     },
                     {
-                        data: 'date_of_birth',
-                        name: 'date_of_birth'
-                    },
-                    {
-                        data: 'birthday_countdown',
-                        name: 'birthday_countdown',
-                        render(data, type, full, meta) {
-                            return data == 0 ? 'Hari ini' : `${data} Hari Lagi`;
-                        },
-                    },
-                    {
                         data: 'active_str',
                         name: 'active',
                         render(data, type, full, meta) {
@@ -226,35 +209,10 @@
                             return `<span class="${class_el} p-2">${full.active_str}</span>`;
                         },
                     },
-                    {
-                        data: 'id',
-                        name: 'id',
-                        render(data, type, full, meta) {
-                            return ` <a class="btn btn-rounded btn-info btn-sm my-1" title="Edit Profile"
-                                href="{{ route('member.profile') }}?id=${data}" >
-                                <i class="fa fa-user" aria-hidden="true"></i> Profile
-                                </a>
-                                <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data"
-                                data-id="${full.id}"
-                                data-name="${full.name}"
-                                data-email="${full.email}"
-                                data-role="${full.role}"
-                                data-active="${full.active}"
-                                data-date_of_birth="${full.date_of_birth}"
-                                data-angkatan="${full.angkatan}"
-                                onClick="editFunc(this)">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                </button>
-                                <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')">
-                                <i class="fa fa-trash" aria-hidden="true"></i> Delete
-                                </button>
-                                `;
-                        },
-                        orderable: false
-                    },
+
                 ],
                 order: [
-                    [6, 'asc']
+                    [2, 'asc']
                 ]
             });
 
@@ -279,8 +237,8 @@
                 var formData = new FormData(this);
                 setBtnLoading('#btn-save', 'Save Changes');
                 resetErrorAfterInput();
-                const route = ($('#id').val() == '') ? "{{ route('admin.user.store') }}" :
-                    "{{ route('admin.user.update') }}";
+                const route = ($('#id').val() == '') ? "{{ route('administrator.user.store') }}" :
+                    "{{ route('administrator.user.update') }}";
                 $.ajax({
                     type: "POST",
                     url: route,
@@ -363,7 +321,7 @@
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        url: `{{ url('admin/user') }}/${id}`,
+                        url: `{{ url('administrator/user') }}/${id}`,
                         type: 'DELETE',
                         dataType: 'json',
                         headers: {
@@ -402,7 +360,7 @@
         }
 
         function exportExcel() {
-            const base = "{{ route('admin.user.excel') }}";
+            const base = "{{ route('administrator.user.excel') }}";
             const active = $('#filter_active').val();
             const role = $('#filter_role').val();
             const search = $('[type=search]').val();

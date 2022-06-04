@@ -1,7 +1,6 @@
 <?php
 $master_helper = new \App\Helpers\Frontend\Template\Master();
-$menu_extend = array_merge($master_helper->menuBidang(), $master_helper->menuPendaftaran());
-$menu = new \App\Helpers\Admin\Template\SidebarMenu(app('config')->get('menu_list')[auth()->user()->role], $page_attr_navigation, $menu_extend);
+$menu = new \App\Helpers\Admin\Template\SidebarMenu(app('config')->get('menu_list')[auth()->user()->role], $page_attr_navigation);
 ?>
 
 

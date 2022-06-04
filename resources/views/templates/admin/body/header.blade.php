@@ -59,9 +59,6 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item" href="{{ route('member.profile') }}">
-                                        <i class="dropdown-icon fe fe-user"></i> Profile
-                                    </a>
                                     <a class="dropdown-item" href="{{ route('member.password') }}">
                                         <i class="dropdown-icon fe fe-lock"></i> Ganti Password
                                     </a>
