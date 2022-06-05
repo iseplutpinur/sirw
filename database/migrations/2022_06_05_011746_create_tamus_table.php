@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nik')->nullable()->default(null);
             $table->bigInteger('rt_id', false, true)->nullable()->default(null);
-            $table->bigInteger('tamu_ke_warga_id', false, true)->nullable()->default(null);
+            $table->bigInteger('tamu_ke_penduduk_id', false, true)->nullable()->default(null);
             $table->string('nama')->nullable()->default(null);
             $table->string('kota_lahir')->nullable()->default(null);
             $table->text('tanggal_lahir')->nullable()->default(null);
@@ -38,8 +38,8 @@ return new class extends Migration
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('tamu_ke_warga_id')
-                ->references('id')->on('wargas')
+            $table->foreign('tamu_ke_penduduk_id')
+                ->references('id')->on('penduduks')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 

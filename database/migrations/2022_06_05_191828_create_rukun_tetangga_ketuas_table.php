@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('rukun_tetangga_ketuas', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('rt_id', false, true)->nullable()->default(null);
-            $table->bigInteger('warga_id', false, true)->nullable()->default(null);
+            $table->bigInteger('penduduk_id', false, true)->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('rt_id')
@@ -24,8 +24,8 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('warga_id')
-                ->references('id')->on('wargas')
+            $table->foreign('penduduk_id')
+                ->references('id')->on('penduduks')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });

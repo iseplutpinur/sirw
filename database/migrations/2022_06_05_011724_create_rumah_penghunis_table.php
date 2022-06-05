@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('rumah_penghunis', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('warga_id', false, true)->nullable()->default(null);
+            $table->bigInteger('penduduk_id', false, true)->nullable()->default(null);
             $table->bigInteger('rumah_id', false, true)->nullable()->default(null);
             $table->timestamps();
-            $table->foreign('warga_id')
-                ->references('id')->on('wargas')
+            $table->foreign('penduduk_id')
+                ->references('id')->on('penduduks')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 

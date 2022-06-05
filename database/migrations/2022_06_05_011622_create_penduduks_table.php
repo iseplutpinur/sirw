@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('wargas', function (Blueprint $table) {
+        Schema::create('penduduks', function (Blueprint $table) {
             $table->id();
             $table->string('nik', 16)->nullable()->default(null);
 
@@ -40,9 +40,9 @@ return new class extends Migration
             $table->date('tanggal_datang')->nullable()->default(null);
 
             $table->boolean('status_tinggal')->nullable()->default(1)->comment('1 lahir, 2 mati, 3 pindah, 4 datang');
-            $table->boolean('status')->nullable()->default(1)->comment('0 bukan warga setempat, 1 warga setempat');
+            $table->boolean('status')->nullable()->default(1)->comment('0 bukan penduduk setempat, 1 penduduk setempat');
 
-            $table->boolean('warga_negara')->nullable()->default(1)->comment('0 wna, 1 wni');
+            $table->boolean('penduduk_negara')->nullable()->default(1)->comment('0 wna, 1 wni');
             $table->string('negara_asal')->nullable()->default(null);
 
             $table->timestamps();
@@ -86,6 +86,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wargas');
+        Schema::dropIfExists('penduduks');
     }
 };

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('alamat_singkat')->nullable()->default(null);
             $table->timestamps();
             $table->foreign('pemilik_id')
-                ->references('id')->on('wargas')
+                ->references('id')->on('penduduks')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
         });

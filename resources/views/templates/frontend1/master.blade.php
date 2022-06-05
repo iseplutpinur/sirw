@@ -218,9 +218,9 @@ $search_master_key = isset($_GET['search']) ? $_GET['search'] : '';
                                 <a class="nav-link" href="struktur-">Struktur Organisasi</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#">Data Warga</a>
+                                <a class="nav-link dropdown-toggle" href="#">Data Penduduk</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="">Data Warga Per RT</a></li>
+                                    <li><a class="dropdown-item" href="">Data Penduduk Per RT</a></li>
                                     <li><a class="dropdown-item" href="">Data Dasawisma</a></li>
                                     <li><a class="dropdown-item" href="">Data Posyandu</a></li>
                                     <li><a class="dropdown-item" href="">Data Posbindu</a></li>
@@ -383,13 +383,13 @@ $search_master_key = isset($_GET['search']) ? $_GET['search'] : '';
                             <h3 class="h5">MISI</h3>
                             <p>
                             <ol>
-                                <li>Meningkatkan peran serta warga RW 01 dalam menciptakan kebersihan, keindahan
+                                <li>Meningkatkan peran serta penduduk RW 01 dalam menciptakan kebersihan, keindahan
                                     lingkungan, dan
                                     wilayah bebas banjir</li>
-                                <li>Meningkatkan kesadaran warga RW 01 tentang pentingnya kesehatan keluarga</li>
-                                <li>Meningkatkan peran aktif warga RW 01 dalam menciptakan keamanan dan ketertiban
+                                <li>Meningkatkan kesadaran penduduk RW 01 tentang pentingnya kesehatan keluarga</li>
+                                <li>Meningkatkan peran aktif penduduk RW 01 dalam menciptakan keamanan dan ketertiban
                                     lingkungan</li>
-                                <li>Mendorong semangat kreatifitas warga untuk memajukan wilayahnya dari segala aspek
+                                <li>Mendorong semangat kreatifitas penduduk untuk memajukan wilayahnya dari segala aspek
                                     sehingga menjadi
                                     RW yang maju dan terdepan</li>
                             </ol>
@@ -781,9 +781,9 @@ $search_master_key = isset($_GET['search']) ? $_GET['search'] : '';
                 <li><a class="nav-link" href="">Struktur Organisasi</a></li>
 
                 <li>
-                    <a class="nav-link dropdown-toggle" href="#">Data Warga</a>
+                    <a class="nav-link dropdown-toggle" href="#">Data Penduduk</a>
                     <ul class="submenu">
-                        <li><a href="">Data Warga Per RT</a></li>
+                        <li><a href="">Data Penduduk Per RT</a></li>
                         <li><a href="">Data Dasawisma</a></li>
                         <li><a href="">Data Posyandu</a></li>
                         <li><a href="">Data Posbindu</a></li>

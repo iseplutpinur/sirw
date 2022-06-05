@@ -13,27 +13,27 @@
     - rukun tetangga
 
 2. Kependudukan
-    - Warga
-        # warga -> data master
+    - Penduduk
+        # penduduk -> data master
     - Kartu Keluarga
         # rt_id -> rt
-        # kepala_keluarga -> warga
+        # kepala_keluarga -> penduduk
     - rukun tetangga ketua
 
     - Kartu Keluarga List
         # hubungan dengan kk -> data master
-        # warga_id -> warga
+        # penduduk_id -> penduduk
         # kk_id -> kk
     - Rumah
-        # pemilik_id -> warga
+        # pemilik_id -> penduduk
     - Rumah Penghuni
-        # warga_id -> warga
+        # penduduk_id -> penduduk
         # rumah_id -> rumah
     - Tanah
-        # pemilik -> warga
+        # pemilik -> penduduk
 
     - Tamu
-        tamu_ke_warga -> warga
+        tamu_ke_penduduk -> penduduk
         status tamu -> data master
 
 

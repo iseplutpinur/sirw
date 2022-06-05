@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('kepala_keluarga')
-                ->references('id')->on('wargas')
+                ->references('id')->on('penduduks')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 

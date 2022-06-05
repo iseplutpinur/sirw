@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('kartu_keluarga_lists', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('warga_id', false, true)->nullable()->default(null);
+            $table->bigInteger('penduduk_id', false, true)->nullable()->default(null);
             $table->bigInteger('kartu_keluarga_id', false, true)->nullable()->default(null);
             $table->bigInteger('hubungan_dengan_kk_id', false, true)->nullable()->default(null);
             $table->timestamps();
 
-            $table->foreign('warga_id')
-                ->references('id')->on('wargas')
+            $table->foreign('penduduk_id')
+                ->references('id')->on('penduduks')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
