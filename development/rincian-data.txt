@@ -1,0 +1,46 @@
+status penduduk
+    1 Lahir
+    2 Mati
+    3 Pindah
+    4 Datang
+
+Status Kependudukan
+    - Warga Negara Indonesia (WNI)
+    - Warga Negara Asing (WNA)
+
+Agama
+    - Islam (Islam)
+    - Kristen (Kristen)
+    - Katholik (Katholik)
+    - Hindu (Hindu)
+    - Budha (Budha)
+    - Lain-Lain (Lain-Lain)
+
+Status Tinggal
+    - Penduduk Tetap (PT)
+    - Penduduk Tidak Tetap (PTT)
+
+Pendidikan
+    - Tidak/Belum Sekolah (Tdk Sekolah)
+    - Tidak Tamat SD (Tdk tmt SD)
+    - Belum Tamat SD (blm tmt SD)
+    - Tamat SD (Tamat SD)
+    - Sekolah Lanjut Pertama (SLP)
+    - Sekolah Lanjut Atas (SLA)
+    - Akademi/Sarjana Muda (Amd)
+    - Sarjana/Pascasarjana (S)
+
+Pekerjaan
+    - Tidak Bekerja (Tidak Bekerja)
+    - Ibu rumah Tangga (IRT)
+    - Buruh (Buruh)
+    - Pegawai Negeri Sipil (PNS)
+    - ABRI/POLRI (ABRI/POLRI)
+    - Pegawai Swasta (PS)
+    - Petani (Tani)
+    - Pedagang (Dagang)
+    - Pelajar (Pelajar)
+    - Mahasiswa (Mhs)
+    - Pensiunan (Pensiunan)
+    - Pra Sekolah (Pra Sekolah)
+    - Lainnya (Lainnya)
