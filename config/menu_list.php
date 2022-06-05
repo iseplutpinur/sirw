@@ -2,9 +2,12 @@
 $admin = [
     ['title' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'fe fe-home'],
     [
-        'title' => 'User',
-        'icon' => 'fe fe-users',
-        'route' => 'admin.user',
+        'title' => 'Data Kependudukan', 'icon' => 'fa fa-id-card-o',
+        'children' => [
+            ['title' => 'Penduduk'],
+            ['title' => 'Kartu Keluarga'],
+            ['title' => 'Tamu'],
+        ]
     ],
     [
         'title' => 'Data Master', 'icon' => 'fa fa-database',
@@ -18,6 +21,11 @@ $admin = [
             ['title' => 'Rukun Tetangga', 'route' => 'admin.data_master.rukun_tetangga'],
             ['title' => 'Status Tamu', 'route' => 'admin.data_master.status_tamu'],
         ]
+    ],
+    [
+        'title' => 'User Applicaiton',
+        'icon' => 'fe fe-users',
+        'route' => 'admin.user',
     ],
 ];
 
