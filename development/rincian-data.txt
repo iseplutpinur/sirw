@@ -4,10 +4,6 @@ status penduduk
     3 Pindah
     4 Datang
 
-Status Kependudukan
-    - Warga Negara Indonesia (WNI)
-    - Warga Negara Asing (WNA)
-
 Agama
     - Islam (Islam)
     - Kristen (Kristen)
@@ -16,7 +12,7 @@ Agama
     - Budha (Budha)
     - Lain-Lain (Lain-Lain)
 
-Status Tinggal
+Status Kependudukan
     - Penduduk Tetap (PT)
     - Penduduk Tidak Tetap (PTT)
 
@@ -28,7 +24,7 @@ Pendidikan
     - Sekolah Lanjut Pertama (SLP)
     - Sekolah Lanjut Atas (SLA)
     - Akademi/Sarjana Muda (Amd)
-    - Sarjana/Pascasarjana (S)
+    - Sarjana/Pascasarjana (Strata)
 
 Pekerjaan
     - Tidak Bekerja (Tidak Bekerja)

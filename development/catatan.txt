@@ -1,1 +1,3 @@
-
+Pindah action ke kiri
+Table nowrap
+row kelebihan di sembunyikan
