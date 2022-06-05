@@ -1,3 +1,56 @@
-Pindah action ke kiri
-Table nowrap
 row kelebihan di sembunyikan
+Rancangan Aplikasi
+Nama: Sistem Infromasi Rukun Warga (SIRW)
+Jenis Pengguna:
+1.	Administrator
+2.	RW
+3.	RT
+4.	PKK
+5.	Posyandu
+6.	POSKB
+Menu Aplikasi:
+1.	Kependudukan
+Menu utama untuk mengolah data menyangkut warga tetap maupun pendatang.
+1.1.	Kartu Keluarga
+Menu untuk mengolah data kartu keluarga termasuk menambahkan daftar orang kedalam kk yang diambil dari data warga nomor 1.2 dan untuk menyimpan copy scan file KK.
+1.2.	Warga
+Menu untuk mengolah data warga sesuai dengan yang ada di dalam KTP dan untuk menyimpan copy scan file KTP.
+1.3.	Tamu
+Menu untuk mengolah data warga pendatang seperti orang yang nge kost, tamu lebih dari 24 jam dan lain lain.
+2.	Rukun Tetangga
+Menu untuk mengolah data rukun warga seperti ketua RT struktur dan lain lain.
+3.	Laporan / Rekap
+Menu untuk mengolah data-data laporan atau rekap
+
+Rincian fitur-fitur dalam Aplikasi:
+1.	Kependudukan
+1.1.	Kartu Keluarga [No KK, No RT, Alamat, Kepala Keluarga, Foto KK]
+1.1.1.	Tambah, Ubah, Hapus Data KK
+1.1.2.	Set Kepala Keluarga
+1.1.3.	Warga Pindah KK
+1.1.4.	Upload foto copy file KK
+
+1.2.	Warga [[Data sesuai KTP], KB, Foto KTP, Pendidikan, Pekerjaan, Ayah, Ibu]
+1.2.1.	Tambah, Ubah, Hapus Data Warga
+1.2.2.	Properti
+1.2.2.1.	Rumah [Lokasi, Tipe, Jumlah Jamban] 1…n
+1.2.2.2.	Tanah [Lokasi, Luas] 1…n
+
+1.3.	Tamu [[Data sesuai KTP], Foto KTP, Tanggal Datang, Tanggal Keluar, Warga Yang Membawa/Bertanggung Jawab, Datang Ke No RT]
+1.3.1.	Tambah, Ubah Hapus Data Pendatang
+1.3.2.	Set Status [Ada, Tidak Ada]
+
+2.	Rukun Tetangga [No RT, Ketua]
+2.1.	Tambah, Ubah, Hapus Data RT
+2.2.	Set Ketua
+
+3.	Posyandu
+3.1.	Data Bayi dan Balita[[Ambil Data Dari Warga], ]
+3.1.1.	Tambah, Ubah, Hapus Data bayi dan balita
+
+4.	Laporan/Rekap
+
+
+
+
+
