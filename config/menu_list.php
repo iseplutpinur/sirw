@@ -1,62 +1,74 @@
 <?php
-$administrator = [
-    ['title' => 'Administrator Menu', 'separator' => true],
-    ['title' => 'Dashboard', 'route' => 'administrator.dashboard', 'icon' => 'fe fe-home'],
-    [
-        'title' => 'User',
-        'icon' => 'fe fe-users',
-        'route' => 'administrator.user',
-    ]
-];
-
 $admin = [
-    ['title' => 'Administrator Menu', 'separator' => true],
     ['title' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'fe fe-home'],
     [
-        'title' => 'Member',
+        'title' => 'User',
         'icon' => 'fe fe-users',
         'route' => 'admin.user',
     ],
     [
-        'title' => 'Profile Addon', 'icon' => 'fe fe-user-plus',
+        'title' => 'Data Master', 'icon' => 'fa fa-database',
         'children' => [
-            ['title' => 'Pendidikan Jenis', 'route' => 'admin.profile.pendidikan_jenis'],
-            ['title' => 'Kontak Tipe', 'route' => 'admin.profile.kontak_tipe'],
+            ['title' => 'Agama', 'route' => 'admin.data_master.agama'],
+            ['title' => 'Pekerjaan'],
+            ['title' => 'Pendidikan'],
+            ['title' => 'Status Kawin'],
+            ['title' => 'Status Penduduk'],
+            ['title' => 'Hubungan Dengan KK'],
+            ['title' => 'Rukun Warga'],
+            ['title' => 'Status Tamu'],
         ]
     ],
-    [
-        'title' => 'Kepengurusan',
-        'route' => 'admin.pengurus.periode',
-        'icon' => 'fe fe-sliders'
-    ],
-    [
-        'title' => 'Artikel',
-        'icon' => 'fe fe-file-text',
-        'children' => [
-            ['title' => 'Data', 'route' => 'admin.artikel.data'],
-            ['title' => 'Kategori', 'route' => 'admin.artikel.kategori'],
-            ['title' => 'Tag', 'route' => 'admin.artikel.tag']
-        ],
-    ],
-    [
-        'title' => 'Address', 'icon' => 'fe fe-map-pin',
-        'children' => [
-            ['title' => 'Province', 'route' => 'admin.address.province'],
-            ['title' => 'Regencie', 'route' => 'admin.address.regencie'],
-            ['title' => 'District', 'route' => 'admin.address.district'],
-            ['title' => 'Village', 'route' => 'admin.address.village'],
-        ]
-    ],
-
-    ['title' => 'Galeri', 'route' => 'admin.galeri', 'icon' => 'fe fe-image'],
-    [
-        'name' => 'pendaftaran',
-    ],
-    ['title' => 'Sosial Media', 'icon' => 'fe fe-aperture', 'route' => 'admin.social_media'],
-    ['title' => 'Kontak', 'icon' => 'fe fe-phone', 'route' => 'admin.contact'],
-    ['title' => 'Footer Instagram', 'icon' => 'fe fe-image', 'route' => 'admin.footer_instagram'],
-    ['title' => 'Username Role', 'icon' => 'fe fe-check', 'route' => 'admin.username_validation'],
 ];
+
+// $admin = [
+//     ['title' => 'Administrator Menu', 'separator' => true],
+//     ['title' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'fe fe-home'],
+//     [
+//         'title' => 'Member',
+//         'icon' => 'fe fe-users',
+//         'route' => 'admin.user',
+//     ],
+//     [
+//         'title' => 'Profile Addon', 'icon' => 'fe fe-user-plus',
+//         'children' => [
+//             ['title' => 'Pendidikan Jenis', 'route' => 'admin.profile.pendidikan_jenis'],
+//             ['title' => 'Kontak Tipe', 'route' => 'admin.profile.kontak_tipe'],
+//         ]
+//     ],
+//     [
+//         'title' => 'Kepengurusan',
+//         'route' => 'admin.pengurus.periode',
+//         'icon' => 'fe fe-sliders'
+//     ],
+//     [
+//         'title' => 'Artikel',
+//         'icon' => 'fe fe-file-text',
+//         'children' => [
+//             ['title' => 'Data', 'route' => 'admin.artikel.data'],
+//             ['title' => 'Kategori', 'route' => 'admin.artikel.kategori'],
+//             ['title' => 'Tag', 'route' => 'admin.artikel.tag']
+//         ],
+//     ],
+//     [
+//         'title' => 'Address', 'icon' => 'fe fe-map-pin',
+//         'children' => [
+//             ['title' => 'Province', 'route' => 'admin.address.province'],
+//             ['title' => 'Regencie', 'route' => 'admin.address.regencie'],
+//             ['title' => 'District', 'route' => 'admin.address.district'],
+//             ['title' => 'Village', 'route' => 'admin.address.village'],
+//         ]
+//     ],
+
+//     ['title' => 'Galeri', 'route' => 'admin.galeri', 'icon' => 'fe fe-image'],
+//     [
+//         'name' => 'pendaftaran',
+//     ],
+//     ['title' => 'Sosial Media', 'icon' => 'fe fe-aperture', 'route' => 'admin.social_media'],
+//     ['title' => 'Kontak', 'icon' => 'fe fe-phone', 'route' => 'admin.contact'],
+//     ['title' => 'Footer Instagram', 'icon' => 'fe fe-image', 'route' => 'admin.footer_instagram'],
+//     ['title' => 'Username Role', 'icon' => 'fe fe-check', 'route' => 'admin.username_validation'],
+// ];
 
 // set member menu
 $member  = [
@@ -89,8 +101,8 @@ $frontend  = [
 $member = array_merge($member, [['title' => 'Home Menu', 'separator' => true]], $frontend);
 
 return [
-    'admin' => array_merge($admin, [['title' => 'Member Menu', 'separator' => true]], $member),
+    // 'admin' => array_merge($admin, [['title' => 'Member Menu', 'separator' => true]], $member),
     'member' => $member,
     'frontend' => $frontend,
-    'administrator' => $administrator
+    'admin' => $admin
 ];

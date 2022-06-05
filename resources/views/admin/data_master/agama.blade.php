@@ -6,37 +6,21 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-md-flex flex-row justify-content-between">
-                    <h3 class="card-title">User Table</h3>
-                    <div>
-                        {{-- <button class="btn btn-success" onclick="exportExcel()">
-                            <i class="fa fa-file-excel-o"></i> Excel
-                        </button> --}}
-                        <button type="button" class="btn btn-rounded btn-primary" data-bs-effect="effect-scale"
-                            data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
-                            <i class="bi bi-plus-lg"></i> Add
-                        </button>
-                    </div>
+                    <h3 class="card-title">Status Agama</h3>
+                    <button type="button" class="btn btn-rounded btn-success" data-bs-effect="effect-scale"
+                        data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
+                        <i class="bi bi-plus-lg"></i> Add
+                    </button>
                 </div>
                 <div class="card-body">
                     <h5 class="h5">Filter Data</h5>
                     <form action="javascript:void(0)" class="form-inline ml-md-3 mb-md-3" id="FilterForm">
                         <div class="form-group me-md-3">
-                            <label for="filter_role">User Role</label>
-                            <select class="form-control" id="filter_role" name="filter_role" style="max-width: 200px">
-                                <option value="">All User Role</option>
-                                @foreach ($user_role as $role)
-                                    <option value="{{ $role }}">
-                                        {{ ucfirst(implode(' ', explode('_', $role))) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group me-md-3">
-                            <label for="filter_active">User Active</label>
-                            <select class="form-control" id="filter_active" name="filter_active" style="max-width: 200px">
-                                <option value="">All User Active</option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
+                            <label for="filter_status">Agama</label>
+                            <select class="form-control" id="filter_status" name="filter_status" style="max-width: 200px">
+                                <option value="">All Agama</option>
+                                <option value="1">Dipakai</option>
+                                <option value="0">Tidak Dipakai</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-rounded btn-md btn-info" title="Refresh Filter Table">
@@ -44,15 +28,15 @@
                         </button>
                     </form>
                     <div class="table-responsive table-striped">
-                        <table class="table table-bordered text-nowrap border-bottom" id="tbl_main">
+                        <table class="table table-bordered border-bottom" id="tbl_main">
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Singkatan</th>
+                                    <th>Keterangan</th>
+                                    <th>Status</th>
                                     <th>Action</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Active</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -71,49 +55,35 @@
                         class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form action="javascript:void(0)" id="UserForm" name="UserForm" method="POST"
+                    <form action="javascript:void(0)" id="MainForm" name="MainForm" method="POST"
                         enctype="multipart/form-data">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name"
+                            <label class="form-label" for="nama">Nama <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Enter Nama"
                                 required="" />
-
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="Email Address"
-                                required="" />
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group ">
-                            <label class="form-label" for="password">Password <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="password" name="password"
-                                placeholder="Enter Password" required="">
+                            <label class="form-label" for="singkatan">Singkatan</label>
+                            <input type="text" class="form-control" id="singkatan" name="singkatan"
+                                placeholder="Enter Singkatan" />
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="role">User Role</label>
-                            <select class="form-control" style="width: 100%;" required="" id="role" name="role">
-                                @foreach ($user_role as $role)
-                                    <option value="{{ $role }}">
-                                        {{ ucfirst(implode(' ', explode('_', $role))) }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <label class="form-label" for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan"
+                                placeholder="Enter Keterangan" />
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="active">Active</label>
-                            <select class="form-control" style="width: 100%;" required="" id="active" name="active">
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
+                            <label class="form-label" for="status">Status</label>
+                            <select class="form-control" style="width: 100%;" required="" id="status" name="status">
+                                <option value="1">Dipakai</option>
+                                <option value="0">Tidak Dipakai</option>
                             </select>
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="btn-save" form="UserForm">
+                    <button type="submit" class="btn btn-primary" id="btn-save" form="MainForm">
                         <li class="fa fa-save mr-1"></li> Save changes
                     </button>
                     <button class="btn btn-light" data-bs-dismiss="modal">
@@ -157,27 +127,47 @@
                 bAutoWidth: false,
                 type: 'GET',
                 ajax: {
-                    url: "{{ route('admin.user') }}",
+                    singkatan: "{{ route('admin.data_master.agama') }}",
                     data: function(d) {
-                        d['filter[active]'] = $('#filter_active').val();
-                        d['filter[role]'] = $('#filter_role').val();
+                        d['filter[status]'] = $('#filter_status').val();
                     }
                 },
                 columns: [{
                         data: null,
                         name: 'id',
                         orderable: false,
-                    }, {
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'singkatan',
+                        name: 'singkatan'
+                    },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan'
+                    },
+                    {
+                        data: 'status_str',
+                        name: 'status',
+                        render(data, type, full, meta) {
+                            const class_el = full.status == 1 ? 'badge bg-success' :
+                                'badge bg-danger';
+                            return `<span class="${class_el} p-2">${full.status_str}</span>`;
+                        },
+                    },
+                    {
                         data: 'id',
                         name: 'id',
                         render(data, type, full, meta) {
-                            return `
-                                <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data"
+                            return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data"
                                 data-id="${full.id}"
-                                data-name="${full.name}"
-                                data-email="${full.email}"
-                                data-role="${full.role}"
-                                data-active="${full.active}"
+                                data-nama="${full.nama}"
+                                data-singkatan="${full.singkatan ?? ''}"
+                                data-keterangan="${full.keterangan ?? ''}"
+                                data-status="${full.status}"
                                 onClick="editFunc(this)">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                                 </button>
@@ -186,33 +176,12 @@
                                 </button>
                                 `;
                         },
-                        orderable: false
+                        orderable: false,
+                        className: 'text-nowrap'
                     },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'role_str',
-                        name: 'role_str'
-                    },
-                    {
-                        data: 'active_str',
-                        name: 'active',
-                        render(data, type, full, meta) {
-                            const class_el = full.active == 1 ? 'badge bg-success' :
-                                'badge bg-danger';
-                            return `<span class="${class_el} p-2">${full.active_str}</span>`;
-                        },
-                    },
-
                 ],
                 order: [
-                    [2, 'asc']
+                    [1, 'asc']
                 ]
             });
 
@@ -232,16 +201,17 @@
             });
 
             // insertForm ===================================================================================
-            $('#UserForm').submit(function(e) {
+            $('#MainForm').submit(function(e) {
                 e.preventDefault();
+                resetErrorAfterInput();
                 var formData = new FormData(this);
                 setBtnLoading('#btn-save', 'Save Changes');
-                resetErrorAfterInput();
-                const route = ($('#id').val() == '') ? "{{ route('admin.user.store') }}" :
-                    "{{ route('admin.user.update') }}";
+                const route = ($('#id').val() == '') ?
+                    "{{ route('admin.data_master.agama.insert') }}" :
+                    "{{ route('admin.data_master.agama.update') }}";
                 $.ajax({
                     type: "POST",
-                    url: route,
+                    singkatan: route,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -287,28 +257,24 @@
         });
 
         function add() {
-            $('#UserForm').trigger("reset");
-            $('#modal-default-title').html("Add User");
+            $('#MainForm').trigger("reset");
+            $('#modal-default-title').html("Add Agama");
             $('#modal-default').modal('show');
             $('#id').val('');
             resetErrorAfterInput();
-            $('#password').attr('required', true);
         }
 
 
         function editFunc(datas) {
             const data = datas.dataset;
-            $('#modal-default-title').html("Edit User");
+            $('#modal-default-title').html("Edit Agama");
             $('#modal-default').modal('show');
-            $('#UserForm').trigger("reset");
+            $('#MainForm').trigger("reset");
             $('#id').val(data.id);
-            $('#name').val(data.name);
-            $('#email').val(data.email);
-            $('#date_of_birth').val(data.date_of_birth);
-            $('#angkatan').val(data.angkatan);
-            $('#role').val(data.role);
-            $('#active').val(data.active);
-            $('#password').removeAttr('required');
+            $('#nama').val(data.nama);
+            $('#status').val(data.status);
+            $('#singkatan').val(data.singkatan);
+            $('#keterangan').val(data.keterangan);
         }
 
         function deleteFunc(id) {
@@ -321,7 +287,7 @@
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        url: `{{ url('admin/user') }}/${id}`,
+                        url: `{{ url('admin/data_master/agama') }}/${id}`,
                         type: 'DELETE',
                         dataType: 'json',
                         headers: {
@@ -338,9 +304,9 @@
                         },
                         success: function(data) {
                             Swal.fire({
-                                position: 'top-end',
+                                position: 'center',
                                 icon: 'success',
-                                title: 'Data deleted successfully',
+                                title: 'Agama  deleted successfully',
                                 showConfirmButton: false,
                                 timer: 1500
                             })
@@ -357,15 +323,6 @@
                     });
                 }
             });
-        }
-
-        function exportExcel() {
-            const base = "{{ route('admin.user.excel') }}";
-            const active = $('#filter_active').val();
-            const role = $('#filter_role').val();
-            const search = $('[type=search]').val();
-            let arg = `?active=${active}&role=${role}&search=${search}`;
-            window.location.href = base + arg;
         }
     </script>
 @endsection

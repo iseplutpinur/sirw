@@ -18,7 +18,7 @@ use App\Http\Controllers\LoaderController;
 // Admin ==============================================================================================================
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-
+use App\Http\Controllers\Admin\DataMaster\AgamaController;
 // ====================================================================================================================
 // Frontend ===========================================================================================================
 use App\Http\Controllers\Frontend\HomeController;
@@ -44,7 +44,7 @@ Route::get('/dashboard', function () {
     $role = isset($user->role) ? $user->role : null;
     switch ($role) {
         case User::ROLE_ADMINISTRATOR:
-            return Redirect::route('administrator.dashboard');
+            return Redirect::route('admin.dashboard');
             break;
 
         default:
@@ -59,16 +59,30 @@ Route::get('/dashboard', function () {
 
 
 // Admin route ========================================================================================================
-Route::group(['prefix' => 'administrator', 'middleware' => ['auth:sanctum', 'verified', 'administrator']], function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('administrator.dashboard');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 'admin']], function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     // user
     Route::controller(UserController::class)->prefix('user')->group(function () {
-        Route::get('/', 'index')->name('administrator.user');
-        Route::get('/excel', 'excel')->name('administrator.user.excel');
-        Route::post('/', 'store')->name('administrator.user.store');
-        Route::delete('/{id}', 'delete')->name('administrator.user.delete');
-        Route::post('/update', 'update')->name('administrator.user.update');
+        Route::get('/', 'index')->name('admin.user');
+        Route::get('/excel', 'excel')->name('admin.user.excel');
+        Route::post('/', 'store')->name('admin.user.store');
+        Route::delete('/{id}', 'delete')->name('admin.user.delete');
+        Route::post('/update', 'update')->name('admin.user.update');
     });
+
+    // data master
+    // ====================================================================================================================
+    Route::prefix('data_master')->group(function () {
+        // agama
+        Route::controller(AgamaController::class)->prefix('agama')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.agama'); // page
+            Route::post('/',  'insert')->name('admin.data_master.agama.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.agama.delete');
+            Route::post('/update',  'update')->name('admin.data_master.agama.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.agama.select2');
+        });
+    });
+    // ====================================================================================================================
 });
 // ====================================================================================================================
 

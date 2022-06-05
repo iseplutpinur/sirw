@@ -10,15 +10,16 @@
 
     - Hubunagn Dengan KK
     - Status Tamu
+    - rukun tetangga
 
 2. Kependudukan
     - Warga
         # warga -> data master
-    - rukun tetangga
-        # ketua -> warga
     - Kartu Keluarga
         # rt_id -> rt
         # kepala_keluarga -> warga
+    - rukun tetangga ketua
+
     - Kartu Keluarga List
         # hubungan dengan kk -> data master
         # warga_id -> warga
