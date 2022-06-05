@@ -31,12 +31,12 @@
                         <table class="table table-bordered border-bottom" id="tbl_main">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Singkatan</th>
-                                    <th>Keterangan</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th class="text-nowrap">No</th>
+                                    <th class="text-nowrap">Action</th>
+                                    <th class="text-nowrap">Status</th>
+                                    <th class="text-nowrap">Nama</th>
+                                    <th class="text-nowrap">Singkatan</th>
+                                    <th class="text-nowrap">Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -138,27 +138,6 @@
                         orderable: false,
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
-                    },
-                    {
-                        data: 'singkatan',
-                        name: 'singkatan'
-                    },
-                    {
-                        data: 'keterangan',
-                        name: 'keterangan'
-                    },
-                    {
-                        data: 'status_str',
-                        name: 'status',
-                        render(data, type, full, meta) {
-                            const class_el = full.status == 1 ? 'badge bg-success' :
-                                'badge bg-danger';
-                            return `<span class="${class_el} p-2">${full.status_str}</span>`;
-                        },
-                    },
-                    {
                         data: 'id',
                         name: 'id',
                         render(data, type, full, meta) {
@@ -179,9 +158,34 @@
                         orderable: false,
                         className: 'text-nowrap'
                     },
+                    {
+                        data: 'status_str',
+                        name: 'status',
+                        render(data, type, full, meta) {
+                            const class_el = full.status == 1 ? 'badge bg-success' :
+                                'badge bg-danger';
+                            return `<span class="${class_el} p-1">${full.status_str}</span>`;
+                        },
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama',
+                        className: 'text-nowrap'
+                    },
+                    {
+                        data: 'singkatan',
+                        name: 'singkatan',
+                        className: 'text-nowrap'
+                    },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan',
+                        className: 'text-nowrap'
+                    },
+
                 ],
                 order: [
-                    [1, 'asc']
+                    [3, 'asc']
                 ]
             });
 

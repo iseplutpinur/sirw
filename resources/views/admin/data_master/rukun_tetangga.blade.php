@@ -18,11 +18,11 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Action</th>
                                     <th>Nama</th>
                                     <th>Nomor RT</th>
                                     <th>Telepon</th>
                                     <th>Whatsapp</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -117,24 +117,7 @@
                         data: null,
                         name: 'id',
                         orderable: false,
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama'
-                    },
-                    {
-                        data: 'nomor',
-                        name: 'nomor'
-                    },
-                    {
-                        data: 'telepon',
-                        name: 'telepon'
-                    },
-                    {
-                        data: 'whatsapp',
-                        name: 'whatsapp'
-                    },
-                    {
+                    }, {
                         data: 'id',
                         name: 'id',
                         render(data, type, full, meta) {
@@ -155,9 +138,30 @@
                         orderable: false,
                         className: 'text-nowrap'
                     },
+                    {
+                        data: 'nama',
+                        name: 'nama',
+                        className: 'text-nowrap'
+                    },
+                    {
+                        data: 'nomor',
+                        name: 'nomor',
+                        className: 'text-nowrap'
+                    },
+                    {
+                        data: 'telepon',
+                        name: 'telepon',
+                        className: 'text-nowrap'
+                    },
+                    {
+                        data: 'whatsapp',
+                        name: 'whatsapp',
+                        className: 'text-nowrap'
+                    },
+
                 ],
                 order: [
-                    [1, 'asc']
+                    [2, 'asc']
                 ]
             });
 
