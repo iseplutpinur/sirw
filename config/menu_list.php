@@ -10,13 +10,13 @@ $admin = [
         'title' => 'Data Master', 'icon' => 'fa fa-database',
         'children' => [
             ['title' => 'Agama', 'route' => 'admin.data_master.agama'],
-            ['title' => 'Pekerjaan'],
-            ['title' => 'Pendidikan'],
-            ['title' => 'Status Kawin'],
-            ['title' => 'Status Penduduk'],
-            ['title' => 'Hubungan Dengan KK'],
-            ['title' => 'Rukun Warga'],
-            ['title' => 'Status Tamu'],
+            ['title' => 'Pekerjaan', 'route' => 'admin.data_master.pekerjaan'],
+            ['title' => 'Pendidikan', 'route' => 'admin.data_master.pendidikan'],
+            ['title' => 'Status Kawin', 'route' => 'admin.data_master.status_kawin'],
+            ['title' => 'Status Penduduk', 'route' => 'admin.data_master.status_penduduk'],
+            ['title' => 'Hubungan Dengan KK', 'route' => 'admin.data_master.hubungan_dengan_kk'],
+            ['title' => 'Rukun Tetangga', 'route' => 'admin.data_master.rukun_tetangga'],
+            ['title' => 'Status Tamu', 'route' => 'admin.data_master.status_tamu'],
         ]
     ],
 ];

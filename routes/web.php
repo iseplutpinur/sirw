@@ -18,10 +18,20 @@ use App\Http\Controllers\LoaderController;
 // Admin ==============================================================================================================
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+
+// Data Master
 use App\Http\Controllers\Admin\DataMaster\AgamaController;
+use App\Http\Controllers\Admin\DataMaster\HubunganDenganKKController;
+use App\Http\Controllers\Admin\DataMaster\PekerjaanController;
+use App\Http\Controllers\Admin\DataMaster\PendidikanController;
+use App\Http\Controllers\Admin\DataMaster\RukunTetanggaController;
+use App\Http\Controllers\Admin\DataMaster\StatusKawinController;
+use App\Http\Controllers\Admin\DataMaster\StatusPendudukController;
+use App\Http\Controllers\Admin\DataMaster\StatusTamuController;
 // ====================================================================================================================
 // Frontend ===========================================================================================================
 use App\Http\Controllers\Frontend\HomeController;
+use App\Models\DataMaster\StatusPenduduk;
 
 // auth ===============================================================================================================
 Route::controller(LoginController::class)->group(function () {
@@ -80,6 +90,62 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
             Route::delete('/{model}',  'delete')->name('admin.data_master.agama.delete');
             Route::post('/update',  'update')->name('admin.data_master.agama.update');
             Route::get('/select2',  'select2')->name('admin.data_master.agama.select2');
+        });
+        // pekerjaan
+        Route::controller(PekerjaanController::class)->prefix('pekerjaan')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.pekerjaan'); // page
+            Route::post('/',  'insert')->name('admin.data_master.pekerjaan.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.pekerjaan.delete');
+            Route::post('/update',  'update')->name('admin.data_master.pekerjaan.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.pekerjaan.select2');
+        });
+        // pendidikan
+        Route::controller(PendidikanController::class)->prefix('pendidikan')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.pendidikan'); // page
+            Route::post('/',  'insert')->name('admin.data_master.pendidikan.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.pendidikan.delete');
+            Route::post('/update',  'update')->name('admin.data_master.pendidikan.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.pendidikan.select2');
+        });
+        // status_kawin
+        Route::controller(StatusKawinController::class)->prefix('status_kawin')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.status_kawin'); // page
+            Route::post('/',  'insert')->name('admin.data_master.status_kawin.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.status_kawin.delete');
+            Route::post('/update',  'update')->name('admin.data_master.status_kawin.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.status_kawin.select2');
+        });
+        // status_penduduk
+        Route::controller(StatusPendudukController::class)->prefix('status_penduduk')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.status_penduduk'); // page
+            Route::post('/',  'insert')->name('admin.data_master.status_penduduk.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.status_penduduk.delete');
+            Route::post('/update',  'update')->name('admin.data_master.status_penduduk.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.status_penduduk.select2');
+        });
+        // status_tamu
+        Route::controller(StatusTamuController::class)->prefix('status_tamu')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.status_tamu'); // page
+            Route::post('/',  'insert')->name('admin.data_master.status_tamu.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.status_tamu.delete');
+            Route::post('/update',  'update')->name('admin.data_master.status_tamu.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.status_tamu.select2');
+        });
+        // hubungan_dengan_kk
+        Route::controller(HubunganDenganKKController::class)->prefix('hubungan_dengan_kk')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.hubungan_dengan_kk'); // page
+            Route::post('/',  'insert')->name('admin.data_master.hubungan_dengan_kk.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.hubungan_dengan_kk.delete');
+            Route::post('/update',  'update')->name('admin.data_master.hubungan_dengan_kk.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.hubungan_dengan_kk.select2');
+        });
+        // rukun_tetangga
+        Route::controller(RukunTetanggaController::class)->prefix('rukun_tetangga')->group(function () {
+            Route::get('/',  'index')->name('admin.data_master.rukun_tetangga'); // page
+            Route::post('/',  'insert')->name('admin.data_master.rukun_tetangga.insert');
+            Route::delete('/{model}',  'delete')->name('admin.data_master.rukun_tetangga.delete');
+            Route::post('/update',  'update')->name('admin.data_master.rukun_tetangga.update');
+            Route::get('/select2',  'select2')->name('admin.data_master.rukun_tetangga.select2');
         });
     });
     // ====================================================================================================================

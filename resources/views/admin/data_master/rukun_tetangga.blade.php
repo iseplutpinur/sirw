@@ -6,36 +6,22 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-md-flex flex-row justify-content-between">
-                    <h3 class="card-title">Agama</h3>
+                    <h3 class="card-title">Rukun Tetangga</h3>
                     <button type="button" class="btn btn-rounded btn-success" data-bs-effect="effect-scale"
                         data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
                         <i class="bi bi-plus-lg"></i> Add
                     </button>
                 </div>
                 <div class="card-body">
-                    <h5 class="h5">Filter Data</h5>
-                    <form action="javascript:void(0)" class="form-inline ml-md-3 mb-md-3" id="FilterForm">
-                        <div class="form-group me-md-3">
-                            <label for="filter_status">Agama</label>
-                            <select class="form-control" id="filter_status" name="filter_status" style="max-width: 200px">
-                                <option value="">All Agama</option>
-                                <option value="1">Dipakai</option>
-                                <option value="0">Tidak Dipakai</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-rounded btn-md btn-info" title="Refresh Filter Table">
-                            <i class="bi bi-arrow-repeat"></i> Refresh
-                        </button>
-                    </form>
                     <div class="table-responsive table-striped">
                         <table class="table table-bordered border-bottom" id="tbl_main">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Singkatan</th>
-                                    <th>Keterangan</th>
-                                    <th>Status</th>
+                                    <th>Nomor RT</th>
+                                    <th>Telepon</th>
+                                    <th>Whatsapp</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -64,21 +50,19 @@
                                 required="" />
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="singkatan">Singkatan</label>
-                            <input type="text" class="form-control" id="singkatan" name="singkatan"
-                                placeholder="Enter Singkatan" />
+                            <label class="form-label" for="nomor">Nomor RT <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="nomor" name="nomor" placeholder="Enter Nomor RT"
+                                required="" />
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="keterangan">Keterangan</label>
-                            <input type="text" class="form-control" id="keterangan" name="keterangan"
-                                placeholder="Enter Keterangan" />
+                            <label class="form-label" for="telepon">Telepon</label>
+                            <input type="text" class="form-control" id="telepon" name="telepon"
+                                placeholder="Enter Telepon" required="" />
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="status">Status</label>
-                            <select class="form-control" style="width: 100%;" required="" id="status" name="status">
-                                <option value="1">Dipakai</option>
-                                <option value="0">Tidak Dipakai</option>
-                            </select>
+                            <label class="form-label" for="whatsapp">Whatsapp</label>
+                            <input type="text" class="form-control" id="whatsapp" name="whatsapp"
+                                placeholder="Enter Telepon" required="" />
                         </div>
                     </form>
                 </div>
@@ -127,10 +111,7 @@
                 bAutoWidth: false,
                 type: 'GET',
                 ajax: {
-                    url: "{{ route('admin.data_master.agama') }}",
-                    data: function(d) {
-                        d['filter[status]'] = $('#filter_status').val();
-                    }
+                    url: "{{ route('admin.data_master.rukun_tetangga') }}",
                 },
                 columns: [{
                         data: null,
@@ -142,21 +123,16 @@
                         name: 'nama'
                     },
                     {
-                        data: 'singkatan',
-                        name: 'singkatan'
+                        data: 'nomor',
+                        name: 'nomor'
                     },
                     {
-                        data: 'keterangan',
-                        name: 'keterangan'
+                        data: 'telepon',
+                        name: 'telepon'
                     },
                     {
-                        data: 'status_str',
-                        name: 'status',
-                        render(data, type, full, meta) {
-                            const class_el = full.status == 1 ? 'badge bg-success' :
-                                'badge bg-danger';
-                            return `<span class="${class_el} p-2">${full.status_str}</span>`;
-                        },
+                        data: 'whatsapp',
+                        name: 'whatsapp'
                     },
                     {
                         data: 'id',
@@ -165,9 +141,9 @@
                             return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data"
                                 data-id="${full.id}"
                                 data-nama="${full.nama}"
-                                data-singkatan="${full.singkatan ?? ''}"
-                                data-keterangan="${full.keterangan ?? ''}"
-                                data-status="${full.status}"
+                                data-telepon="${full.telepon ?? ''}"
+                                data-whatsapp="${full.whatsapp ?? ''}"
+                                data-nomor="${full.nomor}"
                                 onClick="editFunc(this)">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                                 </button>
@@ -207,8 +183,8 @@
                 var formData = new FormData(this);
                 setBtnLoading('#btn-save', 'Save Changes');
                 const route = ($('#id').val() == '') ?
-                    "{{ route('admin.data_master.agama.insert') }}" :
-                    "{{ route('admin.data_master.agama.update') }}";
+                    "{{ route('admin.data_master.rukun_tetangga.insert') }}" :
+                    "{{ route('admin.data_master.rukun_tetangga.update') }}";
                 $.ajax({
                     type: "POST",
                     url: route,
@@ -258,7 +234,7 @@
 
         function add() {
             $('#MainForm').trigger("reset");
-            $('#modal-default-title').html("Add Agama");
+            $('#modal-default-title').html("Add Rukun Tetangga");
             $('#modal-default').modal('show');
             $('#id').val('');
             resetErrorAfterInput();
@@ -267,14 +243,14 @@
 
         function editFunc(datas) {
             const data = datas.dataset;
-            $('#modal-default-title').html("Edit Agama");
+            $('#modal-default-title').html("Edit Rukun Tetangga");
             $('#modal-default').modal('show');
             $('#MainForm').trigger("reset");
             $('#id').val(data.id);
             $('#nama').val(data.nama);
-            $('#status').val(data.status);
-            $('#singkatan').val(data.singkatan);
-            $('#keterangan').val(data.keterangan);
+            $('#nomor').val(data.nomor);
+            $('#telepon').val(data.telepon);
+            $('#whatsapp').val(data.whatsapp);
         }
 
         function deleteFunc(id) {
@@ -287,7 +263,7 @@
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        url: `{{ url('admin/data_master/agama') }}/${id}`,
+                        url: `{{ url('admin/data_master/rukun_tetangga') }}/${id}`,
                         type: 'DELETE',
                         dataType: 'json',
                         headers: {
@@ -306,7 +282,7 @@
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'Agama  deleted successfully',
+                                title: 'Rukun Tetangga  deleted successfully',
                                 showConfirmButton: false,
                                 timer: 1500
                             })

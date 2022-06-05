@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('rukun_tetanggas', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor')->nullable()->default(null);
+            $table->string('nama')->nullable()->default(null);
+            $table->integer('nomor')->nullable()->default(null);
             $table->string('telepon')->nullable()->default(null);
             $table->string('whatsapp')->nullable()->default(null);
             $table->timestamps();

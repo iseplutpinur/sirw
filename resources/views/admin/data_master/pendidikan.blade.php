@@ -6,7 +6,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-md-flex flex-row justify-content-between">
-                    <h3 class="card-title">Agama</h3>
+                    <h3 class="card-title">Pendidikan</h3>
                     <button type="button" class="btn btn-rounded btn-success" data-bs-effect="effect-scale"
                         data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
                         <i class="bi bi-plus-lg"></i> Add
@@ -16,9 +16,9 @@
                     <h5 class="h5">Filter Data</h5>
                     <form action="javascript:void(0)" class="form-inline ml-md-3 mb-md-3" id="FilterForm">
                         <div class="form-group me-md-3">
-                            <label for="filter_status">Agama</label>
+                            <label for="filter_status">Pendidikan</label>
                             <select class="form-control" id="filter_status" name="filter_status" style="max-width: 200px">
-                                <option value="">All Agama</option>
+                                <option value="">All Pendidikan</option>
                                 <option value="1">Dipakai</option>
                                 <option value="0">Tidak Dipakai</option>
                             </select>
@@ -127,7 +127,7 @@
                 bAutoWidth: false,
                 type: 'GET',
                 ajax: {
-                    url: "{{ route('admin.data_master.agama') }}",
+                    url: "{{ route('admin.data_master.pendidikan') }}",
                     data: function(d) {
                         d['filter[status]'] = $('#filter_status').val();
                     }
@@ -207,8 +207,8 @@
                 var formData = new FormData(this);
                 setBtnLoading('#btn-save', 'Save Changes');
                 const route = ($('#id').val() == '') ?
-                    "{{ route('admin.data_master.agama.insert') }}" :
-                    "{{ route('admin.data_master.agama.update') }}";
+                    "{{ route('admin.data_master.pendidikan.insert') }}" :
+                    "{{ route('admin.data_master.pendidikan.update') }}";
                 $.ajax({
                     type: "POST",
                     url: route,
@@ -258,7 +258,7 @@
 
         function add() {
             $('#MainForm').trigger("reset");
-            $('#modal-default-title').html("Add Agama");
+            $('#modal-default-title').html("Add Pendidikan");
             $('#modal-default').modal('show');
             $('#id').val('');
             resetErrorAfterInput();
@@ -267,7 +267,7 @@
 
         function editFunc(datas) {
             const data = datas.dataset;
-            $('#modal-default-title').html("Edit Agama");
+            $('#modal-default-title').html("Edit Pendidikan");
             $('#modal-default').modal('show');
             $('#MainForm').trigger("reset");
             $('#id').val(data.id);
@@ -287,7 +287,7 @@
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        url: `{{ url('admin/data_master/agama') }}/${id}`,
+                        url: `{{ url('admin/data_master/pendidikan') }}/${id}`,
                         type: 'DELETE',
                         dataType: 'json',
                         headers: {
@@ -306,7 +306,7 @@
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'Agama  deleted successfully',
+                                title: 'Pendidikan  deleted successfully',
                                 showConfirmButton: false,
                                 timer: 1500
                             })
