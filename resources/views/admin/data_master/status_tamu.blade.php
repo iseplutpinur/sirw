@@ -16,7 +16,7 @@
                     <h5 class="h5">Filter Data</h5>
                     <form action="javascript:void(0)" class="form-inline ml-md-3 mb-md-3" id="FilterForm">
                         <div class="form-group me-md-3">
-                            <label for="filter_status">Status Tamu</label>
+                            <label for="filter_status">Status</label>
                             <select class="form-control" id="filter_status" name="filter_status" style="max-width: 200px">
                                 <option value="">All Status Tamu</option>
                                 <option value="1">Dipakai</option>

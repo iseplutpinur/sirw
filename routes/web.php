@@ -28,10 +28,23 @@ use App\Http\Controllers\Admin\DataMaster\RukunTetanggaController;
 use App\Http\Controllers\Admin\DataMaster\StatusKawinController;
 use App\Http\Controllers\Admin\DataMaster\StatusPendudukController;
 use App\Http\Controllers\Admin\DataMaster\StatusTamuController;
+use App\Http\Controllers\Admin\Kependudukan\PendudukController;
+// kependudukan
+
+
+
+
 // ====================================================================================================================
 // Frontend ===========================================================================================================
 use App\Http\Controllers\Frontend\HomeController;
-use App\Models\DataMaster\StatusPenduduk;
+
+// home default =======================================================================================================
+Route::controller(HomeController::class)->group(function () {
+    // Route::get('/', 'index')->name('home');
+    Route::get('/', 'index2')->name('home');
+});
+// ====================================================================================================================
+
 
 // auth ===============================================================================================================
 Route::controller(LoginController::class)->group(function () {
@@ -41,12 +54,6 @@ Route::controller(LoginController::class)->group(function () {
 });
 // ====================================================================================================================
 
-// home default =======================================================================================================
-Route::controller(HomeController::class)->group(function () {
-    // Route::get('/', 'index')->name('home');
-    Route::get('/', 'index1')->name('home');
-});
-// ====================================================================================================================
 
 // dashboard ==========================================================================================================
 Route::get('/dashboard', function () {
@@ -81,7 +88,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
     });
 
     // data master
-    // ====================================================================================================================
+    // ================================================================================================================
     Route::prefix('data_master')->group(function () {
         // agama
         Route::controller(AgamaController::class)->prefix('agama')->group(function () {
@@ -146,6 +153,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
             Route::delete('/{model}',  'delete')->name('admin.data_master.rukun_tetangga.delete');
             Route::post('/update',  'update')->name('admin.data_master.rukun_tetangga.update');
             Route::get('/select2',  'select2')->name('admin.data_master.rukun_tetangga.select2');
+        });
+    });
+    // ================================================================================================================
+
+
+    // data Kependudukan
+    Route::prefix('kependudukan')->group(function () {
+        // penduduk
+        Route::controller(PendudukController::class)->prefix('penduduk')->group(function () {
+            Route::get('/',  'index')->name('admin.kependudukan.penduduk'); // page
+            Route::post('/',  'insert')->name('admin.kependudukan.penduduk.insert');
+            Route::delete('/{model}',  'delete')->name('admin.kependudukan.penduduk.delete');
+            Route::post('/update',  'update')->name('admin.kependudukan.penduduk.update');
+            Route::get('/select2',  'select2')->name('admin.kependudukan.penduduk.select2');
         });
     });
     // ====================================================================================================================
