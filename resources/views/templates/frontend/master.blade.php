@@ -28,7 +28,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Nerox - Agency & Portfolio Template</title>
+    <title>SIDAUNG</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -391,582 +391,305 @@
 
     <main>
 
-        <!-- tppoletics-area start -->
-        <div class="tppoletics-area p-relative">
-            <div class="container-fluid p-0">
-                <div class="row g-0 align-items-center">
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="tppoletics-content text-center">
-                            <h2 class="tppoletics-title">HILEXA</h2>
-                            <h3 class="tppoletics-sd-title mb-40">WILLIAM</h3>
-                            <span class="tppoletics-text">I am a American politician</span>
-                            <div class="tppoletics-button mt-65">
-                                <a href="job-list.html" class="tp-solid-btn">Became a Volenteer</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="tppoletics-hero">
-                            <img src="{{ asset('assets/templates/frontend/img/hero/poletics-hero.jpg') }}"
-                                alt="hero-img">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tpbs-scroll tpbs-scroll-3">
-                <a href="#bio-wrapper" class="tpbs-scroll-btn animate"><i class="fa-light fa-arrow-down-long"></i></a>
-                <span><a href="#bio-wrapper">Scrool Down</a></span>
-            </div>
-        </div>
-        <!-- tppoletics-area end -->
-
-        <!--  bio-wrapper start -->
-        <div id="bio-wrapper" class="bio-wrapper grey-bg pt-190">
+        <!-- slider -->
+        <section class="tpagency-area p-relative box-plr-85">
             <div class="container-fluid">
-                <!-- biograpy-area start -->
-                <div class="biograpy-area pt-80 pb-70 white-bg">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6">
-                                <div class="biograpy-image mb-60">
-                                    <img src="{{ asset('assets/templates/frontend/img/about/biograpy-img-1.jpg') }}"
-                                        alt="img">
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6">
-                                <div class="biograpy-image mb-60">
-                                    <img src="{{ asset('assets/templates/frontend/img/about/biograpy-img-2.jpg') }}"
-                                        alt="img">
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="biograpy-title mb-40">Biography</h4>
-                        <p class="bio-text mb-35">Pork id swine, consequat quis drumstick commodo cupidatat short loin
-                            magna
-                            tempor tri-tip shoulder chicken bacon. Adipisicing strip steak jerky, swine shank eu aliqua
-                            non
-                            drumstick cow fatback. Veniam elit meatloaf t-bone in fatback turducken eiusmod ea. Quis
-                            kielbasa
-                            swine fatback, saola velit chuck ullamco. Frankfurter short ribs pastrami ribeye shoulder
-                            occaecat
-                            pancetta. Ipsum cupim landjaeger dolore, aliquip strip steak meatloaf nulla eiusmod.</p>
-                        <div class="row mb-20">
-                            <div class="col-xxl-7 col-xl-8">
-                                <div class="row">
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="features__list mb-10">
-                                            <ul>
-                                                <li class="d-flex align-items-center">
-                                                    <div class="features__list-icon mr-10">
-                                                        <i class="far fa-check"></i>
-                                                    </div>
-                                                    <div class="features__list-text">
-                                                        <p>Majored in Political Science</p>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex align-items-center">
-                                                    <div class="features__list-icon mr-10">
-                                                        <i class="far fa-check"></i>
-                                                    </div>
-                                                    <div class="features__list-text">
-                                                        <p>Law School and Civil Rights Attorney</p>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="features__list mb-10">
-                                            <ul>
-                                                <li class="d-flex align-items-center">
-                                                    <div class="features__list-icon mr-10">
-                                                        <i class="far fa-check"></i>
-                                                    </div>
-                                                    <div class="features__list-text">
-                                                        <p>Deputy Attorney General Media Project</p>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex align-items-center">
-                                                    <div class="features__list-icon mr-10">
-                                                        <i class="far fa-check"></i>
-                                                    </div>
-                                                    <div class="features__list-text">
-                                                        <p>Director of the Developing Communities</p>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p>Exercitation voluptate ribeye tongue, laborum picanha dolore flank in pastrami. In brisket
-                            tail
-                            pariatur in incididunt ham hock shankle bacon landjaeger short ribs deserunt beef. Elit
-                            chicken
-                            porchetta nostrud, nisi consequat occaecat. Bresaola pancetta occaecat chicken filet mignon
-                            exercitation ribeye doner chuck ea pork ex beef andouille. Sunt consequat eu, velit venison
-                            drumstick nulla short ribs sausage.
-                        </p>
-                    </div>
-                </div>
-                <!-- biograpy-area end -->
-
-                <!-- vote-area start -->
-                <div class="vote-area border-top white-bg pt-80 pb-80">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="vote-content text-center">
-                                    <div class="flag-img mb-35">
-                                        <img src="{{ asset('assets/templates/frontend/img/about/flag-img.jpg') }}"
-                                            alt="flag-img">
-                                    </div>
-                                    <h4 class="vote-title mb-35">Leadership.. Experience.. Values..</h4>
-                                    <h5 class="vote-sm-title">VOTE FOR HILEXA WILLAM</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- vote-area end -->
-            </div>
-        </div>
-        <!-- bio-wrapper end -->
-
-        <!-- services-area start -->
-        <div class="tppo-services-area grey-bg pt-135 pb-110">
-            <div class="container">
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-xl-12">
-                        <div class="tpbs-section-wrapper text-center mb-30">
-                            <span class="tpbs-sub-title mb-15">My Services</span>
-                            <h3 class="tpbs-title">Policy <span> positions</span></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-35">
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="tppo-services-item text-center mb-30">
-                            <div class="tppo-services-icon mb-50">
-                                <i class="flaticon-support"></i>
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-1">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-1.png') }}"
-                                    alt="shape">
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-2">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-2.png') }}"
-                                    alt="shape">
-                            </div>
-                            <h5 class="tppo-services-title"><a href="project-details.html">Socail Services</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="tppo-services-item text-center mb-30">
-                            <div class="tppo-services-icon mb-50">
-                                <i class="flaticon-reading"></i>
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-1">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-1.png') }}"
-                                    alt="shape">
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-2">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-2.png') }}"
-                                    alt="shape">
-                            </div>
-                            <h5 class="tppo-services-title"><a href="project-details.html">Education</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="tppo-services-item text-center mb-30">
-                            <div class="tppo-services-icon mb-50">
-                                <i class="flaticon-business"></i>
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-1">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-1.png') }}"
-                                    alt="shape">
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-2">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-2.png') }}"
-                                    alt="shape">
-                            </div>
-                            <h5 class="tppo-services-title"><a href="project-details.html">Business</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="tppo-services-item text-center mb-30">
-                            <div class="tppo-services-icon mb-50">
-                                <i class="flaticon-route"></i>
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-1">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-1.png') }}"
-                                    alt="shape">
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-2">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-2.png') }}"
-                                    alt="shape">
-                            </div>
-                            <h5 class="tppo-services-title"><a href="project-details.html">Transprotation</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="tppo-services-item text-center mb-30">
-                            <div class="tppo-services-icon mb-50">
-                                <i class="flaticon-career"></i>
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-1">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-1.png') }}"
-                                    alt="shape">
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-2">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-2.png') }}"
-                                    alt="shape">
-                            </div>
-                            <h5 class="tppo-services-title"><a href="project-details.html">Development</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="tppo-services-item text-center mb-30">
-                            <div class="tppo-services-icon mb-50">
-                                <i class="flaticon-leaf"></i>
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-1">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-1.png') }}"
-                                    alt="shape">
-                            </div>
-                            <div class="tppo-services-shape tppo-services-shape-2">
-                                <img src="{{ asset('assets/templates/frontend/img/icon/po-ser-shape-2.png') }}"
-                                    alt="shape">
-                            </div>
-                            <h5 class="tppo-services-title"><a href="project-details.html">Enviroment</a></h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- services-area end -->
+                        <div class="tpagency__slider tp-agency-slide-active">
 
-        <!-- tp-furniture-project start -->
-        <div class="tp-political-project grey-bg pb-95 box-plr-155">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-8">
-                        <div class="row">
-                            <div class="col-xl-6 col-md-6">
-                                <div class="tppg-project mb-30">
-                                    <div class="tppg-project__thumb">
-                                        <div class="tppg-project__thumb-image">
-                                            <a href="project-details.html"><img
-                                                    src="{{ asset('assets/templates/frontend/img/project/5/project-img-1.jpg') }}"
-                                                    alt="project-img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="tppg-project__content">
-                                        <span class="tppg-project-tag mb-10">LAW & COURT</span>
-                                        <h4 class="tppg-project-title"><a href="project-details.html">Model &amp;
-                                                Fashion
-                                                Photography</a></h4>
-                                    </div>
+                            <div class="tpagency__slider-item tpagency__slider-height text-center d-flex align-items-center"
+                                data-background="{{ asset('assets/templates/frontend/new/slider/1.jpg') }}">
+                                <div class="tp-agency-slider-inner">
+                                    <h4 class="tpagency-title">Selamat Datang Di <br> Website Resmi RW 13</h4>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-md-6">
-                                <div class="tppg-project mb-30">
-                                    <div class="tppg-project__thumb">
-                                        <div class="tppg-project__thumb-image">
-                                            <a href="project-details.html"><img
-                                                    src="{{ asset('assets/templates/frontend/img/project/5/project-img-2.jpg') }}"
-                                                    alt="project-img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="tppg-project__content">
-                                        <span class="tppg-project-tag mb-10">LAW & COURT</span>
-                                        <h4 class="tppg-project-title"><a href="project-details.html">Model &amp;
-                                                Fashion
-                                                Photography</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-md-6">
-                                <div class="tppg-project mb-30">
-                                    <div class="tppg-project__thumb">
-                                        <div class="tppg-project__thumb-image">
-                                            <a href="project-details.html"><img
-                                                    src="{{ asset('assets/templates/frontend/img/project/5/project-img-3.jpg') }}"
-                                                    alt="project-img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="tppg-project__content">
-                                        <span class="tppg-project-tag mb-10">LAW & COURT</span>
-                                        <h4 class="tppg-project-title"><a href="project-details.html">Model &amp;
-                                                Fashion
-                                                Photography</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-md-6">
-                                <div class="tppg-project mb-30">
-                                    <div class="tppg-project__thumb">
-                                        <div class="tppg-project__thumb-image">
-                                            <a href="project-details.html"><img
-                                                    src="{{ asset('assets/templates/frontend/img/project/5/project-img-4.jpg') }}"
-                                                    alt="project-img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="tppg-project__content">
-                                        <span class="tppg-project-tag mb-10">LAW & COURT</span>
-                                        <h4 class="tppg-project-title"><a href="project-details.html">Model &amp;
-                                                Fashion
-                                                Photography</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4">
-                        <div class="tppg-project mb-35">
-                            <div class="tppg-project__thumb">
-                                <div class="tppg-project__thumb-image">
-                                    <a href="project-details.html"><img
-                                            src="{{ asset('assets/templates/frontend/img/project/5/project-img-5.jpg') }}"
-                                            alt="project-img"></a>
-                                </div>
-                            </div>
-                            <div class="tppg-project__content">
-                                <span class="tppg-project-tag mb-10">LAW & COURT</span>
-                                <h4 class="tppg-project-title"><a href="project-details.html">Model &amp; Fashion
-                                        Photography</a></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- tp-furniture-project end -->
 
-        <!-- tpevent-area start -->
-        <div class="tpevent-area grey-bg pb-100">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="tpbs-section-wrapper text-center mb-30">
-                            <span class="tpbs-sub-title mb-15">My Services</span>
-                            <h3 class="tpbs-title">Policy <span> positions</span></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-35">
-                    <div class="col-xl-12">
-                        <div class="tpevent-item mb-40">
-                            <div class="tpevent-image">
-                                <img src="{{ asset('assets/templates/frontend/img/event/event-img-1.jpg') }}"
-                                    alt="event-img">
+                            <div class="tpagency__slider-item tpagency__slider-height text-center d-flex align-items-center"
+                                data-background="{{ asset('assets/templates/frontend/new/slider/2.jpg') }}">
+                                <div class="tp-agency-slider-inner">
+                                    <h2 class="tpagency-title">Introduce Our Creative <br> Digital Agency.</h2>
+                                </div>
                             </div>
-                            <div class="tp-event-content">
-                                <h4 class="tpevent-title mb-30"><a href="services-details.html">The Economy of the US:
-                                        What are
-                                        the <br> Weakest Spots?</a></h4>
-                                <h6 class="tpevent-sm-title mb-30">Programme --- <span>April 3, 2022</span></h6>
-                                <p>The United States' and China's relations will cast a pall over relations and the
-                                    global. <br>
-                                    During the early months, major</p>
-                            </div>
-                        </div>
-                        <div class="tpevent-item mb-40">
-                            <div class="tpevent-image">
-                                <img src="{{ asset('assets/templates/frontend/img/event/event-img-2.jpg') }}"
-                                    alt="event-img">
-                            </div>
-                            <div class="tp-event-content">
-                                <h4 class="tpevent-title mb-30"><a href="services-details.html">The weakest spots new
-                                        the
-                                        Economy <br> of the us what are</a></h4>
-                                <h6 class="tpevent-sm-title mb-30">Programme --- <span>April 3, 2022</span></h6>
-                                <p>The United States' and China's relations will cast a pall over relations and the
-                                    global. <br>
-                                    During the early months, major</p>
-                            </div>
-                        </div>
-                        <div class="tpevent-item mb-40">
-                            <div class="tpevent-image">
-                                <img src="{{ asset('assets/templates/frontend/img/event/event-img-3.jpg') }}"
-                                    alt="event-img">
-                            </div>
-                            <div class="tp-event-content">
-                                <h4 class="tpevent-title mb-30"><a href="services-details.html">Lets meet for
-                                        protecting The
-                                        Economy <br> of the canada: eco</a></h4>
-                                <h6 class="tpevent-sm-title mb-30">Programme --- <span>April 3, 2022</span></h6>
-                                <p>The United States' and China's relations will cast a pall over relations and the
-                                    global. <br>
-                                    During the early months, major</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- tpevent-area end -->
 
-        <!-- tppo-testimonial-area start -->
-        <div class="tppo-testimonial-area grey-bg box-plr-155">
-            <div class="container-fluid">
-                <div class="tppo-testimonial-wrapper white-bg pt-135 pb-135">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="tpbs-section-wrapper text-center mb-30">
-                                <span class="tpbs-sub-title mb-15">Testimonial</span>
-                                <h3 class="tpbs-title">Do Good <span> For Others</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-xl-10">
-                            <div class="tppotestimonial-slider tppotestimonial-slider-active">
-                                <div class="tppotetsimonial-item text-center">
-                                    <div class="tppotestimonial-icon mb-45">
-                                        <i class="fa-brands fa-twitter"></i>
-                                    </div>
-                                    <p class="tppotestimonial-text mb-50">“ I appreciate your amazing services and
-                                        professional
-                                        staff for all your hard work and creative thinking! It was fun, and I hope to
-                                        work with
-                                        you again soon “</p>
-                                    <span class="tpbs-client-name"><a href="#">Rasalina De Willmson (<span
-                                                class="__cf_email__"
-                                                data-cfemail="3271777d727d405b4a">[email&#160;protected]</span>)</a></span>
-                                </div>
-                                <div class="tppotetsimonial-item text-center">
-                                    <div class="tppotestimonial-icon mb-45">
-                                        <i class="fa-brands fa-twitter"></i>
-                                    </div>
-                                    <p class="tppotestimonial-text mb-50">“ It is a long established fact that a reader
-                                        will be
-                                        distracted by the readable content of a page when looking at its layout. The
-                                        point of
-                                        using Lorem Ipsum is that “</p>
-                                    <span class="tpbs-client-name"><a href="#">Iqbal Hossain (<span
-                                                class="__cf_email__"
-                                                data-cfemail="9dded8d2dddafce7f4">[email&#160;protected]</span>)</a></span>
-                                </div>
-                                <div class="tppotetsimonial-item text-center">
-                                    <div class="tppotestimonial-icon mb-45">
-                                        <i class="fa-brands fa-twitter"></i>
-                                    </div>
-                                    <p class="tppotestimonial-text mb-50">“ If you are going to use a passage of Lorem
-                                        Ipsum, you
-                                        need to be sure there isn't anything embarrassing hidden in the middle of
-                                        textprinting and
-                                        typesetting industry “</p>
-                                    <span class="tpbs-client-name"><a href="#">Angilna Macron(<span
-                                                class="__cf_email__"
-                                                data-cfemail="c586808a858ab7acbd">[email&#160;protected]</span>)</a></span>
-                                </div>
-                                <div class="tppotetsimonial-item text-center">
-                                    <div class="tppotestimonial-icon mb-45">
-                                        <i class="fa-brands fa-twitter"></i>
-                                    </div>
-                                    <p class="tppotestimonial-text mb-50">“ The point of using Lorem Ipsum is that it
-                                        has a
-                                        more-or-less normal distribution of letters, as opposed to using 'Content here,
-                                        content
-                                        here established “</p>
-                                    <span class="tpbs-client-name"><a href="#">Josef Anderson (<span
-                                                class="__cf_email__"
-                                                data-cfemail="4d0e08020d023f2435">[email&#160;protected]</span>)</a></span>
+                            <div class="tpagency__slider-item tpagency__slider-height text-center d-flex align-items-center"
+                                data-background="{{ asset('assets/templates/frontend/new/slider/3.jpg') }}">
+                                <div class="tp-agency-slider-inner">
+                                    <h2 class="tpagency-title">Introduce Our Creative <br> Digital Agency.</h2>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- tppo-testimonial-area end -->
 
-        <!-- tpblog-area start -->
-        <section class="tppoblog-area grey-bg pt-135 pb-130">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="tpbs-section-wrapper text-center">
-                            <span class="tpbs-sub-title mb-15">Blog & Article</span>
-                            <h3 class="tpbs-title">Read <span> Blog & Article</span></h3>
+                            <div class="tpagency__slider-item tpagency__slider-height text-center d-flex align-items-center"
+                                data-background="{{ asset('assets/templates/frontend/new/slider/4.jpg') }}">
+                                <div class="tp-agency-slider-inner">
+                                    <h2 class="tpagency-title">Introduce Our Creative <br> Digital Agency.</h2>
+                                </div>
+                            </div>
+
+                            <div class="tpagency__slider-item tpagency__slider-height text-center d-flex align-items-center"
+                                data-background="{{ asset('assets/templates/frontend/new/slider/5.jpg') }}">
+                                <div class="tp-agency-slider-inner">
+                                    <h2 class="tpagency-title">Introduce Our Creative <br> Digital Agency.</h2>
+                                </div>
+                            </div>
+
+
                         </div>
-                    </div>
-                </div>
-                <div class="row mt-60">
-                    <div class="col-xl-12">
-                        <div class="tpblog__slider tpblog__slider-active-2">
-                            <div class="tpblog">
-                                <div class="tpblog__thumb tpblog__thumb-ds">
-                                    <a href="blog-details.html"><img
-                                            src="{{ asset('assets/templates/frontend/img/blog/4/blog-1.jpg') }}"
-                                            alt="blog"></a>
-                                </div>
-                                <div class="tpblog__content tpblog__content-2">
-                                    <div class="tpblog__meta tpblog__meta-2 mb-25">
-                                        <span class="tpblog__catagory">Business..</span>
-                                        <span class="tpblog__date">23 January 2022</span>
-                                    </div>
-                                    <h5 class="tpblog__title"><a href="blog-details.html">What is the Main Challage
-                                            for a
-                                            Design.</a></h5>
-                                </div>
-                            </div>
-                            <div class="tpblog">
-                                <div class="tpblog__thumb tpblog__thumb-ds">
-                                    <a href="blog-details.html"><img
-                                            src="{{ asset('assets/templates/frontend/img/blog/4/blog-2.jpg') }}"
-                                            alt="blog"></a>
-                                </div>
-                                <div class="tpblog__content tpblog__content-2">
-                                    <div class="tpblog__meta tpblog__meta-2 mb-25">
-                                        <span class="tpblog__catagory">Business..</span>
-                                        <span class="tpblog__date">24 January 2022</span>
-                                    </div>
-                                    <h5 class="tpblog__title"><a href="blog-details.html">How to Handle Client to your
-                                            Home
-                                            Workshop</a></h5>
-                                </div>
-                            </div>
-                            <div class="tpblog">
-                                <div class="tpblog__thumb tpblog__thumb-ds">
-                                    <a href="blog-details.html"><img
-                                            src="{{ asset('assets/templates/frontend/img/blog/4/blog-3.jpg') }}"
-                                            alt="blog"></a>
-                                </div>
-                                <div class="tpblog__content tpblog__content-2">
-                                    <div class="tpblog__meta tpblog__meta-2 mb-25">
-                                        <span class="tpblog__catagory">Business..</span>
-                                        <span class="tpblog__date">25 January 2022</span>
-                                    </div>
-                                    <h5 class="tpblog__title"><a href="blog-details.html">Design is not just look like
-                                            or fill
-                                            like, It's done works.</a></h5>
-                                </div>
-                            </div>
-                            <div class="tpblog">
-                                <div class="tpblog__thumb tpblog__thumb-ds">
-                                    <a href="blog-details.html"><img
-                                            src="{{ asset('assets/templates/frontend/img/blog/4/blog-4.jpg') }}"
-                                            alt="blog"></a>
-                                </div>
-                                <div class="tpblog__content tpblog__content-2">
-                                    <div class="tpblog__meta tpblog__meta-2 mb-25">
-                                        <span class="tpblog__catagory">Business..</span>
-                                        <span class="tpblog__date">26 January 2022</span>
-                                    </div>
-                                    <h5 class="tpblog__title"><a href="blog-details.html">The world is growing so fast
-                                            so you
-                                            need to be</a></h5>
-                                </div>
-                            </div>
+                        <div class="tpbs-scroll tpbs-scroll-3">
+                            <a href="#bio-wrapper" class="tpbs-scroll-btn animate"><i
+                                    class="fa-light fa-arrow-down-long"></i></a>
+                            <span><a href="#bio-wrapper">Scrool Down</a></span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- tpblog-area end -->
+
+        <!-- Tentang -->
+        <div id="bio-wrapper" class="tpbs-blog-area pt-70 pb-120">
+            <div class="container-fluid">
+                <!-- biograpy-area start -->
+                <div class="biograpy-area pt-80 pb-70   pt-190">
+                    <div class="container">
+
+                        <h5 class="vote-sm-title mb-10">Selayang Pandang</h5>
+                        <p class="bio-text mb-35">
+                            <img src="{{ asset('assets/templates/frontend/img/about/biograpy-img-1.jpg') }}"
+                                alt="img"
+                                style="float: left;  margin-right: 24px; max-width: 300px; border-radius: 8px; margin-top: 8px;">
+
+                        <p><b>Assalamu’alaikum Wr. Wb.</b></p>
+
+                        <p><b>Salam Sejahtera untuk kita semua</b></p>
+
+                        <p style="text-align: justify;">Kemajuan IPTEK merupakan anugerah yang patut kita syukuri,
+                            karena dengan
+                            kemajuan teknologi
+                            ini telah membuka cakrawala baru keilmuan dalam berbagai bidang. E-Commerce, Elektronik
+                            Banking, Elektronik Bussiness, Electronic Education (teleconference), dll, bahkan dalam
+                            melaksanakan rutininas sehari-hari kita telah banyak dibantu dengan kehadiran teknologi ini.
+                        </p>
+
+                        <p style="text-align: justify;">
+                            Pemanfaatan TIK melalui web site ini, diharapkan dapat meningkatkan eksistensi dalam rangka
+                            mengoptimalisasikan peran dan fungsi perangkat RW 13 sebagai institusi pelayan masyarakat
+                            serta membantu mensosialisasikan Progam-progam Pemerintah kepada masyarakat. Pengembangan
+                            web site ini disamping untuk memenuhi kebutuhan internal pengurus RW 13 juga ditujukan
+                            guna memenuhi harapan masyarakat yang membutuhkan informasi terkait dengan Data serta
+                            pelayanan yang diselenggarakan oleh perangkat RW 13
+                        </p>
+                        <p style="text-align: justify;">
+                            Untuk memenuhi harapan tersebut tentunya tidak akan sempurna tanpa partisipasi aktif dari
+                            berbagai pihak terkait. Untuk itu kritik dan saran sangat kami harapkan, demikian juga
+                            kepada seluruh perangkat Kelurahan diharapkan dapat merespon dan berbagi masukan yang
+                            sekiranya bermanfaat bagi kemajuan RW 13 khususnya dan kemajuan Desa Tanjakan pada
+                            umumnya.
+                        </p>
+                        <p style="text-align: justify;"> Akhirnya saya sampaikan Selamat dan Apresiasi atas penampilan
+                            terbaru
+                            Website RW 13 Semoga
+                            dengan penampilan Website baru ini informasi tentang lingkungan RW 13 serta aktifitas
+                            didalamnya dapat diketahui oleh masyarakat luas dengan cepat dan akuran.
+                        </p>
+                        <p> Wassalamu’alaikum Wr. Wb. </p>
+                        <p> Ketua RW 13 </p>
+                        <p>Nama Ketua RW </p>
+                    </div>
+                </div>
+                <!-- biograpy-area end -->
+            </div>
+        </div>
+
+        <!-- pengurus -->
+        <div class="team-area pt-120 pb-70 grey-bg">
+            <div class="container">
+                <div class="row  pb-70">
+                    <div class="col-xl-12">
+                        <div class="tp-section-title text-center">
+                            <h2 class="tp-title">Pengurus RW 13</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tpteam text-center mb-60">
+                            <div class="tpteam__img">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author8.jpg')}}" alt="">
+                                <div class="tpteam__social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="tpteam__text">
+                                <h3 class="tpteam-title"><a href="about-me.html">Rasalina Willamson</a></h3>
+                                <span class="team-designation">#UI/UX DEISGNER</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tpteam text-center mb-60">
+                            <div class="tpteam__img">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author9.jpg')}}" alt="">
+                                <div class="tpteam__social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="tpteam__text">
+                                <h3 class="tpteam-title"><a href="about-me.html">Leslie Alexander</a></h3>
+                                <span class="team-designation">#WEB DEVELOPER</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tpteam text-center mb-60">
+                            <div class="tpteam__img">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author10.jpg')}}" alt="">
+                                <div class="tpteam__social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="tpteam__text">
+                                <h3 class="tpteam-title"><a href="about-me.html">Savannah Nguyen</a></h3>
+                                <span class="team-designation">#PRODUCT DESIGN</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tpteam text-center mb-60">
+                            <div class="tpteam__img">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author11.jpg')}}" alt="">
+                                <div class="tpteam__social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="tpteam__text">
+                                <h3 class="tpteam-title"><a href="about-me.html">Iqbal Hossain</a></h3>
+                                <span class="team-designation">#UI/UX DESIGNER</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tpteam text-center mb-60">
+                            <div class="tpteam__img">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author12.jpg')}}" alt="">
+                                <div class="tpteam__social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="tpteam__text">
+                                <h3 class="tpteam-title"><a href="about-me.html">Darlene Robertson</a></h3>
+                                <span class="team-designation">#UI/UX DEISGNER</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tpteam text-center mb-60">
+                            <div class="tpteam__img">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author13.jpg')}}" alt="">
+                                <div class="tpteam__social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="tpteam__text">
+                                <h3 class="tpteam-title"><a href="about-me.html">Darrell Steward</a></h3>
+                                <span class="team-designation">#UI/UX DEISGNER</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tpbs-blog-area start -->
+        <div class="tpbs-blog-area pt-120 pb-120">
+            <div class="container">
+                <div class="row">
+                    <div class="tpbs-section-wrapper text-center mb-30">
+                        <span class="tpbs-sub-title mb-15">Blog & Article</span>
+                        <h3 class="tpbs-title">Read Our <span> Blog & Article</span></h3>
+                    </div>
+                </div>
+                <div class="row mt-30">
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="tpblog mb-30">
+                            <div class="tpblog__thumb mb-30">
+                                <a href="blog-details.html"><img src="{{ asset('assets/templates/frontend/img/blog/blog-1.jpg')}}" alt="blog"></a>
+                            </div>
+                            <div class="tpblog__content">
+                                <div class="tpblog__meta mb-25">
+                                    <span class="tpblog__catagory">Business..</span>
+                                    <span class="tpblog__date">23 January 2022</span>
+                                </div>
+                                <h5 class="tpblog__title"><a href="blog-details.html">What is the Main Challage for a
+                                        Design
+                                        Agency.</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="tpblog mb-30">
+                            <div class="tpblog__thumb mb-30">
+                                <a href="blog-details.html"><img src="{{ asset('assets/templates/frontend/img/blog/blog-2.jpg')}}" alt="blog"></a>
+                            </div>
+                            <div class="tpblog__content">
+                                <div class="tpblog__meta mb-25">
+                                    <span class="tpblog__catagory">Business..</span>
+                                    <span class="tpblog__date">24 January 2022</span>
+                                </div>
+                                <h5 class="tpblog__title"><a href="blog-details.html">How to Handle Client to your
+                                        Home
+                                        Workshop</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="tpblog mb-30">
+                            <div class="tpblog__thumb mb-30">
+                                <a href="blog-details.html"><img src="{{ asset('assets/templates/frontend/img/blog/blog-3.jpg')}}" alt="blog"></a>
+                            </div>
+                            <div class="tpblog__content">
+                                <div class="tpblog__meta mb-25">
+                                    <span class="tpblog__catagory">Business..</span>
+                                    <span class="tpblog__date">16 January 2022</span>
+                                </div>
+                                <h5 class="tpblog__title"><a href="blog-details.html">Design is not just look like or
+                                        fill like,
+                                        It,s how it works.</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="tpbs-blog-button text-center mt-30">
+                            <a href="blog.html" class="tp-solid-btn">View More Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- tpbs-blog-area end -->
 
     </main>
 
