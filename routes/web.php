@@ -40,7 +40,7 @@ use App\Http\Controllers\Frontend\HomeController;
 
 // home default =======================================================================================================
 Route::controller(HomeController::class)->group(function () {
-    // Route::get('/', 'index')->name('home');
+    Route::get('/2', 'index')->name('home2');
     Route::get('/', 'index2')->name('home');
 });
 // ====================================================================================================================

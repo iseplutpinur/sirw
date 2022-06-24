@@ -40,7 +40,7 @@ return new class extends Migration
             $table->date('tanggal_datang')->nullable()->default(null);
 
             $table->boolean('status_tinggal')->nullable()->default(1)->comment('1 lahir, 2 mati, 3 pindah, 4 datang');
-            $table->boolean('status')->nullable()->default(1)->comment('0 bukan penduduk setempat, 1 penduduk setempat');
+            $table->boolean('status')->nullable()->default(1)->comment('0 Tidak ada di lingkungan rw, 1 ada di lingkungan rw');
 
             $table->boolean('penduduk_negara')->nullable()->default(1)->comment('0 wna, 1 wni');
             $table->string('negara_asal')->nullable()->default(null);
