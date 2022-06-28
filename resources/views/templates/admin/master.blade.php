@@ -12,7 +12,7 @@ $page_attr = (object) [
 $page_attr_title = ($page_attr->title == '' ? '' : $page_attr->title . ' | ') . (env('APP_NAME') ?? '');
 ?>
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="id" dir="ltr">
 
 <head>
     <!-- Favicon -->

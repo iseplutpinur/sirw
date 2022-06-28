@@ -38,7 +38,7 @@
                                         Action
                                     </th>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        Rt
+                                        RT
                                     </th>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         Nama
@@ -112,7 +112,7 @@
                                         placeholder="Nomori Induk Kependudukan" maxlength="16" />
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label" for="nama">Nama Lengkap <span
                                             class="text-danger">*</span></label>
@@ -149,10 +149,12 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label" for="tanggal_lahir">Tanggal Lahir<span
-                                            class="text-danger">*</span></label>
+                                    <label class="form-label" for="tanggal_lahir">Tanggal Lahir
+                                        <span class="text-danger">*</span>
+                                        <span class="text-red">bulan/tanggal/tahun</span>
+                                    </label>
                                     <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"
-                                        placeholder="Tanggal Lahir" required="" />
+                                        required="" />
                                 </div>
                             </div>
                             <div class="col-md-4">
