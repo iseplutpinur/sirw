@@ -4,7 +4,7 @@
     <!-- Row -->
     <div class="row row-sm">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card" id="main-card">
                 <div class="card-header d-md-flex flex-row justify-content-between">
                     <h3 class="card-title">Penduduk</h3>
                     <button type="button" class="btn btn-rounded btn-success" data-bs-effect="effect-scale"
@@ -33,6 +33,9 @@
                                 <tr>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         No
+                                    </th>
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
+                                        Action
                                     </th>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         Rt
@@ -285,6 +288,52 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modal-default-ktp">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modal-default-ktp-title">Lihat KTP</h6><button aria-label="Close"
+                        class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" id="img-modal-ktp" />
+                </div>
+                <div class="modal-footer">
+                    <a href="" download="" id="donwloadd-btn-ktp" class="btn btn-primary">
+                        <li class="fa fa-save mr-1"></li> Download
+                    </a>
+                    <button class="btn btn-light" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i>
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-default-akte">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modal-default-akte-title">Lihat AKTE</h6><button aria-label="Close"
+                        class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" id="img-modal-akte" />
+                </div>
+                <div class="modal-footer">
+                    <a href="" download="" id="donwloadd-btn-akte" class="btn btn-primary">
+                        <li class="fa fa-save mr-1"></li> Download
+                    </a>
+                    <button class="btn btn-light" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i>
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('javascript')
@@ -328,6 +377,21 @@
                         data: null,
                         name: 'id',
                         orderable: false,
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        render(data, type, full, meta) {
+                            return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" onClick="editFunc('${data}')">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ubah
+                            </button>
+                            <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')">
+                            <i class="fa fa-trash" aria-hidden="true"></i> Hapus
+                            </button>
+                        `;
+                        },
+                        orderable: false,
+                        className: 'text-nowrap'
                     },
                     {
                         data: 'rt',
@@ -396,11 +460,37 @@
                         data: 'ada_ktp_str',
                         name: 'ada_ktp_str',
                         className: 'text-nowrap text-capitalize',
+                        render(data, type, full, meta) {
+                            const btn = full.ada_ktp == 1 ?
+                                `<button type="button"
+                                    class="btn btn-rounded btn-primary btn-sm"
+                                    title="Lihat foto ktp"
+                                    data-foto="${full.file_ktp}"
+                                    data-nama="${full.nama}"
+                                    data-nik="${full.nik}"
+                                    onClick="viewKtp(this)">
+                                    <i class="fa fa-eye"></i>
+                                </button>` : '';
+                            return `${btn} ${data} `;
+                        },
                     },
                     {
                         data: 'ada_akte_str',
                         name: 'ada_akte_str',
                         className: 'text-nowrap text-capitalize',
+                        render(data, type, full, meta) {
+                            const btn = full.ada_akte == 1 ?
+                                `<button type="button"
+                                    class="btn btn-rounded btn-primary btn-sm"
+                                    title="Lihat foto akte"
+                                    data-foto="${full.file_akte}"
+                                    data-nama="${full.nama}"
+                                    data-nik="${full.nik}"
+                                    onClick="viewAkte(this)">
+                                    <i class="fa fa-eye"></i>
+                                </button>` : '';
+                            return `${btn} ${data} `;
+                        },
                     },
                     {
                         data: 'alamat_lengkap',
@@ -414,45 +504,6 @@
                                 `;
                         }
                     },
-                    // {
-                    //     data: 'id',
-                    //     name: 'id',
-                    //     render(data, type, full, meta) {
-                    //         return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" onClick="editFunc('${data}')">
-                //     <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                //     </button>
-                //     <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')">
-                //     <i class="fa fa-trash" aria-hidden="true"></i> Delete
-                //     </button>
-                //     `;
-                    //     },
-                    //     orderable: false,
-                    //     className: 'text-nowrap'
-                    // },
-                    // {
-                    //     data: 'status_str',
-                    //     name: 'status',
-                    //     render(data, type, full, meta) {
-                    //         const class_el = full.status == 1 ? 'badge bg-success' :
-                    //             'badge bg-danger';
-                    //         return `<span class="${class_el} p-1">${full.status_str}</span>`;
-                    //     },
-                    // },
-                    // {
-                    //     data: 'nama',
-                    //     name: 'nama',
-                    //     className: 'text-nowrap'
-                    // },
-                    // {
-                    //     data: 'singkatan',
-                    //     name: 'singkatan',
-                    //     className: 'text-nowrap'
-                    // },
-                    // {
-                    //     data: 'keterangan',
-                    //     name: 'keterangan',
-                    //     className: 'text-nowrap'
-                    // },
 
                 ],
                 order: [
@@ -534,7 +585,7 @@
         function add() {
             if (global_is_edit) {
                 $('#MainForm').trigger("reset");
-                $('#modal-default-title').html("Tambah Penduduk");
+                $('#modal-default-title').html("Tambah Data Penduduk");
                 $('#modal-default').modal('show');
                 $('#id').val('');
                 resetErrorAfterInput();
@@ -543,16 +594,53 @@
         }
 
 
-        function editFunc(datas) {
-            const data = datas.dataset;
-            $('#modal-default-title').html("Ubah Penduduk");
-            $('#modal-default').modal('show');
-            $('#MainForm').trigger("reset");
-            $('#id').val(data.id);
-            $('#nama').val(data.nama);
-            $('#status').val(data.status);
-            $('#singkatan').val(data.singkatan);
-            $('#keterangan').val(data.keterangan);
+        function editFunc(id) {
+            $('#main-card').LoadingOverlay("show");
+            $.ajax({
+                type: "GET",
+                url: `{{ url('admin/kependudukan/penduduk/find') }}/${id}`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: null,
+                success: (data) => {
+                    $('#id').val(data.id);
+                    $('#nik').val(data.nik);
+                    $('#nama').val(data.nama);
+                    $('#penduduk_negara').val(data.penduduk_negara);
+                    $('#negara_asal').val(data.negara_asal);
+                    $('#kota_lahir').val(data.kota_lahir);
+                    $('#tanggal_lahir').val(data.tanggal_lahir);
+                    $('#jenis_kelamin').val(data.jenis_kelamin);
+                    $('#agama_id').val(data.agama_id);
+                    $('#pendidikan_id').val(data.pendidikan_id);
+                    $('#pekerjaan_id').val(data.pekerjaan_id);
+                    $('#status_kawin_id').val(data.status_kawin_id);
+                    $('#status_penduduk_id').val(data.status_penduduk_id);
+                    $('#rt_id').val(data.rt_id);
+                    $('#status').val(data.status);
+                    $('#alamat_lengkap').val(data.alamat_lengkap);
+                    $('#file_ktp').val('');
+                    $('#file_akte').val('');
+
+                    $('#modal-default-title').html("Ubah Data Penduduk");
+                    $('#modal-default').modal('show');
+                    resetErrorAfterInput();
+                    global_is_edit = true;
+                },
+                error: function(data) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Something went wrong',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                complete: function() {
+                    $('#main-card').LoadingOverlay("hide");
+                }
+            });
         }
 
         function deleteFunc(id) {
@@ -601,6 +689,32 @@
                     });
                 }
             });
+        }
+
+        function viewKtp(ele) {
+            const data = ele.dataset;
+            const link = `{{ url($folder_ktp) }}/${data.foto}`
+            $('#modal-default-ktp').modal('show');
+            const btn_download = $('#donwloadd-btn-ktp');
+            const img_modal = $('#img-modal-ktp');
+            btn_download.attr('href', link);
+            btn_download.attr('download', `ktp-${data.nama}-${data.nik}`);
+
+            img_modal.attr('src', link);
+            img_modal.attr('alt', data.nama);
+        }
+
+        function viewAkte(ele) {
+            const data = ele.dataset;
+            const link = `{{ url($folder_akte) }}/${data.foto}`
+            $('#modal-default-akte').modal('show');
+            const btn_download = $('#donwloadd-btn-akte');
+            const img_modal = $('#img-modal-akte');
+            btn_download.attr('href', link);
+            btn_download.attr('download', `akte-${data.nama}-${data.nik}`);
+
+            img_modal.attr('src', link);
+            img_modal.attr('alt', data.nama);
         }
     </script>
 @endsection

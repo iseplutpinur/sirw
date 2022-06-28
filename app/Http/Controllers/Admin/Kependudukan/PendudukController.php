@@ -23,7 +23,7 @@ class PendudukController extends Controller
 
     private $validate_model = [
         'nama' => ['required', 'string', 'max:255'],
-        'nik' => ['required', 'string', 'max:16'],
+        'nik' => ['nullable', 'string', 'max:16'],
         'kota_lahir' => ['required', 'string', 'max:255'],
         'jenis_kelamin' => ['required', 'string', 'max:255'],
         'alamat_lengkap' => ['required', 'string'],
@@ -123,7 +123,8 @@ class PendudukController extends Controller
         $status_kawins = StatusKawin::where('status', '=', 1)->get();
         $status_penduduks = StatusPenduduk::where('status', '=', 1)->get();
         $rts = RukunTetangga::all();
-
+        $folder_akte = $this->folder_akte;
+        $folder_ktp = $this->folder_ktp;
         return view('admin.kependudukan.penduduk', compact(
             'page_attr',
             'agamas',
@@ -132,6 +133,8 @@ class PendudukController extends Controller
             'status_kawins',
             'status_penduduks',
             'rts',
+            'folder_akte',
+            'folder_ktp'
         ));
     }
 
@@ -166,6 +169,8 @@ class PendudukController extends Controller
                 $image->move($this->folder_ktp, $foto_ktp);
                 $model->file_ktp = $foto_ktp;
                 $model->ada_ktp = 1;
+            } else {
+                $model->ada_ktp = 0;
             }
 
             $foto_akte = '';
@@ -174,6 +179,8 @@ class PendudukController extends Controller
                 $image->move($this->folder_akte, $foto_akte);
                 $model->file_akte = $foto_akte;
                 $model->ada_akte = 1;
+            } else {
+                $model->ada_akte = 0;
             }
 
 
@@ -193,10 +200,39 @@ class PendudukController extends Controller
             $model = Penduduk::find($request->id);
             $request->validate(array_merge(['id' => ['required', 'int']], $this->validate_model));
 
-            $model->nama = $request->nama;
-            $model->singkatan = $request->singkatan;
-            $model->keterangan = $request->keterangan;
+            $model->agama_id = $request->agama_id;
+            $model->pendidikan_id = $request->pendidikan_id;
+            $model->pekerjaan_id = $request->pekerjaan_id;
+            $model->status_kawin_id = $request->status_kawin_id;
+            $model->status_penduduk_id = $request->status_penduduk_id;
+            $model->rt_id = $request->rt_id;
+
             $model->status = $request->status;
+            $model->penduduk_negara = $request->penduduk_negara;
+            $model->negara_asal = $request->negara_asal;
+
+            $model->nik = $request->nik;
+            $model->nama = $request->nama;
+            $model->kota_lahir = $request->kota_lahir;
+            $model->jenis_kelamin = $request->jenis_kelamin;
+            $model->alamat_lengkap = $request->alamat_lengkap;
+            $model->tanggal_lahir = $request->tanggal_lahir;
+
+            // upload foto ktp dan akta
+            if ($image = $request->file('file_ktp')) {
+                $foto_ktp = AppHelper::slugify($request->nama) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($this->folder_ktp, $foto_ktp);
+                $model->file_ktp = $foto_ktp;
+                $model->ada_ktp = 1;
+            }
+
+            if ($image = $request->file('file_akte')) {
+                $foto_akte = AppHelper::slugify($request->nama) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($this->folder_akte, $foto_akte);
+                $model->file_akte = $foto_akte;
+                $model->ada_akte = 1;
+            }
+
             $model->save();
             return response()->json();
         } catch (ValidationException $error) {
@@ -233,6 +269,15 @@ class PendudukController extends Controller
             }
 
             return response()->json(['results' => $result]);
+        } catch (\Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
+
+    public function getById(Penduduk $model)
+    {
+        try {
+            return response()->json($model);
         } catch (\Exception $error) {
             return response()->json($error, 500);
         }
