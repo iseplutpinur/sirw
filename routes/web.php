@@ -173,12 +173,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
         });
         Route::controller(KartuKeluargaController::class)->prefix('kk')->group(function () {
             Route::get('/',  'index')->name('admin.kependudukan.kk'); // page
-            Route::get('/find/{model}',  'getById')->name('admin.kependudukan.kk.find');
-            Route::get('/anggota',  'getListWarga')->name('admin.kependudukan.kk.anggota');
             Route::post('/',  'insert')->name('admin.kependudukan.kk.insert');
             Route::delete('/{model}',  'delete')->name('admin.kependudukan.kk.delete');
             Route::post('/update',  'update')->name('admin.kependudukan.kk.update');
-            Route::get('/select2',  'select2')->name('admin.kependudukan.kk.select2');
+            Route::get('/find/{model}',  'getById')->name('admin.kependudukan.kk.find');
+
+            // kk anggota
+            Route::prefix('anggota')->group(function () {
+                Route::get('/select2',  'anggota_select2')->name('admin.kependudukan.kk.anggota.select2');
+                Route::post('/',  'anggota_insert')->name('admin.kependudukan.kk.anggota.insert');
+                Route::get('/list',  'anggota_list')->name('admin.kependudukan.kk.anggota.list');
+                Route::delete('/{model}',  'anggota_delete')->name('admin.kependudukan.kk.anggota.delete');
+            });
         });
     });
     // ====================================================================================================================

@@ -4,7 +4,7 @@ Perubahan database
         penduduk dari kk
 
 
-buat profile penduduk
+buat profile penduduk [implementasi ke semua modul]
     data ktp
     data kk
     foto ktp

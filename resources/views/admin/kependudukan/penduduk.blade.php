@@ -671,7 +671,7 @@
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'Agama  deleted successfully',
+                                title: 'Data deleted successfully',
                                 showConfirmButton: false,
                                 timer: 1500
                             })

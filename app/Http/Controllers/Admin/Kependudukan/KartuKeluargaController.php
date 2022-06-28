@@ -102,11 +102,13 @@ class KartuKeluargaController extends Controller
         ];
 
         $rts = RukunTetangga::all();
+        $hub_kks = HubunganDenganKK::all();
         $image_folder = $this->image_folder;
         return view('admin.kependudukan.kartukeluarga', compact(
             'page_attr',
             'rts',
-            'image_folder'
+            'hub_kks',
+            'image_folder',
         ));
     }
 
@@ -175,11 +177,23 @@ class KartuKeluargaController extends Controller
         }
     }
 
-    public function select2(Request $request)
+    public function anggota_select2(Request $request)
     {
         try {
-            $model = KartuKeluarga::select(['id', DB::raw('nama as text')])
-                ->whereRaw("(`nama` like '%$request->search%' or `id` like '%$request->search%')")
+            $table_rt = RukunTetangga::tableName;
+            $table_penduduk = Penduduk::tableName;
+            $model = Penduduk::select([
+                DB::raw("$table_penduduk.id as id"),
+                DB::raw("concat($table_penduduk.nik, ' | ', $table_rt.nama,' | ',$table_penduduk.nama) as text")
+            ])->whereRaw("(
+                    $table_rt.nama like '%$request->search%' or
+                    $table_rt.nomor like '%$request->search%' or
+                    $table_penduduk.nama like '%$request->search%' or
+                    $table_penduduk.alamat_lengkap like '%$request->search%' or
+                    $table_penduduk.nik like '%$request->search%' or
+                    $table_penduduk.id like '%$request->search%'
+                    )")
+                ->leftJoin("$table_rt", "$table_rt.id", '=', "$table_penduduk.rt_id")
                 ->limit(10);
 
             $result = $model->get()->toArray();
@@ -202,7 +216,7 @@ class KartuKeluargaController extends Controller
         }
     }
 
-    public function getListWarga(Request $request)
+    public function anggota_list(Request $request)
     {
         try {
             // table
@@ -211,7 +225,8 @@ class KartuKeluargaController extends Controller
             $table_hd_kk = HubunganDenganKK::tableName;
 
             $id = $request->id;
-            $result = KartuKeluargaList::selectRaw("$table_kk_list.*")
+            $result = KartuKeluargaList::selectRaw("$table_kk_list.*, b.nik")
+                ->selectRaw("DATE_FORMAT($table_kk_list.created_at, '%W, %d %M %Y %H:%i:%s') as created")
                 ->selectRaw("b.nama as penduduk")
                 ->selectRaw("c.nama as hubungan_dengan_kk")
                 ->join("$table_penduduk as b", "b.id", "=", "$table_kk_list.penduduk_id")
@@ -222,6 +237,43 @@ class KartuKeluargaController extends Controller
             return response()->json($result);
         } catch (\Exception $error) {
             return response()->json($error, 500);
+        }
+    }
+
+    public function anggota_insert(Request $request)
+    {
+        try {
+            $request->validate([
+                'penduduk_id' => ['required', 'integer'],
+                'kartu_keluarga_id' => ['required', 'integer'],
+                'hubungan_dengan_kk_id' => ['required', 'integer'],
+            ]);
+
+            $model = new KartuKeluargaList();
+            $model->penduduk_id = $request->penduduk_id;
+            $model->kartu_keluarga_id = $request->kartu_keluarga_id;
+            $model->hubungan_dengan_kk_id = $request->hubungan_dengan_kk_id;
+
+            $model->save();
+            return response()->json();
+        } catch (ValidationException $error) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $error,
+            ], 500);
+        }
+    }
+
+    public function anggota_delete(KartuKeluargaList $model)
+    {
+        try {
+            $model->delete();
+            return response()->json();
+        } catch (ValidationException $error) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $error,
+            ], 500);
         }
     }
 }

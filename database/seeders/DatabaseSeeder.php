@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
 
         // data master
         // php artisan iseed agamas,pekerjaans,pendidikans,status_kawins,status_penduduks,status_tamus,status_tinggals,hubungan_dengan_k_k_s,rukun_tetanggas --force
+
+        // penduduk
+        // php artisan iseed penduduks,kartu_keluargas,kartu_keluarga_lists  --force
         $this->call(AgamasTableSeeder::class);
         $this->call(PekerjaansTableSeeder::class);
         $this->call(PendidikansTableSeeder::class);
@@ -33,5 +36,8 @@ class DatabaseSeeder extends Seeder
         $this->call(StatusTinggalsTableSeeder::class);
         $this->call(HubunganDenganKKSTableSeeder::class);
         $this->call(RukunTetanggasTableSeeder::class);
+        $this->call(PenduduksTableSeeder::class);
+        $this->call(KartuKeluargasTableSeeder::class);
+        $this->call(KartuKeluargaListsTableSeeder::class);
     }
 }
