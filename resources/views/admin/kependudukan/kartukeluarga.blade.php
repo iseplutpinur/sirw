@@ -184,6 +184,9 @@
                             <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')">
                             <i class="fa fa-trash" aria-hidden="true"></i> Hapus
                             </button>
+                            <button type="button" class="btn btn-rounded btn-info btn-sm" title="Delete Data" onClick="anggotaFunc('${data}')">
+                            <i class="fa fa-user" aria-hidden="true"></i> Anggota
+                            </button>
                         `;
                         },
                         orderable: false,
@@ -212,17 +215,17 @@
 
                     {
                         data: 'foto_link',
-                        name: 'foto_link',
+                        name: 'foto',
                         className: 'text-nowrap text-capitalize',
                         render(data, type, full, meta) {
                             return data ? `<button type="button"
-                                    class="btn btn-rounded btn-primary btn-sm"
-                                    title="Lihat foto ktp"
-                                    data-link="${full.foto_link}"
-                                    data-no="${full.no}"
-                                    onClick="viewFoto(this)">
-                                    <i class="fa fa-eye"></i>
-                                </button>` : '';
+                                class="btn btn-rounded btn-primary btn-sm"
+                                title="Lihat foto ktp"
+                                data-link="${full.foto_link}"
+                                data-no="${full.no}"
+                                onClick="viewFoto(this)">
+                                <i class="fa fa-eye"></i>
+                            </button>` : '';
                         },
                     },
 
@@ -238,7 +241,7 @@
                     },
                     {
                         data: 'updated',
-                        name: 'updated',
+                        name: 'created',
                         render(data, type, full, meta) {
                             return data != full.created ? data : '';
                         },
@@ -428,6 +431,29 @@
 
             img_modal.attr('src', link);
             img_modal.attr('alt', data.no);
+        }
+
+        function anggotaFunc(id) {
+            $('#main-card').LoadingOverlay("show");
+            $.ajax({
+                url: `{{ route('admin.kependudukan.kk.anggota') }}`,
+                type: 'GET',
+                data: {
+                    id: id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                complete: function() {
+                    $('#main-card').LoadingOverlay("hide");
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    swal.fire("!Opps ", "Something went wrong, try again later", "error");
+                }
+            });
         }
     </script>
 @endsection

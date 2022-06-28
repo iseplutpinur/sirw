@@ -24,6 +24,8 @@ class KartuKeluargaController extends Controller
         'rt_id' => ['required', 'integer'],
     ];
 
+    private $query = [];
+
     public function index(Request $request)
     {
         if (request()->ajax()) {
@@ -34,52 +36,61 @@ class KartuKeluargaController extends Controller
             $table_penduduk = Penduduk::tableName;
             $table_rt = RukunTetangga::tableName;
 
-            // get key from validate
-            $select = [];
-            foreach ($this->validate_model as $k => $val) $select[] = "a.$k";
-            $base_url_image_folder = url(str_replace('./', '', $this->image_folder)) . '/';
-
             // cusotm query
             // get list anggota kk dengan no urut terendah
-            $anggota = <<<SQL
+            // ========================================================================================================
+            $this->query['jumlah_anggota'] = <<<SQL
+                (select count(*) from $table_kk_list where $table_kk_list.kartu_keluarga_id = $table_kk.id)
+            SQL;
+            $this->query['jumlah_anggota_alias'] = 'jumlah_anggota';
+
+
+            $this->query['anggota'] = <<<SQL
                 (select concat($table_penduduk.nama, '[', $table_hd_kk.singkatan , ']') from $table_penduduk
                     join $table_kk_list on $table_penduduk.id = $table_kk_list.penduduk_id
                     join $table_hd_kk on $table_kk_list.hubungan_dengan_kk_id = $table_hd_kk.id
-                    where $table_kk_list.kartu_keluarga_id = a.id
+                    where $table_kk_list.kartu_keluarga_id = $table_kk.id
                     order by $table_hd_kk.urut asc limit 1)
             SQL;
+            $this->query['anggota_alias'] = 'anggota';
+            // ========================================================================================================
 
-            $jumlah_anggota = <<<SQL
-                (select count(*) from $table_kk_list where $table_kk_list.kartu_keluarga_id = a.id)
-            SQL;
+            // get key from validate
+            $select = [];
+            foreach ($this->validate_model as $k => $val) $select[] = "$table_kk.$k";
+            $base_url_image_folder = url(str_replace('./', '', $this->image_folder)) . '/';
 
-            // get data from model
-            $model = Penduduk::select(array_merge([
-                'a.id',
+            $model = KartuKeluarga::select(array_merge([
+                "$table_kk.id",
+                DB::raw("rt.nama as rt"),
+                DB::raw("{$this->query['anggota']} as {$this->query['anggota_alias']}"),
+                DB::raw("{$this->query['jumlah_anggota']} as {$this->query['jumlah_anggota_alias']}"),
             ], $select))
-                // select raw
-                ->selectRaw("($anggota) as anggota")
-                ->selectRaw("concat('{$base_url_image_folder}',a.foto) as foto_link")
-                ->selectRaw("($jumlah_anggota) as jumlah_anggota")
-                ->selectRaw("rt.nama as rt")
-                ->selectRaw("DATE_FORMAT(a.created_at, '%W, %d %M %Y %H:%i:%s') as created")
-                ->selectRaw("DATE_FORMAT(a.updated_at, '%W, %d %M %Y %H:%i:%s') as updated")
-
+                ->selectRaw("concat('{$base_url_image_folder}',$table_kk.foto) as foto_link")
+                ->selectRaw("DATE_FORMAT($table_kk.created_at, '%W, %d %M %Y %H:%i:%s') as created")
+                ->selectRaw("DATE_FORMAT($table_kk.updated_at, '%W, %d %M %Y %H:%i:%s') as updated")
                 // join
-                ->leftJoin("$table_rt as rt", 'rt.id', '=', 'a.rt_id')
-                // from
-                ->from("$table_kk as a");
-
-            // filter
-            if (isset($request->filter)) {
-                $filter = $request->filter;
-                if ($filter['status'] != '') {
-                    $model->where('status', '=', $filter['status']);
-                }
-            }
+                ->leftJoin("$table_rt as rt", 'rt.id', '=', "$table_kk.rt_id");
 
             return Datatables::of($model)
                 ->addIndexColumn()
+                ->filterColumn('rt', function ($query, $keyword) {
+                    $query->whereRaw("(rt.nama like '%$keyword%')");
+                })
+                ->filterColumn('created', function ($query, $keyword) {
+                    $table_kk = KartuKeluarga::tableName;
+                    $query->whereRaw("(DATE_FORMAT($table_kk.created_at, '%W, %d %M %Y %H:%i:%s') like '%$keyword%')");
+                })
+                ->filterColumn('updated', function ($query, $keyword) {
+                    $table_kk = KartuKeluarga::tableName;
+                    $query->whereRaw("(DATE_FORMAT($table_kk.updated_at, '%W, %d %M %Y %H:%i:%s') like '%$keyword%')");
+                })
+                ->filterColumn($this->query['anggota_alias'], function ($query, $keyword) {
+                    $query->whereRaw("{$this->query['anggota']} like '%$keyword%'");
+                })
+                ->filterColumn($this->query['jumlah_anggota_alias'], function ($query, $keyword) {
+                    $query->whereRaw("{$this->query['jumlah_anggota']} like '%$keyword%'");
+                })
                 ->make(true);
         }
         $page_attr = [
@@ -186,6 +197,29 @@ class KartuKeluargaController extends Controller
     {
         try {
             return response()->json($model);
+        } catch (\Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
+
+    public function getListWarga(Request $request)
+    {
+        try {
+            // table
+            $table_kk_list = KartuKeluargaList::tableName;
+            $table_penduduk = Penduduk::tableName;
+            $table_hd_kk = HubunganDenganKK::tableName;
+
+            $id = $request->id;
+            $result = KartuKeluargaList::selectRaw("$table_kk_list.*")
+                ->selectRaw("b.nama as penduduk")
+                ->selectRaw("c.nama as hubungan_dengan_kk")
+                ->join("$table_penduduk as b", "b.id", "=", "$table_kk_list.penduduk_id")
+                ->join("$table_hd_kk as c", "c.id", "=", "$table_kk_list.hubungan_dengan_kk_id")
+                ->where("$table_kk_list.kartu_keluarga_id", $id)
+                ->orderBy("urut")
+                ->get();
+            return response()->json($result);
         } catch (\Exception $error) {
             return response()->json($error, 500);
         }
