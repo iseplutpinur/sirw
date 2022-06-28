@@ -1,0 +1,13 @@
+Sekenario
+    # Input Data Master
+        - Agama
+        - Pekerjaan
+        - Pendidikan
+        - Status Kawin
+        - Status Penduduk
+        - Hubungan Dengan KK
+        - Rukun Tetangga
+        - Status Tamu
+
+    # Kependudukan
+        - Input Data KK

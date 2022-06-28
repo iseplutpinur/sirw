@@ -15,16 +15,11 @@ return new class extends Migration
     {
         Schema::create('kartu_keluargas', function (Blueprint $table) {
             $table->id();
-            $table->integer('no')->nullable()->default(null);
+            $table->string('no', 16)->nullable()->default(null);
             $table->text('alamat')->nullable()->default(null);
             $table->bigInteger('rt_id', false, true)->nullable()->default(null);
-            $table->bigInteger('kepala_keluarga', false, true)->nullable()->default(null);
+            $table->string('foto')->nullable()->default(null);
             $table->timestamps();
-
-            $table->foreign('kepala_keluarga')
-                ->references('id')->on('penduduks')
-                ->nullOnDelete()
-                ->cascadeOnUpdate();
 
             $table->foreign('rt_id')
                 ->references('id')->on('rukun_tetanggas')

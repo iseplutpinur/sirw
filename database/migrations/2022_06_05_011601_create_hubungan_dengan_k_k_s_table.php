@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama')->nullable()->default(null);
             $table->string('singkatan')->nullable()->default(null);
             $table->string('keterangan')->nullable()->default(null);
+            $table->integer('urut')->nullable()->default(0);
             $table->boolean('status')->nullable()->default(null);
             $table->timestamps();
         });

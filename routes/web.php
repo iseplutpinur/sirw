@@ -28,8 +28,10 @@ use App\Http\Controllers\Admin\DataMaster\RukunTetanggaController;
 use App\Http\Controllers\Admin\DataMaster\StatusKawinController;
 use App\Http\Controllers\Admin\DataMaster\StatusPendudukController;
 use App\Http\Controllers\Admin\DataMaster\StatusTamuController;
-use App\Http\Controllers\Admin\Kependudukan\PendudukController;
+
 // kependudukan
+use App\Http\Controllers\Admin\Kependudukan\KartuKeluargaController;
+use App\Http\Controllers\Admin\Kependudukan\PendudukController;
 
 
 
@@ -168,6 +170,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
             Route::delete('/{model}',  'delete')->name('admin.kependudukan.penduduk.delete');
             Route::post('/update',  'update')->name('admin.kependudukan.penduduk.update');
             Route::get('/select2',  'select2')->name('admin.kependudukan.penduduk.select2');
+        });
+        Route::controller(KartuKeluargaController::class)->prefix('kk')->group(function () {
+            Route::get('/',  'index')->name('admin.kependudukan.kk'); // page
+            Route::get('/find/{model}',  'getById')->name('admin.kependudukan.kk.find');
+            Route::post('/',  'insert')->name('admin.kependudukan.kk.insert');
+            Route::delete('/{model}',  'delete')->name('admin.kependudukan.kk.delete');
+            Route::post('/update',  'update')->name('admin.kependudukan.kk.update');
+            Route::get('/select2',  'select2')->name('admin.kependudukan.kk.select2');
         });
     });
     // ====================================================================================================================

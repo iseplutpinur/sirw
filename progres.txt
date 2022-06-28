@@ -1,0 +1,18 @@
+Perubahan database
+    Tambah no urut di hubungan dengan kk
+    buat curd KK
+        penduduk dari kk
+
+
+buat profile penduduk
+    data ktp
+    data kk
+    foto ktp
+    foto akte
+    foto kk
+    transaksi warga
+        lahir
+        pindah
+        datang
+        mati
+    properti

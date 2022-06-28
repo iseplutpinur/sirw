@@ -4,8 +4,7 @@
         <div class="d-flex flex-row  justify-content-between">
             <!-- sidebar-toggle-->
             <div>
-                <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar"
-                    href="javascript:void(0)">
+                <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)">
                 </a>
 
             </div>
@@ -13,9 +12,9 @@
 
                 <a class="logo-horizontal " href="{{ url('/') }}">
                     <img src="{{ asset('assets/templates/admin/images/brand/logo.png') }}"
-                        class="header-brand-img desktop-logo" alt="logo">
+                        class="header-brand-img desktop-logo" style="max-width: 175px" alt="logo">
                     <img src="{{ asset('assets/templates/admin/images/brand/logo-3.png') }}"
-                        class="header-brand-img light-logo1" alt="logo">
+                        class="header-brand-img light-logo1" style="max-width: 175px" alt="logo">
                 </a>
             </div>
 

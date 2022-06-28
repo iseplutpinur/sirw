@@ -33,7 +33,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Place favicon.ico in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/templates/frontend/img/favicon.png') }}">
+    <link rel="icon" href="{{ asset('favicon/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicon/apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('favicon/apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicon/apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('favicon/apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('favicon/apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('favicon/apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('favicon/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('favicon/android-icon-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon/favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('favicon/manifest.json') }}">
+    <meta name="msapplication-TileColor" content="#fff">
+    <meta name="theme-color" content="#0191D7">
+    <meta name="msapplication-TileImage" content="{{ asset('favicon/icon-144x144.png') }}">
 
     <!-- theme style switch -->
     <meta name="theme-style-mode" content="1">
@@ -91,15 +108,15 @@
                         <div class="row align-items-center">
                             <div class="col-xxl-3 col-xl-2 col-lg-2 col-md-6 col-6">
                                 <div class="logo-dark">
-                                    <a href="index.html">
+                                    <a href="{{ url('') }}">
                                         <img src="{{ asset('assets/templates/frontend/img/logo/logo.png') }}"
-                                            alt="logo">
+                                            alt="logo" style="max-width: 175px">
                                     </a>
                                 </div>
                                 <div class="logo-white">
-                                    <a href="index.html">
+                                    <a href="{{ url('') }}">
                                         <img src="{{ asset('assets/templates/frontend/img/logo/logo-white.png') }}"
-                                            alt="logo">
+                                            alt="logo" style="max-width: 175px">
                                     </a>
                                 </div>
                             </div>
@@ -198,16 +215,8 @@
                                                     <li><a href="services-details.html">Services Deatils</a></li>
                                                 </ul>
                                             </li>
-                                            <li class="has-dropdown">
-                                                <a href="blog.html">Blog</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">Blog Page</a></li>
-                                                    <li><a href="blog-grid.html">Blog Grid</a></li>
-                                                    <li><a href="blog-details.html">Blog Deatils</a></li>
-                                                </ul>
-                                            </li>
                                             <li>
-                                                <a href="contact.html">Contact</a>
+                                                <a href="{{ route('login') }}">Login</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -514,7 +523,8 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="tpteam text-center mb-60">
                             <div class="tpteam__img">
-                                <img src="{{ asset('assets/templates/frontend/img/author/author8.jpg')}}" alt="">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author8.jpg') }}"
+                                    alt="">
                                 <div class="tpteam__social">
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -532,7 +542,8 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="tpteam text-center mb-60">
                             <div class="tpteam__img">
-                                <img src="{{ asset('assets/templates/frontend/img/author/author9.jpg')}}" alt="">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author9.jpg') }}"
+                                    alt="">
                                 <div class="tpteam__social">
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -550,7 +561,8 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="tpteam text-center mb-60">
                             <div class="tpteam__img">
-                                <img src="{{ asset('assets/templates/frontend/img/author/author10.jpg')}}" alt="">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author10.jpg') }}"
+                                    alt="">
                                 <div class="tpteam__social">
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -568,7 +580,8 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="tpteam text-center mb-60">
                             <div class="tpteam__img">
-                                <img src="{{ asset('assets/templates/frontend/img/author/author11.jpg')}}" alt="">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author11.jpg') }}"
+                                    alt="">
                                 <div class="tpteam__social">
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -586,7 +599,8 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="tpteam text-center mb-60">
                             <div class="tpteam__img">
-                                <img src="{{ asset('assets/templates/frontend/img/author/author12.jpg')}}" alt="">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author12.jpg') }}"
+                                    alt="">
                                 <div class="tpteam__social">
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -604,7 +618,8 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="tpteam text-center mb-60">
                             <div class="tpteam__img">
-                                <img src="{{ asset('assets/templates/frontend/img/author/author13.jpg')}}" alt="">
+                                <img src="{{ asset('assets/templates/frontend/img/author/author13.jpg') }}"
+                                    alt="">
                                 <div class="tpteam__social">
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -636,7 +651,9 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="tpblog mb-30">
                             <div class="tpblog__thumb mb-30">
-                                <a href="blog-details.html"><img src="{{ asset('assets/templates/frontend/img/blog/blog-1.jpg')}}" alt="blog"></a>
+                                <a href="blog-details.html"><img
+                                        src="{{ asset('assets/templates/frontend/img/blog/blog-1.jpg') }}"
+                                        alt="blog"></a>
                             </div>
                             <div class="tpblog__content">
                                 <div class="tpblog__meta mb-25">
@@ -652,7 +669,9 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="tpblog mb-30">
                             <div class="tpblog__thumb mb-30">
-                                <a href="blog-details.html"><img src="{{ asset('assets/templates/frontend/img/blog/blog-2.jpg')}}" alt="blog"></a>
+                                <a href="blog-details.html"><img
+                                        src="{{ asset('assets/templates/frontend/img/blog/blog-2.jpg') }}"
+                                        alt="blog"></a>
                             </div>
                             <div class="tpblog__content">
                                 <div class="tpblog__meta mb-25">
@@ -668,7 +687,9 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="tpblog mb-30">
                             <div class="tpblog__thumb mb-30">
-                                <a href="blog-details.html"><img src="{{ asset('assets/templates/frontend/img/blog/blog-3.jpg')}}" alt="blog"></a>
+                                <a href="blog-details.html"><img
+                                        src="{{ asset('assets/templates/frontend/img/blog/blog-3.jpg') }}"
+                                        alt="blog"></a>
                             </div>
                             <div class="tpblog__content">
                                 <div class="tpblog__meta mb-25">

@@ -107,10 +107,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label" for="nik">Nomori Induk Kependudukan <span
-                                            class="text-danger">*</span></label>
+                                    <label class="form-label" for="nik">Nomori Induk Kependudukan</label>
                                     <input type="number" class="form-control" id="nik" name="nik"
-                                        placeholder="Nomori Induk Kependudukan" required="" maxlength="16" />
+                                        placeholder="Nomori Induk Kependudukan" maxlength="16" />
                                 </div>
                             </div>
                             <div class="col-6">

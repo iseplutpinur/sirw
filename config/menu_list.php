@@ -5,7 +5,7 @@ $admin = [
         'title' => 'Data Kependudukan', 'icon' => 'fa fa-id-card-o',
         'children' => [
             ['title' => 'Penduduk', 'route' => 'admin.kependudukan.penduduk'],
-            ['title' => 'Kartu Keluarga'],
+            ['title' => 'Kartu Keluarga', 'route' => 'admin.kependudukan.kk'],
             ['title' => 'Tamu'],
         ]
     ],

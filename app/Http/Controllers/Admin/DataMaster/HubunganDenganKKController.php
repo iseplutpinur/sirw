@@ -15,6 +15,7 @@ class HubunganDenganKKController extends Controller
         'nama' => ['required', 'string', 'max:255'],
         'singkatan' => ['nullable', 'string', 'max:255'],
         'keterangan' => ['nullable', 'string', 'max:255'],
+        'urut' => ['required', 'integer'],
         'status' => ['required', 'int'],
     ];
 
@@ -60,6 +61,7 @@ class HubunganDenganKKController extends Controller
             $model->nama = $request->nama;
             $model->singkatan = $request->singkatan;
             $model->keterangan = $request->keterangan;
+            $model->urut = $request->urut;
             $model->status = $request->status;
             $model->save();
             return response()->json();
@@ -80,6 +82,7 @@ class HubunganDenganKKController extends Controller
             $model->nama = $request->nama;
             $model->singkatan = $request->singkatan;
             $model->keterangan = $request->keterangan;
+            $model->urut = $request->urut;
             $model->status = $request->status;
             $model->save();
             return response()->json();

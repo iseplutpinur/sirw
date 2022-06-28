@@ -25,9 +25,10 @@ class HubunganDenganKKSTableSeeder extends Seeder
                 'nama' => 'Kepala Keluarga',
                 'singkatan' => 'KK',
                 'keterangan' => NULL,
+                'urut' => 1,
                 'status' => 1,
                 'created_at' => '2022-06-06 03:59:48',
-                'updated_at' => '2022-06-06 03:59:48',
+                'updated_at' => '2022-06-28 09:05:21',
             ),
             1 => 
             array (
@@ -35,9 +36,10 @@ class HubunganDenganKKSTableSeeder extends Seeder
                 'nama' => 'Anak',
                 'singkatan' => 'Anak',
                 'keterangan' => NULL,
+                'urut' => 4,
                 'status' => 1,
                 'created_at' => '2022-06-06 03:59:57',
-                'updated_at' => '2022-06-06 03:59:57',
+                'updated_at' => '2022-06-28 09:05:51',
             ),
             2 => 
             array (
@@ -45,9 +47,10 @@ class HubunganDenganKKSTableSeeder extends Seeder
                 'nama' => 'Istri',
                 'singkatan' => 'Istri',
                 'keterangan' => NULL,
+                'urut' => 3,
                 'status' => 1,
                 'created_at' => '2022-06-06 04:00:10',
-                'updated_at' => '2022-06-06 04:00:10',
+                'updated_at' => '2022-06-28 09:05:45',
             ),
             3 => 
             array (
@@ -55,9 +58,10 @@ class HubunganDenganKKSTableSeeder extends Seeder
                 'nama' => 'Cucu',
                 'singkatan' => 'Cucu',
                 'keterangan' => NULL,
+                'urut' => 5,
                 'status' => 1,
                 'created_at' => '2022-06-06 04:00:28',
-                'updated_at' => '2022-06-06 04:00:28',
+                'updated_at' => '2022-06-28 09:05:57',
             ),
             4 => 
             array (
@@ -65,9 +69,10 @@ class HubunganDenganKKSTableSeeder extends Seeder
                 'nama' => 'Suami',
                 'singkatan' => 'Suami',
                 'keterangan' => NULL,
+                'urut' => 2,
                 'status' => 1,
                 'created_at' => '2022-06-06 04:00:46',
-                'updated_at' => '2022-06-06 04:00:46',
+                'updated_at' => '2022-06-28 09:05:38',
             ),
         ));
         

@@ -104,10 +104,11 @@ $page_attr_title = ($page_attr->title == '' ? '' : $page_attr->title . ' | ') . 
                 <div class="container-login100">
                     <div class="wrap-login100 p-6">
                         <div class="text-center">
-                            <img src="{{ asset('assets/templates/admin/images/brand/logo-white.png') }}"
-                                class="header-brand-img" alt="Logo Karmapack" id="logo">
+                            <img src="{{ asset('assets/templates/admin/images/brand/logo.png') }}"
+                                class="header-brand-img" alt="Logo SIDAUNG" id="logo"
+                                style="max-width: 175px;">
                         </div>
-                        <p class="text-center mt-5">Sistem Informasi Rukun Penduduk (SIRW)</p>
+                        <p class="text-center mt-5">Sistem Data Penduduk Pasirlayung (SIDAUNG)</p>
                         <div class="panel panel-primary">
                             <div class="panel-body tabs-menu-body p-0">
                                 <div class="tab-content">
@@ -126,7 +127,8 @@ $page_attr_title = ($page_attr->title == '' ? '' : $page_attr->title . ' | ') . 
                                                 <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
                                             </a>
                                             <input class="input100 border-start-0 form-control ms-0" type="password"
-                                                placeholder="Password" id="password" required="" name="password">
+                                                placeholder="Password" id="password" required=""
+                                                name="password">
                                         </div>
                                         <div class="container-login100-form-btn">
                                             <button type="submit" class="login100-form-btn btn-primary">
@@ -147,7 +149,7 @@ $page_attr_title = ($page_attr->title == '' ? '' : $page_attr->title . ' | ') . 
                 <div class="col col-login mx-auto">
                     <div class="text-center d-md-flex  justify-content-center">
                         <div>
-                            © <span id="year"></span> Sistem Informasi RW.
+                            © <span id="year"></span> Rukun Warga 13 Pasirlayung
                         </div>
                     </div>
                 </div>
