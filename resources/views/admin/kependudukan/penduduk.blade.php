@@ -151,10 +151,11 @@
                                 <div class="form-group">
                                     <label class="form-label" for="tanggal_lahir">Tanggal Lahir
                                         <span class="text-danger">*</span>
-                                        <span class="text-red">bulan/tanggal/tahun</span>
+                                        <span class="text-success">bulan/tanggal/tahun</span>
                                     </label>
                                     <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"
                                         required="" />
+                                    <input type="hidden" id="tanggal_lahir_id" name="tanggal_lahir_id">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -259,19 +260,31 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label text-capitalize" for="status">Status Ada<span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" id="status" name="status">
-                                        <option value="1" class="text-capitalize">Ada di lingkungan RW</option>
-                                        <option value="0" class="text-capitalize">Tidak ada di lingkungan RW</option>
+                                    <label class="form-label text-capitalize" for="asal_data">
+                                        Ditambahkan Berdasarkan<span class="text-danger">*</span></label>
+                                    <select class="form-control" id="asal_data" name="asal_data">
+                                        <option value="0" class="text-capitalize">Kelahiran</option>
+                                        <option value="1" class="text-capitalize">Kedatangan</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="display: none">
+                                <div class="form-group">
+                                    <label class="form-label text-capitalize" for="tanggal_datang">
+                                        Tanggal Datang<span class="text-danger">*</span>
+                                        <span class="text-success">bulan/tanggal/tahun</span>
+                                    </label>
+                                    <input type="hidden" id="tanggal_datang_id" name="tanggal_datang_id">
+                                    <input type="date" class="form-control" id="tanggal_datang"
+                                        name="tanggal_datang">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label text-capitalize" for="alamat_lengkap">Alamat Lengkap <span
                                             class="text-danger">*</span></label>
-                                    <textarea class="form-control" id="alamat_lengkap" name="alamat_lengkap" rows="3" required></textarea>
+                                    <textarea class="form-control" id="alamat_lengkap" name="alamat_lengkap" rows="3" required
+                                        placeholder="Alamat Yang Digunakan Untuk Laporan Dan Lain Lain"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -353,6 +366,12 @@
         let global_is_edit = true;
         const table_html = $('#tbl_main');
         $(document).ready(function() {
+            $('#penduduk_negara').change(() => {
+                wn_refresh();
+            })
+            $('#asal_data').change(() => {
+                tanggal_datang_refresh();
+            })
             // datatable ====================================================================================
             $.ajaxSetup({
                 headers: {
@@ -591,6 +610,8 @@
                 $('#id').val('');
                 resetErrorAfterInput();
                 global_is_edit = false;
+                wn_refresh();
+                tanggal_datang_refresh();
             }
         }
 
@@ -612,6 +633,7 @@
                     $('#negara_asal').val(data.negara_asal);
                     $('#kota_lahir').val(data.kota_lahir);
                     $('#tanggal_lahir').val(data.tanggal_lahir);
+                    $('#tanggal_lahir_id').val(data.tanggal_lahir_id);
                     $('#jenis_kelamin').val(data.jenis_kelamin);
                     $('#agama_id').val(data.agama_id);
                     $('#pendidikan_id').val(data.pendidikan_id);
@@ -619,7 +641,9 @@
                     $('#status_kawin_id').val(data.status_kawin_id);
                     $('#status_penduduk_id').val(data.status_penduduk_id);
                     $('#rt_id').val(data.rt_id);
-                    $('#status').val(data.status);
+                    $('#asal_data').val(data.asal_data);
+                    $('#tanggal_datang').val(data.tanggal_datang);
+                    $('#tanggal_datang_id').val(data.tanggal_datang_id);
                     $('#alamat_lengkap').val(data.alamat_lengkap);
                     $('#file_ktp').val('');
                     $('#file_akte').val('');
@@ -628,6 +652,11 @@
                     $('#modal-default').modal('show');
                     resetErrorAfterInput();
                     global_is_edit = true;
+                    wn_refresh();
+                    // perlu revisi
+                    // asal_data
+                    // tanggal_datang
+                    tanggal_datang_refresh();
                 },
                 error: function(data) {
                     Swal.fire({
@@ -716,6 +745,48 @@
 
             img_modal.attr('src', link);
             img_modal.attr('alt', data.nama);
+        }
+
+        function wn_refresh() {
+            const penduduk_negara = $('#penduduk_negara');
+            const negara_asal = $('#negara_asal');
+            const nama = $('#nama');
+
+            if (penduduk_negara.val() == 0) {
+                negara_asal.parent().parent().fadeIn();
+                nama.parent().parent().attr('class', 'col-md-4');
+                penduduk_negara.parent().parent().attr('class', 'col-md-4');
+                negara_asal.attr('required', '');
+            } else {
+                negara_asal.parent().parent().hide();
+                nama.parent().parent().attr('class', 'col-md-6');
+                penduduk_negara.parent().parent().attr('class', 'col-md-6');
+                negara_asal.removeAttr('required')
+            }
+        }
+
+        function tanggal_datang_refresh() {
+            const asal_data = $('#asal_data');
+            const file_ktp = $('#file_ktp');
+            const file_akte = $('#file_akte');
+            const tanggal_datang = $('#tanggal_datang');
+
+
+            if (asal_data.val() == 0) {
+                tanggal_datang.parent().parent().hide();
+                tanggal_datang.removeAttr('required')
+
+                asal_data.parent().parent().attr('class', 'col-md-4');
+                file_ktp.parent().parent().attr('class', 'col-md-4');
+                file_akte.parent().parent().attr('class', 'col-md-4');
+            } else {
+                tanggal_datang.parent().parent().fadeIn();
+                tanggal_datang.attr('required', '');
+
+                asal_data.parent().parent().attr('class', 'col-md-6');
+                file_ktp.parent().parent().attr('class', 'col-md-6');
+                file_akte.parent().parent().attr('class', 'col-md-6');
+            }
         }
     </script>
 @endsection

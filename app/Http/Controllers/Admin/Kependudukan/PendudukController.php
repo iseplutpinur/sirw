@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use League\Config\Exception\ValidationException;
 use Yajra\Datatables\Datatables;
 use App\Models\Kependudukan\Penduduk;
+use App\Models\Kependudukan\Peristiwa;
 use Illuminate\Support\Facades\DB;
 
 class PendudukController extends Controller
@@ -28,10 +29,9 @@ class PendudukController extends Controller
         'jenis_kelamin' => ['required', 'string', 'max:255'],
         'alamat_lengkap' => ['required', 'string'],
 
-        'status' => ['required', 'int'],
-        'status_tinggal' => ['nullable', 'int'],
         'penduduk_negara' => ['required', 'int'],
         'negara_asal' => ['nullable', 'string', 'max:255'],
+        'asal_data' => ['required', 'int'],
 
         // data master
         'agama_id' => ['required', 'int'],
@@ -43,9 +43,6 @@ class PendudukController extends Controller
 
         // tanggal
         'tanggal_lahir' => ['required', 'string', 'max:255'],
-        'tanggal_mati' => ['nullable', 'string', 'max:255'],
-        'tanggal_pindah' => ['nullable', 'string', 'max:255'],
-        'tanggal_datang' => ['nullable', 'string', 'max:255'],
     ];
 
     public function index(Request $request)
@@ -141,6 +138,7 @@ class PendudukController extends Controller
     public function insert(Request $request)
     {
         try {
+            DB::beginTransaction();
             $request->validate($this->validate_model);
 
             $model = new Penduduk();
@@ -151,11 +149,11 @@ class PendudukController extends Controller
             $model->status_penduduk_id = $request->status_penduduk_id;
             $model->rt_id = $request->rt_id;
 
-            $model->status = $request->status;
             $model->penduduk_negara = $request->penduduk_negara;
             $model->negara_asal = $request->negara_asal;
 
             $model->nik = $request->nik;
+            $model->asal_data = $request->asal_data;
             $model->nama = $request->nama;
             $model->kota_lahir = $request->kota_lahir;
             $model->jenis_kelamin = $request->jenis_kelamin;
@@ -165,7 +163,7 @@ class PendudukController extends Controller
             // upload foto ktp dan akta
             $foto_ktp = '';
             if ($image = $request->file('file_ktp')) {
-                $foto_ktp = AppHelper::slugify($request->nama) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $foto_ktp = $request->nik . AppHelper::slugify($request->nama)  .  '.' .  $image->getClientOriginalExtension();
                 $image->move($this->folder_ktp, $foto_ktp);
                 $model->file_ktp = $foto_ktp;
                 $model->ada_ktp = 1;
@@ -175,7 +173,7 @@ class PendudukController extends Controller
 
             $foto_akte = '';
             if ($image = $request->file('file_akte')) {
-                $foto_akte = AppHelper::slugify($request->nama) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $foto_akte = $request->nik . AppHelper::slugify($request->nama)  .  '.' .  $image->getClientOriginalExtension();
                 $image->move($this->folder_akte, $foto_akte);
                 $model->file_akte = $foto_akte;
                 $model->ada_akte = 1;
@@ -183,8 +181,24 @@ class PendudukController extends Controller
                 $model->ada_akte = 0;
             }
 
-
+            // set peristiwa
             $model->save();
+            Peristiwa::create([
+                'penduduk_id' => $model->id,
+                'tanggal' => $request->tanggal_lahir,
+                'peristiwa' => 1
+            ]);
+
+            // warga pindahan dari luar
+            if ($request->asal_data == 1) {
+                Peristiwa::create([
+                    'penduduk_id' => $model->id,
+                    'tanggal' => $request->tanggal_datang,
+                    'peristiwa' => 4
+                ]);
+            }
+
+            DB::commit();
             return response()->json();
         } catch (ValidationException $error) {
             return response()->json([
@@ -197,6 +211,7 @@ class PendudukController extends Controller
     public function update(Request $request)
     {
         try {
+            DB::beginTransaction();
             $model = Penduduk::find($request->id);
             $request->validate(array_merge(['id' => ['required', 'int']], $this->validate_model));
 
@@ -218,22 +233,61 @@ class PendudukController extends Controller
             $model->alamat_lengkap = $request->alamat_lengkap;
             $model->tanggal_lahir = $request->tanggal_lahir;
 
+            $model->asal_data = $request->asal_data;
+
             // upload foto ktp dan akta
             if ($image = $request->file('file_ktp')) {
-                $foto_ktp = AppHelper::slugify($request->nama) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+                if (file_exists("{$this->folder_ktp}/{$model->file_ktp}")) {
+                    $date_time = date('Y-m-d-H-i-s');
+                    rename("{$this->folder_ktp}/{$model->file_ktp}", "{$this->folder_ktp}/delete/{$date_time}-{$model->file_ktp}");
+                }
+
+                $foto_ktp = $request->nik . AppHelper::slugify($request->nama) . '.' . $image->getClientOriginalExtension();
                 $image->move($this->folder_ktp, $foto_ktp);
+                // move file to delete
+
                 $model->file_ktp = $foto_ktp;
                 $model->ada_ktp = 1;
             }
 
             if ($image = $request->file('file_akte')) {
-                $foto_akte = AppHelper::slugify($request->nama) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+                if (file_exists("{$this->folder_akte}/{$model->file_akte}")) {
+                    $date_time = date('Y-m-d-H-i-s');
+                    rename("{$this->folder_akte}/{$model->file_akte}", "{$this->folder_akte}/delete/{$date_time}-{$model->file_akte}");
+                }
+
+                $foto_akte = $request->nik . AppHelper::slugify($request->nama) . '.' . $image->getClientOriginalExtension();
                 $image->move($this->folder_akte, $foto_akte);
                 $model->file_akte = $foto_akte;
                 $model->ada_akte = 1;
             }
 
+            // update peristiwa
+            Peristiwa::updateOrCreate([
+                'id' => $request->tanggal_lahir_id,
+                'penduduk_id' => $model->id,
+                'tanggal' => $request->tanggal_lahir,
+                'peristiwa' => 1
+            ]);
+
+            if ($request->asal_data == 1) {
+                Peristiwa::updateOrCreate([
+                    'id' => $request->tanggal_datang_id,
+                    'penduduk_id' => $model->id,
+                    'tanggal' => $request->tanggal_datang,
+                    'peristiwa' => 4
+                ]);
+            } else {
+                $asal = Peristiwa::where('penduduk_id', '=', $model->id)
+                    ->where('peristiwa', '=', 4)
+                    ->orderBy('tanggal', 'desc')->get()->first();
+                if ($asal) {
+                    $asal->delete();
+                }
+            }
+
             $model->save();
+            DB::commit();
             return response()->json();
         } catch (ValidationException $error) {
             return response()->json([
@@ -246,7 +300,27 @@ class PendudukController extends Controller
     public function delete(Penduduk $model)
     {
         try {
+            DB::beginTransaction();
+            // delete peristiwa
+            $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)->get(['id']);
+            if ($peristiwa) {
+                Peristiwa::destroy($peristiwa->toArray());
+            }
+
+            // delete file ktp akte
+            if (file_exists("{$this->folder_ktp}/{$model->file_ktp}")) {
+                $date_time = date('Y-m-d-H-i-s');
+                rename("{$this->folder_ktp}/{$model->file_ktp}", "{$this->folder_ktp}/delete/{$date_time}-{$model->file_ktp}");
+            }
+
+            if (file_exists("{$this->folder_akte}/{$model->file_akte}")) {
+                $date_time = date('Y-m-d-H-i-s');
+                rename("{$this->folder_akte}/{$model->file_akte}", "{$this->folder_akte}/delete/{$date_time}-{$model->file_akte}");
+            }
+
+            // delete data
             $model->delete();
+            DB::commit();
             return response()->json();
         } catch (ValidationException $error) {
             return response()->json([
@@ -277,6 +351,26 @@ class PendudukController extends Controller
     public function getById(Penduduk $model)
     {
         try {
+            if ($model->asal_data == 1) {
+                // tanggal datang
+                $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
+                    ->where('peristiwa', '=', 4)
+                    ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
+                if ($peristiwa) {
+                    $model->tanggal_datang = $peristiwa->tanggal;
+                    $model->tanggal_datang_id = $peristiwa->id;
+                }
+            }
+
+            // tanggal lahir
+            $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
+                ->where('peristiwa', '=', 1)
+                ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
+            if ($peristiwa) {
+                $model->tanggal_lahir = $peristiwa->tanggal;
+                $model->tanggal_lahir_id = $peristiwa->id;
+            }
+
             return response()->json($model);
         } catch (\Exception $error) {
             return response()->json($error, 500);

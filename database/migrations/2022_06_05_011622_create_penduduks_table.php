@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('penduduks', function (Blueprint $table) {
             $table->id();
+            $table->string('nama')->nullable()->default(null);
             $table->string('nik', 16)->nullable()->default(null);
 
             // data master
@@ -25,7 +26,6 @@ return new class extends Migration
             $table->bigInteger('status_penduduk_id', false, true)->nullable()->default(null);
             $table->bigInteger('rt_id', false, true)->nullable()->default(null);
 
-            $table->string('nama')->nullable()->default(null);
             $table->string('kota_lahir')->nullable()->default(null);
             $table->string('jenis_kelamin')->nullable()->default(null);
             $table->boolean('ada_ktp')->nullable()->default(null);
@@ -35,12 +35,10 @@ return new class extends Migration
             $table->text('alamat_lengkap')->nullable()->default(null);
 
             $table->date('tanggal_lahir')->nullable()->default(null);
-            $table->date('tanggal_mati')->nullable()->default(null);
-            $table->date('tanggal_pindah')->nullable()->default(null);
-            $table->date('tanggal_datang')->nullable()->default(null);
 
-            $table->boolean('status_tinggal')->nullable()->default(1)->comment('1 lahir, 2 mati, 3 pindah, 4 datang');
             $table->boolean('status')->nullable()->default(1)->comment('0 Tidak ada di lingkungan rw, 1 ada di lingkungan rw');
+
+            $table->boolean('asal_data')->nullable()->default(0)->comment('0 kelahiran, 1 kedatangan');
 
             $table->boolean('penduduk_negara')->nullable()->default(1)->comment('0 wna, 1 wni');
             $table->string('negara_asal')->nullable()->default(null);
