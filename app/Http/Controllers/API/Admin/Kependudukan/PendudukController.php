@@ -16,6 +16,8 @@ use App\Models\DataMaster\StatusKawin;
 use App\Models\DataMaster\StatusPenduduk;
 use App\Models\DataMaster\RukunTetangga;
 use App\Models\Import\Excel;
+use App\Models\Import\ExcelDetail;
+use App\Models\Import\ExcelPendudukList;
 use App\Models\Kependudukan\Penduduk;
 use App\Models\Kependudukan\Penduduk\Agama as PendudukAgama;
 use App\Models\Kependudukan\Penduduk\Akte;
@@ -30,6 +32,7 @@ use App\Models\Kependudukan\Penduduk\Status as PendudukStatus;
 
 
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 
 class PendudukController extends Controller
 {
@@ -214,6 +217,9 @@ class PendudukController extends Controller
 
     public function import_excel(Request $request)
     {
+        // catatan
+        // - validasi ketika excel nya kosong
+
         $folder = Excel::folder;
         $excel = null;
         if ($file = $request->file('file')) {
@@ -224,44 +230,189 @@ class PendudukController extends Controller
 
 
         /** Load $inputFileName to a Spreadsheet Object  **/
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("./$folder/penduduk/$excel");
+        $file_excel = "./$folder/penduduk/$excel";
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file_excel);
         $array_from_excel = $spreadsheet->getActiveSheet()->toArray();
-        $start = 6;
-        foreach ($array_from_excel as $i => $v) {
-        }
-        die;
+        $start = 5;
 
-        $map = [
-            'nama' => '2',
-            'no_kk' => '3',
-            'nik' => '4',
-            'hub_kk' => '5',
-            'jenis_kelamin' => '6',
-            'kota_lahir' => '7',
-            'tanggal_lahir' => '8',
-            'no_hp' => '9',
-            'rt_id' => '10',
-            'agama_id' => '11',
-            'agama_dari' => '12',
-            'status_kawin_id' => '13',
-            'status_kawin_dari' => '14',
-            'pendidikan_id' => '15',
-            'pendidikan_dari' => '16',
-            'pekerjaan_id' => '17',
-            'pekerjaan_dari' => '18',
-            'status_penduduk' => '19',
-            'status_penduduk_dari' => '20',
-            'ktp_status' => '21',
-            'ktp_dari' => '22',
-            'akte_status' => '23',
-            'akte_dari' => '24',
-            'alamat_lengkap' => '25',
-            'tinggal_dari_tanggal' => '26',
-            'tanggal_mati' => '27',
-            'asal_data' => '28',
-            'negara' => '29',
-            'negara_nama' => '30',
-            'negara_dari' => '31',
-        ];
+        // get data master
+
+        // agama
+        $agama_map = ['id', 'singkatan', 'nama'];
+        $agama_list = Agama::get($agama_map)->toArray();
+        $rt_map = ['id', 'nomor', 'nama'];
+        $rt_list = RukunTetangga::get($rt_map)->toArray();
+        $pendidikan_map = ['id', 'singkatan', 'nama'];
+        $pendidikan_list = Pendidikan::get($pendidikan_map)->toArray();
+        $pekerjaan_map = ['id', 'singkatan', 'nama'];
+        $pekerjaan_list = Pekerjaan::get($pekerjaan_map)->toArray();
+        $status_kawin_map = ['id', 'singkatan', 'nama'];
+        $status_kawin_list = StatusKawin::get($status_kawin_map)->toArray();
+        $status_penduduk_map = ['id', 'singkatan', 'nama'];
+        $status_penduduk_list = StatusPenduduk::get($status_penduduk_map)->toArray();
+
+        DB::beginTransaction();
+        $db_excel = new Excel();
+        $db_excel->file = $file_excel;
+        $db_excel->nama = $request->nama;
+        $db_excel->keterangan = $request->keterangan;
+        $db_excel->kode = 'penduduk';
+        $db_excel->save();
+
+        $map = ['nama' => '2', 'no_kk' => '3', 'nik' => '4', 'hub_kk' => '5', 'hub_kk_dari' => '6', 'jenis_kelamin' => '7', 'kota_lahir' => '8', 'tanggal_lahir' => '9', 'no_hp' => '10', 'rt_id' => '11', 'agama_id' => '12', 'agama_dari' => '13', 'status_kawin_id' => '14', 'status_kawin_dari' => '15', 'pendidikan_id' => '16', 'pendidikan_dari' => '17', 'pekerjaan_id' => '18', 'pekerjaan_dari' => '19', 'status_penduduk' => '20', 'status_penduduk_dari' => '21', 'ktp_status' => '22', 'ktp_dari' => '23', 'akte_status' => '24', 'akte_dari' => '25', 'alamat_lengkap' => '26', 'tinggal_dari_tanggal' => '27', 'tanggal_mati' => '28', 'asal_data' => '29', 'negara' => '30', 'negara_nama' => '31', 'negara_dari' => '32'];
+        $count = 0;
+        $count_success = 0;
+        $count_failed = 0;
+        foreach ($array_from_excel as $i => $v) {
+            if ($i < $start) continue;
+            $excel_penduduk_list = new ExcelPendudukList();
+            $excel_penduduk_list->excel_id = $db_excel->id;
+
+            $excel_details = new ExcelDetail();
+            $excel_details->excel_id = $db_excel->id;
+
+            $model = new Penduduk();
+            $transaksi = new Transaksi();
+            $rt = new Rt();
+            $ktp = new Ktp();
+            $akte = new Akte();
+            $agama = new PendudukAgama();
+            $pendidikan = new PendudukPendidikan();
+            $pekerjaan = new PendudukPekerjaan();
+            $status_kawin = new PendudukStatusKawin();
+            $negara = new PendudukNegara();
+            $status = new PendudukStatus();
+
+            try {
+                $model->nama = $v[$map['nama']];
+                $model->nik = $v[$map['nik']];
+                $model->kota_lahir = $v[$map['kota_lahir']];
+                $model->jenis_kelamin = $v[$map['jenis_kelamin']];
+                $model->no_hp = $v[$map['no_hp']];
+                $model->alamat_lengkap = $v[$map['alamat_lengkap']];
+                $model->tanggal_lahir = $v[$map['tanggal_lahir']];
+                $model->tanggal_mati = $v[$map['tanggal_mati']];
+                // 0 kelahiran, 1 kedatangan
+                $model->asal_data = $v[$map['asal_data']];
+                // get id
+                $excel_details->status = 1;
+                $model->save();
+                $excel_penduduk_list->penduduk_id = $model->id;
+
+                // insert data master =====================================================================================
+                $agama_id = $this->master_check($agama_map, $agama_list, $v[$map['agama_id']]);
+                $rt_id = $this->master_check($rt_map, $rt_list, $v[$map['rt_id']]);
+                $pendidikan_id = $this->master_check($pendidikan_map, $pendidikan_list, $v[$map['pendidikan_id']]);
+                $pekerjaan_id = $this->master_check($pekerjaan_map, $pekerjaan_list, $v[$map['pekerjaan_id']]);
+                $status_kawin_id = $this->master_check($status_kawin_map, $status_kawin_list, $v[$map['status_kawin_id']]);
+                $status_penduduk_id = $this->master_check($status_penduduk_map, $status_penduduk_list, $v[$map['status_penduduk']]);
+
+                // rt
+                // jika kedatangan 1 maka tambahkan kedalam tabel penduudk rt transaksi
+                if ($model->asal_data == 1) {
+                    $transaksi->penduduk_id = $model->id;
+                    $transaksi->rt_id = $rt_id;
+                    $transaksi->keterangan = $v[$map['datang_keterangan']];
+                    $transaksi->tanggal = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
+                    $transaksi->jenis = 2;
+                    $transaksi->save();
+                }
+
+                $rt->penduduk_id = $model->id;
+                $rt->rt_id = $rt_id;
+                $rt->dari = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
+                $rt->save();
+
+                $ktp->penduduk_id = $model->id;
+                $ktp->status = $v[$map['ktp_status']];
+                $ktp->dari = $v[$map['ktp_dari']] ?? (date('Y-m-d', strtotime($v[$map['tanggal_lahir']] . ' + 17 years')));
+
+                $akte->penduduk_id = $model->id;
+                $akte->status = $v[$map['akte_status']];
+                $akte->dari = $v[$map['akte_dari']] ?? (date('Y-m-d', strtotime($v[$map['tanggal_lahir']] . ' + 17 years')));
+
+                $agama->penduduk_id = $model->id;
+                $agama->agama_id = $agama_id;
+                $agama->dari = $v[$map['agama_dari']] ?? $v[$map['tanggal_lahir']];
+                $agama->save();
+
+                $pendidikan->penduduk_id = $model->id;
+                $pendidikan->pendidikan_id = $pendidikan_id;
+                $pendidikan->dari = $v[$map['pendidikan_dari']] ?? $v[$map['tanggal_lahir']];
+                $pendidikan->save();
+
+                $pekerjaan->penduduk_id = $model->id;
+                $pekerjaan->pekerjaan_id = $pekerjaan_id;
+                $pekerjaan->dari = $v[$map['pekerjaan_dari']] ?? $v[$map['tanggal_lahir']];
+                $pekerjaan->save();
+
+                $status_kawin->penduduk_id = $model->id;
+                $status_kawin->status_kawin_id = $status_kawin_id;
+                $status_kawin->dari = $v[$map['status_kawin_dari']] ?? $v[$map['tanggal_lahir']];
+                $status_kawin->save();
+
+                $negara->penduduk_id = $model->id;
+                $negara->negara = $v[$map['negara']];
+                $negara->negara_nama = $v[$map['negara_nama']];
+                $negara->dari = $v[$map['negara_dari']] ?? $v[$map['tanggal_lahir']];
+                $negara->save();
+
+                $status->penduduk_id = $model->id;
+                $status->status = $status_penduduk_id;
+                $status->dari = $v[$map['status_penduduk_dari']] ?? $v[$map['tanggal_lahir']];
+                $status->save();
+            } catch (\Throwable $th) {
+                $excel_details->status = 0;
+            }
+
+            $excel_details->data = json_encode([
+                'penduduk' => $model->toJson(),
+                'transaksi' => $transaksi->toJson(),
+                'rt' => $rt->toJson(),
+                'ktp' => $ktp->toJson(),
+                'akte' => $akte->toJson(),
+                'agama' => $agama->toJson(),
+                'pendidikan' => $pendidikan->toJson(),
+                'pekerjaan' => $pekerjaan->toJson(),
+                'status_kawin' => $status_kawin->toJson(),
+                'negara' => $negara->toJson(),
+                'status' => $status->toJson(),
+                'map' => json_encode($map),
+                'v' => json_encode($v),
+            ]);
+            $excel_details->save();
+            $excel_penduduk_list->excel_detail_id = $excel_details->id;
+            $excel_penduduk_list->status = $excel_details->status;
+            $excel_penduduk_list->save();
+            $count++;
+            if ($excel_details->status == 0) {
+                $count_failed++;
+            } else {
+                $count_success++;
+            }
+        }
+        DB::commit();
+
+        return ResponseFormatter::success(
+            [
+                'total' => $count,
+                'success' => $count_success,
+                'failed' => $count_failed,
+            ],
+            'Penduduk imported'
+        );
+    }
+
+    private function master_check(?array $map, ?array $items, ?string $search)
+    {
+        $result = null;
+        foreach ($items as $v) {
+            foreach ($map as $m) {
+                if (strtolower($v[$m]) == strtolower($search)) {
+                    return $v['id'];
+                }
+            }
+        }
+        return $result;
     }
 }

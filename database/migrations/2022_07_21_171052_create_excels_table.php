@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('file')->nullable()->default(null);
             $table->string('nama')->nullable()->default(null);
-            $table->text('kererangan')->nullable()->default(null);
+            $table->text('keterangan')->nullable()->default(null);
             $table->string('kode')->nullable()->default(null);
             $table->timestamps();
         });
