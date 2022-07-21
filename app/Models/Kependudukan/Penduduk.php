@@ -12,7 +12,6 @@ class Penduduk extends Model
     protected $primaryKey = 'id';
     protected $table = 'penduduks';
     const tableName = 'penduduks';
-    const image_folder_ktp = './assets/penduduks/ktp';
-    const image_folder_akte = './assets/penduduks/akte';
-    const image_default = 'assets/image/anggota_default.png';
+    const image_folder = './assets/penduduk/data';
+    const image_default = './assets/penduduk/data/default.png';
 }

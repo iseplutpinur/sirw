@@ -10,8 +10,8 @@ class Pekerjaan extends Model
     use HasFactory;
     protected $guarded = [];
     protected $primaryKey = 'id';
-    protected $table = 'pekerjaans';
-    const tableName = 'pekerjaans';
-    const image_folder = '/assets/pekerjaans';
-    const image_default = 'assets/image/anggota_default.png';
+    protected $table = 'master_pekerjaan';
+    const tableName = 'master_pekerjaan';
+    const image_folder = '/assets/master/pekerjaan';
+    const image_default = '/assets/master/pekerjaan/default.png';
 }

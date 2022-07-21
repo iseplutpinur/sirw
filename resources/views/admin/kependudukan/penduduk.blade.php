@@ -378,6 +378,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            return;
             const new_table = table_html.DataTable({
                 searchDelay: 500,
                 processing: true,

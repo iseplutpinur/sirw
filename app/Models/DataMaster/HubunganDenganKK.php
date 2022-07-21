@@ -10,8 +10,8 @@ class HubunganDenganKK extends Model
     use HasFactory;
     protected $guarded = [];
     protected $primaryKey = 'id';
-    protected $table = 'hubungan_dengan_k_k_s';
-    const tableName = 'hubungan_dengan_k_k_s';
-    const image_folder = '/assets/hubungan_dengan_k_k_s';
-    const image_default = 'assets/image/anggota_default.png';
+    protected $table = 'master_hub_dgn_kk';
+    const tableName = 'master_hub_dgn_kk';
+    const image_folder = '/assets/master/hub_dgn_kk';
+    const image_default = '/assets/master/hub_dgn_kk/default.png';
 }

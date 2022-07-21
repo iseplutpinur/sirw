@@ -14,35 +14,39 @@ use Illuminate\Http\Request;
 use League\Config\Exception\ValidationException;
 use Yajra\Datatables\Datatables;
 use App\Models\Kependudukan\Penduduk;
+use App\Models\Kependudukan\Penduduk\Akte;
+use App\Models\Kependudukan\Penduduk\Ktp;
 use App\Models\Kependudukan\Peristiwa;
 use Illuminate\Support\Facades\DB;
 
 class PendudukController extends Controller
 {
-    private $folder_akte = Penduduk::image_folder_akte;
-    private $folder_ktp = Penduduk::image_folder_ktp;
+    private $folder_akte = Akte::image_folder;
+    private $folder_ktp = Ktp::image_folder;
 
     private $validate_model = [
         'nama' => ['required', 'string', 'max:255'],
         'nik' => ['nullable', 'string', 'max:16'],
         'kota_lahir' => ['required', 'string', 'max:255'],
         'jenis_kelamin' => ['required', 'string', 'max:255'],
+        'no_hp' => ['nullable', 'string', 'max:255'],
         'alamat_lengkap' => ['required', 'string'],
-
-        'penduduk_negara' => ['required', 'int'],
-        'negara_asal' => ['nullable', 'string', 'max:255'],
+        'tanggal_lahir' => ['required', 'string', 'max:255'],
+        'tanggal_mati' => ['nullable', 'string', 'max:255'],
+        'status' => ['required', 'int'],
         'asal_data' => ['required', 'int'],
 
-        // data master
-        'agama_id' => ['required', 'int'],
-        'pendidikan_id' => ['required', 'int'],
-        'pekerjaan_id' => ['required', 'int'],
-        'status_kawin_id' => ['required', 'int'],
-        'status_penduduk_id' => ['required', 'int'],
-        'rt_id' => ['required', 'int'],
+        // 'penduduk_negara' => ['required', 'int'],
+        // 'negara_asal' => ['nullable', 'string', 'max:255'],
+
+        // // data master
+        // 'agama_id' => ['required', 'int'],
+        // 'pendidikan_id' => ['required', 'int'],
+        // 'pekerjaan_id' => ['required', 'int'],
+        // 'status_penduduk_id' => ['required', 'int'],
+        // 'rt_id' => ['required', 'int'],
 
         // tanggal
-        'tanggal_lahir' => ['required', 'string', 'max:255'],
     ];
 
     public function index(Request $request)
@@ -140,25 +144,29 @@ class PendudukController extends Controller
         try {
             DB::beginTransaction();
             $request->validate($this->validate_model);
-
+            // insert data model penduduk
             $model = new Penduduk();
-            $model->agama_id = $request->agama_id;
-            $model->pendidikan_id = $request->pendidikan_id;
-            $model->pekerjaan_id = $request->pekerjaan_id;
-            $model->status_kawin_id = $request->status_kawin_id;
-            $model->status_penduduk_id = $request->status_penduduk_id;
-            $model->rt_id = $request->rt_id;
-
-            $model->penduduk_negara = $request->penduduk_negara;
-            $model->negara_asal = $request->negara_asal;
-
-            $model->nik = $request->nik;
-            $model->asal_data = $request->asal_data;
             $model->nama = $request->nama;
+            $model->nik = $request->nik;
             $model->kota_lahir = $request->kota_lahir;
             $model->jenis_kelamin = $request->jenis_kelamin;
+            $model->no_hp = $request->no_hp;
             $model->alamat_lengkap = $request->alamat_lengkap;
             $model->tanggal_lahir = $request->tanggal_lahir;
+            $model->tanggal_mati = $request->tanggal_mati;
+
+            // 0 Tidak ada di lingkungan rw, 1 ada di lingkungan rw
+            $model->status = $request->status;
+
+            // 0 kelahiran, 1 kedatangan
+            $model->asal_data = $request->asal_data;
+
+            // get id
+            $model->save();
+
+            dd($model);
+
+
 
             // upload foto ktp dan akta
             $foto_ktp = '';
@@ -183,20 +191,20 @@ class PendudukController extends Controller
 
             // set peristiwa
             $model->save();
-            Peristiwa::create([
-                'penduduk_id' => $model->id,
-                'tanggal' => $request->tanggal_lahir,
-                'peristiwa' => 1
-            ]);
+            // Peristiwa::create([
+            //     'penduduk_id' => $model->id,
+            //     'tanggal' => $request->tanggal_lahir,
+            //     'peristiwa' => 1
+            // ]);
 
-            // warga pindahan dari luar
-            if ($request->asal_data == 1) {
-                Peristiwa::create([
-                    'penduduk_id' => $model->id,
-                    'tanggal' => $request->tanggal_datang,
-                    'peristiwa' => 4
-                ]);
-            }
+            // // warga pindahan dari luar
+            // if ($request->asal_data == 1) {
+            //     Peristiwa::create([
+            //         'penduduk_id' => $model->id,
+            //         'tanggal' => $request->tanggal_datang,
+            //         'peristiwa' => 4
+            //     ]);
+            // }
 
             DB::commit();
             return response()->json();
@@ -263,27 +271,27 @@ class PendudukController extends Controller
             }
 
             // update peristiwa
-            Peristiwa::updateOrCreate([
-                'id' => $request->tanggal_lahir_id,
-                'penduduk_id' => $model->id,
-                'tanggal' => $request->tanggal_lahir,
-                'peristiwa' => 1
-            ]);
+            // Peristiwa::updateOrCreate([
+            //     'id' => $request->tanggal_lahir_id,
+            //     'penduduk_id' => $model->id,
+            //     'tanggal' => $request->tanggal_lahir,
+            //     'peristiwa' => 1
+            // ]);
 
             if ($request->asal_data == 1) {
-                Peristiwa::updateOrCreate([
-                    'id' => $request->tanggal_datang_id,
-                    'penduduk_id' => $model->id,
-                    'tanggal' => $request->tanggal_datang,
-                    'peristiwa' => 4
-                ]);
+                // Peristiwa::updateOrCreate([
+                //     'id' => $request->tanggal_datang_id,
+                //     'penduduk_id' => $model->id,
+                //     'tanggal' => $request->tanggal_datang,
+                //     'peristiwa' => 4
+                // ]);
             } else {
-                $asal = Peristiwa::where('penduduk_id', '=', $model->id)
-                    ->where('peristiwa', '=', 4)
-                    ->orderBy('tanggal', 'desc')->get()->first();
-                if ($asal) {
-                    $asal->delete();
-                }
+                // $asal = Peristiwa::where('penduduk_id', '=', $model->id)
+                //     ->where('peristiwa', '=', 4)
+                //     ->orderBy('tanggal', 'desc')->get()->first();
+                // if ($asal) {
+                //     $asal->delete();
+                // }
             }
 
             $model->save();
@@ -302,10 +310,10 @@ class PendudukController extends Controller
         try {
             DB::beginTransaction();
             // delete peristiwa
-            $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)->get(['id']);
-            if ($peristiwa) {
-                Peristiwa::destroy($peristiwa->toArray());
-            }
+            // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)->get(['id']);
+            // if ($peristiwa) {
+            // Peristiwa::destroy($peristiwa->toArray());
+            // }
 
             // delete file ktp akte
             if (file_exists("{$this->folder_ktp}/{$model->file_ktp}")) {
@@ -353,23 +361,23 @@ class PendudukController extends Controller
         try {
             if ($model->asal_data == 1) {
                 // tanggal datang
-                $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
-                    ->where('peristiwa', '=', 4)
-                    ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
-                if ($peristiwa) {
-                    $model->tanggal_datang = $peristiwa->tanggal;
-                    $model->tanggal_datang_id = $peristiwa->id;
-                }
+                // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
+                //     ->where('peristiwa', '=', 4)
+                //     ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
+                // if ($peristiwa) {
+                //     $model->tanggal_datang = $peristiwa->tanggal;
+                //     $model->tanggal_datang_id = $peristiwa->id;
+                // }
             }
 
             // tanggal lahir
-            $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
-                ->where('peristiwa', '=', 1)
-                ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
-            if ($peristiwa) {
-                $model->tanggal_lahir = $peristiwa->tanggal;
-                $model->tanggal_lahir_id = $peristiwa->id;
-            }
+            // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
+            //     ->where('peristiwa', '=', 1)
+            //     ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
+            // if ($peristiwa) {
+            //     $model->tanggal_lahir = $peristiwa->tanggal;
+            //     $model->tanggal_lahir_id = $peristiwa->id;
+            // }
 
             return response()->json($model);
         } catch (\Exception $error) {

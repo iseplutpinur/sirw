@@ -10,8 +10,8 @@ class RukunTetangga extends Model
     use HasFactory;
     protected $guarded = [];
     protected $primaryKey = 'id';
-    protected $table = 'rukun_tetanggas';
-    const tableName = 'rukun_tetanggas';
-    const image_folder = '/assets/rukun_tetanggas';
-    const image_default = 'assets/image/anggota_default.png';
+    protected $table = 'master_rukun_tetangga';
+    const tableName = 'master_rukun_tetangga';
+    const image_folder = '/assets/master/rukun_tetangga';
+    const image_default = '/assets/master/rukun_tetangga/default.png';
 }

@@ -10,8 +10,8 @@ class Agama extends Model
     use HasFactory;
     protected $guarded = [];
     protected $primaryKey = 'id';
-    protected $table = 'agamas';
-    const tableName = 'agamas';
-    const image_folder = '/assets/agamas';
-    const image_default = 'assets/image/anggota_default.png';
+    protected $table = 'master_agama';
+    const tableName = 'master_agama';
+    const image_folder = '/assets/master/agama';
+    const image_default = '/assets/master/agama/default.png';
 }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->bigInteger('penduduk_id', false, true)->nullable()->default(null);
             $table->bigInteger('kartu_keluarga_id', false, true)->nullable()->default(null);
             $table->bigInteger('hubungan_dengan_kk_id', false, true)->nullable()->default(null);
+            $table->date('dari')->nullable()->default(null);
+            $table->date('sampai')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('penduduk_id')
@@ -31,7 +33,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
 
             $table->foreign('hubungan_dengan_kk_id')
-                ->references('id')->on('hubungan_dengan_k_k_s')
+                ->references('id')->on('master_hub_dgn_kk')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
         });

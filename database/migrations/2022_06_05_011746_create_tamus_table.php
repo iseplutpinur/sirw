@@ -23,8 +23,8 @@ return new class extends Migration
             $table->text('tanggal_lahir')->nullable()->default(null);
             $table->string('jenis_kelamin')->nullable()->default(null);
 
-            $table->bigInteger('status_kawin_id', false, true)->nullable()->default(null);
-            $table->bigInteger('status_penduduk_id', false, true)->nullable()->default(null);
+            $table->bigInteger('master_status_kawin_id', false, true)->nullable()->default(null);
+            $table->bigInteger('master_status_penduduk_id', false, true)->nullable()->default(null);
             $table->bigInteger('status_tamu_id', false, true)->nullable()->default(null);
 
             $table->text('alamat_lengkap')->nullable()->default(null);
@@ -34,7 +34,7 @@ return new class extends Migration
 
 
             $table->foreign('rt_id')
-                ->references('id')->on('rukun_tetanggas')
+                ->references('id')->on('master_rukun_tetangga')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
@@ -44,17 +44,17 @@ return new class extends Migration
                 ->cascadeOnUpdate();
 
             $table->foreign('status_tamu_id')
-                ->references('id')->on('status_tamus')
+                ->references('id')->on('master_status_tamu')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('status_kawin_id')
-                ->references('id')->on('status_kawins')
+            $table->foreign('master_status_kawin_id')
+                ->references('id')->on('master_status_kawin')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('status_penduduk_id')
-                ->references('id')->on('status_penduduks')
+            $table->foreign('master_status_penduduk_id')
+                ->references('id')->on('master_status_penduduk')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
             $table->timestamps();

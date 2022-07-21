@@ -10,6 +10,35 @@ $admin = [
         ]
     ],
     [
+        'title' => 'Administrasi', 'icon' => 'fa fa-pencil-square-o',
+        'children' => [
+            ['title' => 'Pindah Agama'],
+            ['title' => 'Pindah Pekerjaan'],
+            ['title' => 'Pindah Pendidikan'],
+            ['title' => 'Pindah Warga Negara'],
+            ['title' => 'Pindah Status Kawin'],
+            ['title' => 'Pindah Status Penduduk'],
+            ['title' => 'Pindah Rukun Tetangga'],
+        ]
+    ],
+    [
+        'title' => 'Laporan Data Penduduk', 'icon' => 'fa fa-file-text',
+        'children' => [
+            ['title' => 'Model 1 (KKPP) WNI'],
+            ['title' => 'Model 2 (KKPP) WNA'],
+            ['title' => 'Model 3 Golongan Agama'],
+            ['title' => 'Model 4 Umur'],
+            ['title' => 'Model 5 Pendididkan & Pekerjaan'],
+            ['title' => 'Model 6 Kep. KTP & Akte'],
+        ]
+    ],
+    [
+        'title' => 'Buku Induk Penduduk', 'icon' => 'fa fa-book'
+    ],
+    [
+        'title' => 'PKM Lansia', 'icon' => 'fa fa-user-o'
+    ],
+    [
         'title' => 'Data Master', 'icon' => 'fa fa-database',
         'children' => [
             ['title' => 'Agama', 'route' => 'admin.data_master.agama'],

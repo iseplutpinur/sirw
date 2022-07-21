@@ -17,14 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('no', 16)->nullable()->default(null);
             $table->text('alamat')->nullable()->default(null);
-            $table->bigInteger('rt_id', false, true)->nullable()->default(null);
             $table->string('foto')->nullable()->default(null);
             $table->timestamps();
-
-            $table->foreign('rt_id')
-                ->references('id')->on('rukun_tetanggas')
-                ->nullOnDelete()
-                ->cascadeOnUpdate();
         });
     }
 

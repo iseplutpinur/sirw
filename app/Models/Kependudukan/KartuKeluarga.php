@@ -12,6 +12,6 @@ class KartuKeluarga extends Model
     protected $primaryKey = 'id';
     protected $table = 'kartu_keluargas';
     const tableName = 'kartu_keluargas';
-    const image_folder = './assets/penduduks/kartu_keluargas';
-    const image_default = 'assets/image/anggota_default.png';
+    const image_folder = './assets/penduduk/kartu_keluarga';
+    const image_default = './assets/penduduk/kartu_keluarga/default.png';
 }

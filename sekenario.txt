@@ -11,3 +11,165 @@ Sekenario
 
     # Kependudukan
         - Input Data KK
+
+Penduduk pindah antar rt
+penduduk pindah ke luar
+penduduk masuk
+penduduk meninggal
+
+laporan_penduduk
+
+Sekenario KKPP (MODEL 1 DAN 2)
+    parameter: _dari(2021-01-01), _sampai((2022-01-01)-1) // tahun 2021
+    jumlah penduduk awal bulan:
+        diambil dari data penduduk yang (tanggal_lahir < _dari dan lahir_disini = 1) or datang < _dari
+    jumlah penduduk lahir:
+        diambil dari data penduduk yang (tanggal_lahir >= _dari dan lahir_disini = 1) and tanggal_lahir <= _sampai
+    jumlah penduduk mati:
+        diambil dari data penduduk yang tanggal_mati >= _dari and tanggal_mati <= _sampai
+    jumlah penduduk pindah:
+        diambil dari data penduduk yang tanggal_pindah >= _dari and tanggal_pindah <= _sampai
+    jumlah penduduk datang:
+        diambil dari data penduduk yang tanggal_datang >= _dari and tanggal_datang <= _sampai
+
+
+Sekenario Golongan agama(MODEL 3)
+    // pada tabel kk ditambahkan tanggal_ditambahkan, tanggal_dihapus
+    parameter: _dari(2021-01), sampai(2021-01) di looping per 1 bulan
+    jumlah kk:
+        diabmil dari data kk yang tanggal_ditambahkan <= iteration(tanggal) and (tanggal_dihapus is null or tanggal_dihapus > iteration(tanggal))
+    Jumlah penduduk tetap atau tidak tetap:
+        sama dengan sekenario model 1 jumlah penduduk awal bulan dan ditambahkan where tetap atau tidak tetap
+    Jumlah Menurut Agama
+        diambil dari data penduduk_agama yang dari <= iteration(tanggal) and (sampai  is null or sampai >  iteration(tanggal))
+
+
+Sekenario MODEL 4
+    Buat curd Laporan Setting -> Group Umur
+    tabel: group_umur
+    properti:
+        nama varchar,
+        dari: int null default 0 (0=kebawah),
+        sampai: int null default null (null=keatas),
+        status: 0,1
+
+    parameter: tanggal
+    data:
+        ambil data warga berdasarkan kelahiran dibawah sama dengan parameter kemudian di lopting dengan tabel group_umur yang aktif saat di looping sekaligus menjumlakan juga
+
+
+
+Sekenario MODEL 5
+    hampir sama dengan model 4 cuman di lopting dengan pekerjaan atau pendidikan
+
+
+
+sekenario ada akte dan ada ktp (MODEL 6)
+    penduduk yang sebelumnya belum ada akte dan ktp:
+        buat tabel penduduk akte_ktp kemudian tanggal tanggal ditambahkan dan tambah menu: [tambah akte penduduk, tambah ktp penduduk]
+
+    penduduk yang sudah ada aket dan ktp saat menambahkan data penduduk:
+        ketika penduduk ditambahkan maka secara otomatis tanggal ditambahakan untuk akte sesuai dengan tanggal lahir dan untuk ktp sesuai dengan tanggal lahir ditambah 17 tahun
+
+
+buat tabel pendukung laporan
+    penduduk_pindah
+    properti:
+        tanggal: date default now,
+        dari_rt_id: int constrain rt_id,
+        ke_rt_id: int constrain rt_id null,
+
+    penduduk_datang
+    properti:
+        tanggal: date default now,
+        dari_rt_id: int constrain rt_id null,
+        ke_rt_id: int constrain rt_id,
+
+    penduduk_agama
+    properti:
+        penduduk_id,
+        agama_id,
+        dari,
+        sampai: jika null berarti aktif,
+
+    penduduk_pendidikan
+    properti:
+        penduduk_id,
+        pendidikan_id,
+        dari,
+        sampai: jika null berarti aktif,
+
+    penduduk_pekerjaan
+    properti:
+        penduduk_id,
+        pekerjaan_id,
+        dari,
+        sampai: jika null berarti aktif,
+
+    penduduk_ktp
+    properti:
+        penduduk_id,
+        foto,
+        dari,
+        sampai: jika null berarti aktif,
+
+    penduduk_akte
+    properti:
+        penduduk_id,
+        foto,
+        dari,
+        sampai: jika null berarti aktif,
+
+
+    laporan_group_umur
+    properti:
+        nama varchar,
+        dari: int null default 0 (0=kebawah),
+        sampai: int null default null (null=keatas),
+        status: 0,1
+
+    penduduk_status
+    properti:
+        penduduk_id,
+        status_penduduk_id,
+        dari,
+        sampai: jika null berarti aktif,
+
+    penduduk_status_kawin
+    properti:
+        penduduk_id,
+        status_kawin_id,
+        dari,
+        sampai: jika null berarti aktif,
+
+
+
+nama:Isep Lutpi Nur
+nik:3263201008200002
+kota_lahir:Cianjur
+jenis_kelamin:laki-laki
+no_hp:+6285798132505
+alamat_lengkap:Cianjur
+tanggal_lahir:2000-08-10
+tanggal_mati:
+status:1
+asal_data:1
+rt_id:1
+tinggal_dari_tanggal:2004-08-10
+ktp_status:1
+ktp_dari:2020-08-10
+akte_status:1
+akte_dari:2020-08-10
+agama_id:1
+agama_dari:2000-08-10
+pendidikan_id:1
+pendidikan_dari:2000-08-10
+pekerjaan_id:1
+pekerjaan_dari:2000-08-10
+status_kawin_id:1
+status_kawin_dari:2000-08-10
+negara:1
+negara_nama:
+negara_dari:2000-08-10
+status_penduduk:1
+status_penduduk_dari:2000-08-10

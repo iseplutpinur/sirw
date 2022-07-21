@@ -10,8 +10,8 @@ class StatusPenduduk extends Model
     use HasFactory;
     protected $guarded = [];
     protected $primaryKey = 'id';
-    protected $table = 'status_penduduks';
-    const tableName = 'status_penduduks';
-    const image_folder = '/assets/status_penduduks';
-    const image_default = 'assets/image/anggota_default.png';
+    protected $table = 'master_status_penduduk';
+    const tableName = 'master_status_penduduk';
+    const image_folder = '/assets/master/status_penduduk';
+    const image_default = '/assets/master/status_penduduk/default.png';
 }

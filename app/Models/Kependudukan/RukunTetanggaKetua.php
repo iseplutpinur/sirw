@@ -11,8 +11,8 @@ class RukunTetanggaKetua extends Model
     use HasFactory;
     protected $guarded = [];
     protected $primaryKey = 'id';
-    protected $table = 'rukun_tetangga_ketuas';
-    const tableName = 'rukun_tetangga_ketuas';
-    const image_folder = '/assets/rukun_tetangga_ketuas';
-    const image_default = 'assets/image/anggota_default.png';
+    protected $table = 'rukun_tetangga_ketua';
+    const tableName = 'rukun_tetangga_ketua';
+    const image_folder = './assets/kependudukan/rukun_tetangga_ketua';
+    const image_default = './assets/kependudukan/rukun_tetangga_ketua/default.png';
 }
