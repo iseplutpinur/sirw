@@ -37,13 +37,16 @@
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         Action
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Rukun Tetangga">
                                         RT
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Nama Lengkap Penduduk">
                                         Nama
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Nomor Induk Penduduk">
                                         NIK
                                     </th>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
@@ -58,25 +61,36 @@
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         Agama
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        Status KW/BW
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Status Kawin">
+                                        Sts. KW
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        Status Pendidikan
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Status Pendidikan">
+                                        Sts. Pend
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        Status Kerjaan
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Status Pekerjaan">
+                                        Sts. Pek
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        Status Penduduk
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Status Penduduk">
+                                        Penduduk
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        KTP Ya/Tidak
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="KTP Ada/Tidak">
+                                        KTP
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
-                                        Akte Ya/Tidak
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Akte Ada/Tidak">
+                                        Akte
                                     </th>
-                                    <th class="text-center" style="vertical-align: middle" rowspan="2">
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Nomor Telepon">
+                                        No. Tel
+                                    </th>
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Alamat Lengkap">
                                         Alamat
                                     </th>
                                 </tr>
@@ -379,7 +393,7 @@
                 }
             });
 
-            return;
+            // return;
             const new_table = table_html.DataTable({
                 searchDelay: 500,
                 processing: true,
@@ -404,11 +418,11 @@
                         data: 'id',
                         name: 'id',
                         render(data, type, full, meta) {
-                            return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" onClick="editFunc('${data}')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ubah
+                            return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" onClick="editFunc('${data}')" data-toggle="tooltip" title="Ubah Data">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </button>
-                            <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')">
-                            <i class="fa fa-trash" aria-hidden="true"></i> Hapus
+                            <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')"  data-toggle="tooltip" title="Hapus Data">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         `;
                         },
@@ -419,6 +433,11 @@
                         data: 'rt',
                         name: 'rt',
                         className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${row.rt_nama}">
+                                ${data}
+                                </span> `;
+                        }
                     },
                     {
                         data: 'nama',
@@ -441,8 +460,8 @@
                         className: 'text-nowrap text-capitalize',
                     },
                     {
-                        data: 'tanggal_lahir',
-                        name: 'tanggal_lahir',
+                        data: 'tanggal_lahir_str',
+                        name: 'tanggal_lahir_str',
                         className: 'text-nowrap text-capitalize',
                     },
                     {
@@ -457,80 +476,101 @@
                         data: 'agama',
                         name: 'agama',
                         className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${row.agama_nama}">
+                                ${data}
+                                </span> `;
+                        }
                     },
                     {
                         data: 'status_kawin',
                         name: 'status_kawin',
                         className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${row.status_kawin_nama}">
+                                ${data}
+                                </span> `;
+                        }
                     },
                     {
                         data: 'pendidikan',
                         name: 'pendidikan',
                         className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${row.pendidikan_nama}">
+                                ${data}
+                                </span> `;
+                        }
                     },
                     {
                         data: 'pekerjaan',
                         name: 'pekerjaan',
                         className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${row.pekerjaan_nama}">
+                                ${data}
+                                </span> `;
+                        }
                     },
                     {
                         data: 'status_penduduk',
                         name: 'status_penduduk',
                         className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${row.status_penduduk_nama}">
+                                ${data}
+                                </span> `;
+                        }
                     },
                     {
-                        data: 'ada_ktp_str',
-                        name: 'ada_ktp_str',
+                        data: 'ktp_ada',
+                        name: 'ktp_ada',
                         className: 'text-nowrap text-capitalize',
-                        render(data, type, full, meta) {
-                            const btn = full.ada_ktp == 1 ?
-                                `<button type="button"
-                                    class="btn btn-rounded btn-primary btn-sm"
-                                    title="Lihat foto ktp"
-                                    data-foto="${full.file_ktp}"
-                                    data-nama="${full.nama}"
-                                    data-nik="${full.nik}"
-                                    onClick="viewKtp(this)">
-                                    <i class="fa fa-eye"></i>
-                                </button>` : '';
-                            return `${btn} ${data} `;
-                        },
+                        render: function(data, type, row) {
+                            const status = data == 1 ? 'Ada' : 'Tidak';
+                            const status_nama = data == 1 ? 'Ada' : 'Tidak Ada';
+                            const bg = data == 1 ? 'bg-success' : 'bg-danger';
+                            return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
+                                ${status}
+                                </span> `;
+                        }
                     },
                     {
-                        data: 'ada_akte_str',
-                        name: 'ada_akte_str',
+                        data: 'akte_ada',
+                        name: 'akte_ada',
                         className: 'text-nowrap text-capitalize',
-                        render(data, type, full, meta) {
-                            const btn = full.ada_akte == 1 ?
-                                `<button type="button"
-                                    class="btn btn-rounded btn-primary btn-sm"
-                                    title="Lihat foto akte"
-                                    data-foto="${full.file_akte}"
-                                    data-nama="${full.nama}"
-                                    data-nik="${full.nik}"
-                                    onClick="viewAkte(this)">
-                                    <i class="fa fa-eye"></i>
-                                </button>` : '';
-                            return `${btn} ${data} `;
-                        },
+                        render: function(data, type, row) {
+                            const status = data == 1 ? 'Ada' : 'Tidak';
+                            const status_nama = data == 1 ? 'Ada' : 'Tidak Ada';
+                            const bg = data == 1 ? 'bg-success' : 'bg-danger';
+                            return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
+                                ${status}
+                                </span> `;
+                        }
+                    },
+                    {
+                        data: 'no_hp',
+                        name: 'no_hp',
+                        className: 'text-nowrap text-capitalize',
                     },
                     {
                         data: 'alamat_lengkap',
                         name: 'alamat_lengkap',
                         className: 'text-nowrap text-capitalize',
                         render: function(data, type, row) {
-                            return `
-                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${data}">
+                            return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${data}">
                                 ${String(data).substr(0, 100) + (String(data).length > 100 ? '...' : '')}
-                                </span>
-                                `;
+                                </span> `;
                         }
                     },
 
                 ],
                 order: [
                     [1, 'asc']
-                ]
+                ],
+                drawCallback: function(settings) {
+                    $('[data-toggle="tooltip"]').tooltip();
+                }
             });
 
             new_table.on('draw.dt', function() {
@@ -540,6 +580,7 @@
                 }).nodes().each(function(cell, i) {
                     cell.innerHTML = i + 1 + PageInfo.start;
                 });
+
             });
 
             $('#FilterForm').submit(function(e) {

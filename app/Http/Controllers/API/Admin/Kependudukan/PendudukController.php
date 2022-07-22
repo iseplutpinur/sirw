@@ -268,6 +268,12 @@ class PendudukController extends Controller
             ['id' => 1, 'a' => 'ada', 'b' => 'ya', 'c' => '1', 'd' => 'y'],
         ];
 
+        $jenis_kelamin_map = ['id', 'a', 'b'];
+        $jenis_kelamin_list = [
+            ['id' => 'laki-laki', 'a' => '0', 'b' => 'L'],
+            ['id' => 'perempuan', 'a' => '1', 'b' => 'P'],
+        ];
+
         DB::beginTransaction();
         $db_excel = new Excel();
         $db_excel->file = $file_excel;
@@ -310,7 +316,7 @@ class PendudukController extends Controller
                 $model->nama = $v[$map['nama']];
                 $model->nik = $v[$map['nik']];
                 $model->kota_lahir = $v[$map['kota_lahir']];
-                $model->jenis_kelamin = $v[$map['jenis_kelamin']];
+                $model->jenis_kelamin = $this->master_check($jenis_kelamin_map, $jenis_kelamin_list, $v[$map['jenis_kelamin']]);
                 $model->no_hp = $v[$map['no_hp']];
                 $model->alamat_lengkap = $v[$map['alamat_lengkap']];
                 $model->tanggal_lahir = $v[$map['tanggal_lahir']];
@@ -432,7 +438,7 @@ class PendudukController extends Controller
 
                 // status penduduk
                 $status->penduduk_id = $model->id;
-                $status->status = $status_penduduk_id;
+                $status->status_penduduk_id = $status_penduduk_id;
                 $status->dari = $v[$map['status_penduduk_dari']] ?? $v[$map['tanggal_lahir']];
                 $checkpoint = "Insert Penduduk Status Status Penduduk";
                 $status->save();
@@ -518,107 +524,176 @@ class PendudukController extends Controller
         // ========================================================================================================
         // rt
         $this->query['rt'] = <<<SQL
-                                (select nama from $table_rt
+                                (select $table_rt.nomor from $table_rt
                                     join $table_penduduk_rt on
                                         $table_rt.id = $table_penduduk_rt.rt_id
-                                    where $table_penduduk_rt.penduduk_id = a.id
+                                    where $table_penduduk_rt.penduduk_id = $table_penduduk.id
                                     order by $table_penduduk_rt.dari desc limit 1)
                         SQL;
         $this->query['rt_alias'] = 'rt';
+        $this->query['rt_nama'] = <<<SQL
+                                (select $table_rt.nama from $table_rt
+                                    join $table_penduduk_rt on
+                                        $table_rt.id = $table_penduduk_rt.rt_id
+                                    where $table_penduduk_rt.penduduk_id = $table_penduduk.id
+                                    order by $table_penduduk_rt.dari desc limit 1)
+                        SQL;
+        $this->query['rt_nama_alias'] = 'rt_nama';
 
         // ktp
         $this->query['ktp_ada'] = <<<SQL
-                            (if((select `status` from $table_penduduk_ktp where $table_penduduk_ktp.penduduk_id = a.id
-                                order by $table_penduduk_ktp.dari desc limit 1) = 1, 'Ada', 'Tidak Ada'))
+                            (select `status` from $table_penduduk_ktp where $table_penduduk_ktp.penduduk_id = $table_penduduk.id
+                                order by $table_penduduk_ktp.dari desc limit 1)
                         SQL;
         $this->query['ktp_ada_alias'] = 'ktp_ada';
 
         // akte
         $this->query['akte_ada'] = <<<SQL
-                            (if((select `status` from $table_penduduk_akte where $table_penduduk_akte.penduduk_id = a.id
-                                order by $table_penduduk_akte.dari desc limit 1) = 1, 'Ada', 'Tidak Ada'))
+                            (select `status` from $table_penduduk_akte where $table_penduduk_akte.penduduk_id = $table_penduduk.id
+                                order by $table_penduduk_akte.dari desc limit 1)
                         SQL;
         $this->query['akte_ada_alias'] = 'akte_ada';
 
         // agama
         $this->query['agama'] = <<<SQL
-                (select nama from $table_agama
+                (select $table_agama.singkatan from $table_agama
                     join $table_penduduk_agama on
                         $table_agama.id = $table_penduduk_agama.agama_id
-                    where $table_penduduk_agama.penduduk_id = a.id
+                    where $table_penduduk_agama.penduduk_id = $table_penduduk.id
                     order by $table_penduduk_agama.dari desc limit 1)
         SQL;
         $this->query['agama_alias'] = 'agama';
 
+        $this->query['agama_nama'] = <<<SQL
+                (select $table_agama.nama from $table_agama
+                    join $table_penduduk_agama on
+                        $table_agama.id = $table_penduduk_agama.agama_id
+                    where $table_penduduk_agama.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_agama.dari desc limit 1)
+        SQL;
+        $this->query['agama_nama_alias'] = 'agama_nama';
+
         // pendidikan
         $this->query['pendidikan'] = <<<SQL
-                (select nama from $table_pendidikan
+                (select $table_pendidikan.singkatan from $table_pendidikan
                     join $table_penduduk_pendidikan on
                         $table_pendidikan.id = $table_penduduk_pendidikan.pendidikan_id
-                    where $table_penduduk_pendidikan.penduduk_id = a.id
+                    where $table_penduduk_pendidikan.penduduk_id = $table_penduduk.id
                     order by $table_penduduk_pendidikan.dari desc limit 1)
         SQL;
         $this->query['pendidikan_alias'] = 'pendidikan';
+        $this->query['pendidikan_nama'] = <<<SQL
+                (select $table_pendidikan.nama from $table_pendidikan
+                    join $table_penduduk_pendidikan on
+                        $table_pendidikan.id = $table_penduduk_pendidikan.pendidikan_id
+                    where $table_penduduk_pendidikan.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_pendidikan.dari desc limit 1)
+        SQL;
+        $this->query['pendidikan_nama_alias'] = 'pendidikan_nama';
 
         // pekerjaan
         $this->query['pekerjaan'] = <<<SQL
-                (select nama from $table_pekerjaan
+                (select $table_pekerjaan.singkatan from $table_pekerjaan
                     join $table_penduduk_pekerjaan on
                         $table_pekerjaan.id = $table_penduduk_pekerjaan.pekerjaan_id
-                    where $table_penduduk_pekerjaan.penduduk_id = a.id
+                    where $table_penduduk_pekerjaan.penduduk_id = $table_penduduk.id
                     order by $table_penduduk_pekerjaan.dari desc limit 1)
         SQL;
         $this->query['pekerjaan_alias'] = 'pekerjaan';
+        $this->query['pekerjaan_nama'] = <<<SQL
+                (select $table_pekerjaan.nama from $table_pekerjaan
+                    join $table_penduduk_pekerjaan on
+                        $table_pekerjaan.id = $table_penduduk_pekerjaan.pekerjaan_id
+                    where $table_penduduk_pekerjaan.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_pekerjaan.dari desc limit 1)
+        SQL;
+        $this->query['pekerjaan_nama_alias'] = 'pekerjaan_nama';
 
         // status_kawin
         $this->query['status_kawin'] = <<<SQL
-                (select nama from $table_status_kawin
+                (select $table_status_kawin.singkatan from $table_status_kawin
                     join $table_penduduk_status_kawin on
                         $table_status_kawin.id = $table_penduduk_status_kawin.status_kawin_id
-                    where $table_penduduk_status_kawin.penduduk_id = a.id
+                    where $table_penduduk_status_kawin.penduduk_id = $table_penduduk.id
                     order by $table_penduduk_status_kawin.dari desc limit 1)
         SQL;
         $this->query['status_kawin_alias'] = 'status_kawin';
+        $this->query['status_kawin_nama'] = <<<SQL
+                (select $table_status_kawin.nama from $table_status_kawin
+                    join $table_penduduk_status_kawin on
+                        $table_status_kawin.id = $table_penduduk_status_kawin.status_kawin_id
+                    where $table_penduduk_status_kawin.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_status_kawin.dari desc limit 1)
+        SQL;
+        $this->query['status_kawin_nama_alias'] = 'status_kawin_nama';
 
         // status_penduduk
         $this->query['status_penduduk'] = <<<SQL
-                (select nama from $table_status_penduduk
+                (select $table_status_penduduk.singkatan from $table_status_penduduk
                     join $table_penduduk_status_penduduk on
-                        $table_status_penduduk.id = $table_penduduk_status_penduduk.penduduk_id
-                    where $table_penduduk_status_penduduk.penduduk_id = a.id
+                        $table_status_penduduk.id = $table_penduduk_status_penduduk.status_penduduk_id
+                    where $table_penduduk_status_penduduk.penduduk_id = $table_penduduk.id
                     order by $table_penduduk_status_penduduk.dari desc limit 1)
         SQL;
         $this->query['status_penduduk_alias'] = 'status_penduduk';
+        $this->query['status_penduduk_nama'] = <<<SQL
+                (select $table_status_penduduk.nama from $table_status_penduduk
+                    join $table_penduduk_status_penduduk on
+                        $table_status_penduduk.id = $table_penduduk_status_penduduk.status_penduduk_id
+                    where $table_penduduk_status_penduduk.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_status_penduduk.dari desc limit 1)
+        SQL;
+        $this->query['status_penduduk_nama_alias'] = 'status_penduduk_nama';
 
+        $this->query['tanggal_lahir_str'] = <<<SQL
+                (DATE_FORMAT($table_penduduk.tanggal_lahir, '%d-%b-%Y'))
+        SQL;
+        $this->query['tanggal_lahir_str_alias'] = 'tanggal_lahir_str';
+
+        $this->query['umur'] = <<<SQL
+                (SELECT TIMESTAMPDIFF(YEAR, $table_penduduk.tanggal_lahir, CURDATE()))
+        SQL;
+        $this->query['umur_alias'] = 'umur';
 
         // ========================================================================================================
-        $model = KartuKeluarga::select([
+        $model = Penduduk::select([
             // penduduk
-            'a.id',
-            'a.nama',
-            'a.nik',
-            'a.kota_lahir',
-            'a.jenis_kelamin',
-            'a.no_hp',
-            'a.alamat_lengkap',
-            'a.tanggal_lahir',
-            'a.tanggal_mati',
-            'a.asal_data',
+            "$table_penduduk.id",
+            "$table_penduduk.nama",
+            "$table_penduduk.nik",
+            "$table_penduduk.kota_lahir",
+            "$table_penduduk.jenis_kelamin",
+            "$table_penduduk.no_hp",
+            "$table_penduduk.alamat_lengkap",
+            "$table_penduduk.tanggal_lahir",
+            "$table_penduduk.tanggal_mati",
+            "$table_penduduk.asal_data",
 
             // data master
-            // DB::raw("rt.nama as rt"),
             DB::raw("{$this->query['rt']} as {$this->query['rt_alias']}"),
+            DB::raw("{$this->query['rt_nama']} as {$this->query['rt_nama_alias']}"),
+
             DB::raw("{$this->query['ktp_ada']} as {$this->query['ktp_ada_alias']}"),
             DB::raw("{$this->query['akte_ada']} as {$this->query['akte_ada_alias']}"),
-            DB::raw("{$this->query['agama']} as {$this->query['agama_alias']}"),
-            DB::raw("{$this->query['pendidikan']} as {$this->query['pendidikan_alias']}"),
-            DB::raw("{$this->query['pekerjaan']} as {$this->query['pekerjaan_alias']}"),
-            DB::raw("{$this->query['status_kawin']} as {$this->query['status_kawin_alias']}"),
-            DB::raw("{$this->query['status_penduduk']} as {$this->query['status_penduduk_alias']}"),
-        ])
-            // from
-            ->from("$table_penduduk as a");
 
+            DB::raw("{$this->query['agama']} as {$this->query['agama_alias']}"),
+            DB::raw("{$this->query['agama_nama']} as {$this->query['agama_nama_alias']}"),
+
+            DB::raw("{$this->query['pendidikan']} as {$this->query['pendidikan_alias']}"),
+            DB::raw("{$this->query['pendidikan_nama']} as {$this->query['pendidikan_nama_alias']}"),
+
+            DB::raw("{$this->query['pekerjaan']} as {$this->query['pekerjaan_alias']}"),
+            DB::raw("{$this->query['pekerjaan_nama']} as {$this->query['pekerjaan_nama_alias']}"),
+
+            DB::raw("{$this->query['status_kawin']} as {$this->query['status_kawin_alias']}"),
+            DB::raw("{$this->query['status_kawin_nama']} as {$this->query['status_kawin_nama_alias']}"),
+
+            DB::raw("{$this->query['status_penduduk']} as {$this->query['status_penduduk_alias']}"),
+            DB::raw("{$this->query['status_penduduk_nama']} as {$this->query['status_penduduk_nama_alias']}"),
+
+            DB::raw("{$this->query['tanggal_lahir_str']} as {$this->query['tanggal_lahir_str_alias']}"),
+            DB::raw("{$this->query['umur']} as {$this->query['umur_alias']}"),
+        ]);
 
         return Datatables::of($model)
             ->addIndexColumn()
@@ -626,26 +701,58 @@ class PendudukController extends Controller
             ->filterColumn($this->query['rt_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['rt']} like '%$keyword%'");
             })
+            ->filterColumn($this->query['rt_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['rt_nama']} like '%$keyword%'");
+            })
+
             ->filterColumn($this->query['ktp_ada_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['ktp_ada']} like '%$keyword%'");
             })
             ->filterColumn($this->query['akte_ada_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['akte_ada']} like '%$keyword%'");
             })
+
             ->filterColumn($this->query['agama_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['agama']} like '%$keyword%'");
             })
+            ->filterColumn($this->query['agama_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['agama_nama']} like '%$keyword%'");
+            })
+
             ->filterColumn($this->query['pendidikan_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['pendidikan']} like '%$keyword%'");
             })
+
+            ->filterColumn($this->query['pendidikan_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['pendidikan_nama']} like '%$keyword%'");
+            })
+
             ->filterColumn($this->query['pekerjaan_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['pekerjaan']} like '%$keyword%'");
             })
+            ->filterColumn($this->query['pekerjaan_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['pekerjaan_nama']} like '%$keyword%'");
+            })
+
             ->filterColumn($this->query['status_kawin_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['status_kawin']} like '%$keyword%'");
             })
+            ->filterColumn($this->query['status_kawin_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['status_kawin_nama']} like '%$keyword%'");
+            })
+
             ->filterColumn($this->query['status_penduduk_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['status_penduduk']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['status_penduduk_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['status_penduduk_nama']} like '%$keyword%'");
+            })
+
+            ->filterColumn($this->query['tanggal_lahir_str_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['tanggal_lahir_str']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['umur_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['umur']} like '%$keyword%'");
             })
             ->make(true);
     }

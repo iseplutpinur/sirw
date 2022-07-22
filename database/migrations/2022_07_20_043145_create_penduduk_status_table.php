@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             // tetap, tidak tetap
             $table->bigInteger('penduduk_id', false, true)->nullable()->default(null);
-            $table->boolean('status')->nullable()->default(1)->comment('0 tidak tetap, 1 tetap');
+            $table->bigInteger('status_penduduk_id', false, true)->nullable()->default(null);
             $table->date('dari')->nullable()->default(null);
             $table->date('sampai')->nullable()->default(null);
             $table->timestamps();
@@ -25,6 +25,10 @@ return new class extends Migration
             $table->foreign('penduduk_id')
                 ->references('id')->on('penduduks')
                 ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreign('status_penduduk_id')
+                ->references('id')->on('master_status_penduduk')
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
         });
     }
