@@ -221,27 +221,30 @@ class PendudukController extends Controller
 
     public function import_excel(Request $request)
     {
-        // catatan belum
-        // - validasi ketika excel nya kosong
-        // - penduduk akte
-        // - penduduk ktp
+        // catatan belum]
+        // - import kk rt masih ngikut dari rt penduduk
+        // - asal data jika dari luar
 
         $folder = Excel::folder;
         $excel = null;
-        if ($file = $request->file('file')) {
-            $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $excel = date('Y-m-d-h-i-s-') . AppHelper::slugify($name)  .  '.' .  $file->getClientOriginalExtension();
-            $file->move("./$folder/penduduk", $excel);
+        $error = null;
+        try {
+            if ($file = $request->file('file')) {
+                $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $excel = date('Y-m-d-h-i-s-') . AppHelper::slugify($name)  .  '.' .  $file->getClientOriginalExtension();
+                $file->move("./$folder/penduduk", $excel);
+                $file_excel = "./$folder/penduduk/$excel";
+
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file_excel);
+                $array_from_excel = $spreadsheet->getActiveSheet()->toArray();
+                $start = 5;
+            }
+        } catch (\Throwable $th) {
+            $error = $th;
         }
-
-
-        /** Load $inputFileName to a Spreadsheet Object  **/
-        $file_excel = "./$folder/penduduk/$excel";
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file_excel);
-        $array_from_excel = $spreadsheet->getActiveSheet()->toArray();
-        $start = 5;
-
-        // get data master
+        if (is_null($excel)) {
+            return ResponseFormatter::error($error, 'File Not found');
+        }
 
         // agama
         $agama_map = ['id', 'singkatan', 'nama'];
@@ -316,6 +319,7 @@ class PendudukController extends Controller
                 $model->asal_data = $v[$map['asal_data']];
                 // get id
                 $excel_details->status = 1;
+                $checkpoint = "Insert Penduduk";
                 $model->save();
                 $excel_penduduk_list->penduduk_id = $model->id;
 
@@ -336,6 +340,7 @@ class PendudukController extends Controller
                     $recent_kk_no = $v[$map['no_kk']];
                     $kk = new KartuKeluarga();
                     $kk->no = $recent_kk_no;
+                    $checkpoint = "Insert Kartu Keluarga";
                     $kk->save();
                     $recent_kk_id = $kk->id;
 
@@ -343,6 +348,7 @@ class PendudukController extends Controller
                     $kk_rt->kartu_keluarga_id = $recent_kk_id;
                     $kk_rt->rt_id = $rt_id;
                     $kk_rt->dari = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
+                    $checkpoint = "Insert Kartu Keluarga RT";
                     $kk_rt->save();
                 }
 
@@ -351,17 +357,19 @@ class PendudukController extends Controller
                 $kk_list->kartu_keluarga_id = $recent_kk_id;
                 $kk_list->hubungan_dengan_kk_id = $hub_dgn_kk_id;
                 $kk_list->dari = $v[$map['hub_kk_dari']] ?? date('Y-m-d');
+                $checkpoint = "Insert Kartu Keluarga List Penduduk";
                 $kk_list->save();
 
                 // rt
                 // jika kedatangan 1 maka tambahkan kedalam tabel penduudk rt transaksi
                 if ($model->asal_data == 1) {
-                    $transaksi->penduduk_id = $model->id;
-                    $transaksi->rt_id = $rt_id;
-                    $transaksi->keterangan = $v[$map['datang_keterangan']];
-                    $transaksi->tanggal = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
-                    $transaksi->jenis = 2;
-                    $transaksi->save();
+                    // $transaksi->penduduk_id = $model->id;
+                    // $transaksi->rt_id = $rt_id;
+                    // $transaksi->keterangan = $v[$map['datang_keterangan']];
+                    // $transaksi->tanggal = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
+                    // $transaksi->jenis = 2;
+                    // $checkpoint = "Insert Penduduk Asal data";
+                    // $transaksi->save();
                 }
 
                 // penduduk data master
@@ -369,42 +377,49 @@ class PendudukController extends Controller
                 $rt->penduduk_id = $model->id;
                 $rt->rt_id = $rt_id;
                 $rt->dari = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
+                $checkpoint = "Insert Penduduk RT";
                 $rt->save();
 
                 // ktp
                 $ktp->penduduk_id = $model->id;
                 $ktp->status = $ktp_status;
                 $ktp->dari = $v[$map['ktp_dari']] ?? (date('Y-m-d', strtotime($v[$map['tanggal_lahir']] . ' + 17 years')));
+                $checkpoint = "Insert Penduduk KTP";
                 $ktp->save();
 
                 // akte
                 $akte->penduduk_id = $model->id;
                 $akte->status = $akte_status;
                 $akte->dari = $v[$map['akte_dari']] ?? (date('Y-m-d', strtotime($v[$map['tanggal_lahir']] . ' + 17 years')));
+                $checkpoint = "Insert Penduduk Akte";
                 $akte->save();
 
                 // agama
                 $agama->penduduk_id = $model->id;
                 $agama->agama_id = $agama_id;
                 $agama->dari = $v[$map['agama_dari']] ?? $v[$map['tanggal_lahir']];
+                $checkpoint = "Insert Penduduk Agama";
                 $agama->save();
 
                 // pendidikan
                 $pendidikan->penduduk_id = $model->id;
                 $pendidikan->pendidikan_id = $pendidikan_id;
                 $pendidikan->dari = $v[$map['pendidikan_dari']] ?? $v[$map['tanggal_lahir']];
+                $checkpoint = "Insert Penduduk Pendidikan";
                 $pendidikan->save();
 
                 // pekerjaan
                 $pekerjaan->penduduk_id = $model->id;
                 $pekerjaan->pekerjaan_id = $pekerjaan_id;
                 $pekerjaan->dari = $v[$map['pekerjaan_dari']] ?? $v[$map['tanggal_lahir']];
+                $checkpoint = "Insert Penduduk Pekerjaan";
                 $pekerjaan->save();
 
                 // status_kawin
                 $status_kawin->penduduk_id = $model->id;
                 $status_kawin->status_kawin_id = $status_kawin_id;
                 $status_kawin->dari = $v[$map['status_kawin_dari']] ?? $v[$map['tanggal_lahir']];
+                $checkpoint = "Insert Penduduk Status Kawin";
                 $status_kawin->save();
 
                 // negara
@@ -412,13 +427,16 @@ class PendudukController extends Controller
                 $negara->negara = $v[$map['negara']];
                 $negara->negara_nama = $v[$map['negara_nama']];
                 $negara->dari = $v[$map['negara_dari']] ?? $v[$map['tanggal_lahir']];
+                $checkpoint = "Insert Penduduk Status Negara";
                 $negara->save();
 
                 // status penduduk
                 $status->penduduk_id = $model->id;
                 $status->status = $status_penduduk_id;
                 $status->dari = $v[$map['status_penduduk_dari']] ?? $v[$map['tanggal_lahir']];
+                $checkpoint = "Insert Penduduk Status Status Penduduk";
                 $status->save();
+                $checkpoint = "Success";
             } catch (\Throwable $th) {
                 $excel_details->status = 0;
             }
@@ -438,7 +456,9 @@ class PendudukController extends Controller
                 'map' => json_encode($map),
                 'v' => json_encode($v),
             ]);
+            $excel_details->catatan = $checkpoint;
             $excel_details->save();
+
             $excel_penduduk_list->excel_detail_id = $excel_details->id;
             $excel_penduduk_list->status = $excel_details->status;
             $excel_penduduk_list->save();
@@ -453,11 +473,7 @@ class PendudukController extends Controller
         DB::commit();
 
         return ResponseFormatter::success(
-            [
-                'total' => $count,
-                'success' => $count_success,
-                'failed' => $count_failed,
-            ],
+            ['total' => $count, 'success' => $count_success, 'failed' => $count_failed],
             'Penduduk imported'
         );
     }
@@ -473,5 +489,164 @@ class PendudukController extends Controller
             }
         }
         return $result;
+    }
+
+    public function datatable(Request $request)
+    {
+        // list table
+        $table_penduduk = Penduduk::tableName;
+
+        // data master ============================================================================================
+        // rt
+        $table_penduduk_rt = Rt::tableName;
+        $table_rt = RukunTetangga::tableName;
+        $table_penduduk_ktp = Ktp::tableName;
+        $table_penduduk_akte = Akte::tableName;
+        $table_penduduk_agama = PendudukAgama::tableName;
+        $table_agama = Agama::tableName;
+        $table_penduduk_pendidikan = PendudukPendidikan::tableName;
+        $table_pendidikan = Pendidikan::tableName;
+        $table_penduduk_pekerjaan = PendudukPekerjaan::tableName;
+        $table_pekerjaan = Pekerjaan::tableName;
+        $table_penduduk_status_kawin = PendudukStatusKawin::tableName;
+        $table_status_kawin = StatusKawin::tableName;
+        $table_penduduk_status_penduduk = PendudukStatus::tableName;
+        $table_status_penduduk = StatusPenduduk::tableName;
+
+        // cusotm query
+        // get list anggota kk dengan no urut terendah
+        // ========================================================================================================
+        // rt
+        $this->query['rt'] = <<<SQL
+                                (select nama from $table_rt
+                                    join $table_penduduk_rt on
+                                        $table_rt.id = $table_penduduk_rt.rt_id
+                                    where $table_penduduk_rt.penduduk_id = a.id
+                                    order by $table_penduduk_rt.dari desc limit 1)
+                        SQL;
+        $this->query['rt_alias'] = 'rt';
+
+        // ktp
+        $this->query['ktp_ada'] = <<<SQL
+                            (if((select `status` from $table_penduduk_ktp where $table_penduduk_ktp.penduduk_id = a.id
+                                order by $table_penduduk_ktp.dari desc limit 1) = 1, 'Ada', 'Tidak Ada'))
+                        SQL;
+        $this->query['ktp_ada_alias'] = 'ktp_ada';
+
+        // akte
+        $this->query['akte_ada'] = <<<SQL
+                            (if((select `status` from $table_penduduk_akte where $table_penduduk_akte.penduduk_id = a.id
+                                order by $table_penduduk_akte.dari desc limit 1) = 1, 'Ada', 'Tidak Ada'))
+                        SQL;
+        $this->query['akte_ada_alias'] = 'akte_ada';
+
+        // agama
+        $this->query['agama'] = <<<SQL
+                (select nama from $table_agama
+                    join $table_penduduk_agama on
+                        $table_agama.id = $table_penduduk_agama.agama_id
+                    where $table_penduduk_agama.penduduk_id = a.id
+                    order by $table_penduduk_agama.dari desc limit 1)
+        SQL;
+        $this->query['agama_alias'] = 'agama';
+
+        // pendidikan
+        $this->query['pendidikan'] = <<<SQL
+                (select nama from $table_pendidikan
+                    join $table_penduduk_pendidikan on
+                        $table_pendidikan.id = $table_penduduk_pendidikan.pendidikan_id
+                    where $table_penduduk_pendidikan.penduduk_id = a.id
+                    order by $table_penduduk_pendidikan.dari desc limit 1)
+        SQL;
+        $this->query['pendidikan_alias'] = 'pendidikan';
+
+        // pekerjaan
+        $this->query['pekerjaan'] = <<<SQL
+                (select nama from $table_pekerjaan
+                    join $table_penduduk_pekerjaan on
+                        $table_pekerjaan.id = $table_penduduk_pekerjaan.pekerjaan_id
+                    where $table_penduduk_pekerjaan.penduduk_id = a.id
+                    order by $table_penduduk_pekerjaan.dari desc limit 1)
+        SQL;
+        $this->query['pekerjaan_alias'] = 'pekerjaan';
+
+        // status_kawin
+        $this->query['status_kawin'] = <<<SQL
+                (select nama from $table_status_kawin
+                    join $table_penduduk_status_kawin on
+                        $table_status_kawin.id = $table_penduduk_status_kawin.status_kawin_id
+                    where $table_penduduk_status_kawin.penduduk_id = a.id
+                    order by $table_penduduk_status_kawin.dari desc limit 1)
+        SQL;
+        $this->query['status_kawin_alias'] = 'status_kawin';
+
+        // status_penduduk
+        $this->query['status_penduduk'] = <<<SQL
+                (select nama from $table_status_penduduk
+                    join $table_penduduk_status_penduduk on
+                        $table_status_penduduk.id = $table_penduduk_status_penduduk.penduduk_id
+                    where $table_penduduk_status_penduduk.penduduk_id = a.id
+                    order by $table_penduduk_status_penduduk.dari desc limit 1)
+        SQL;
+        $this->query['status_penduduk_alias'] = 'status_penduduk';
+
+
+        // ========================================================================================================
+        $model = KartuKeluarga::select([
+            // penduduk
+            'a.id',
+            'a.nama',
+            'a.nik',
+            'a.kota_lahir',
+            'a.jenis_kelamin',
+            'a.no_hp',
+            'a.alamat_lengkap',
+            'a.tanggal_lahir',
+            'a.tanggal_mati',
+            'a.asal_data',
+
+            // data master
+            // DB::raw("rt.nama as rt"),
+            DB::raw("{$this->query['rt']} as {$this->query['rt_alias']}"),
+            DB::raw("{$this->query['ktp_ada']} as {$this->query['ktp_ada_alias']}"),
+            DB::raw("{$this->query['akte_ada']} as {$this->query['akte_ada_alias']}"),
+            DB::raw("{$this->query['agama']} as {$this->query['agama_alias']}"),
+            DB::raw("{$this->query['pendidikan']} as {$this->query['pendidikan_alias']}"),
+            DB::raw("{$this->query['pekerjaan']} as {$this->query['pekerjaan_alias']}"),
+            DB::raw("{$this->query['status_kawin']} as {$this->query['status_kawin_alias']}"),
+            DB::raw("{$this->query['status_penduduk']} as {$this->query['status_penduduk_alias']}"),
+        ])
+            // from
+            ->from("$table_penduduk as a");
+
+
+        return Datatables::of($model)
+            ->addIndexColumn()
+            // custom pencarian
+            ->filterColumn($this->query['rt_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['rt']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['ktp_ada_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['ktp_ada']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['akte_ada_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['akte_ada']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['agama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['agama']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['pendidikan_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['pendidikan']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['pekerjaan_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['pekerjaan']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['status_kawin_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['status_kawin']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['status_penduduk_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['status_penduduk']} like '%$keyword%'");
+            })
+            ->make(true);
     }
 }

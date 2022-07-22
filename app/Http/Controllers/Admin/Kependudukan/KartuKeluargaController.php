@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataMaster\HubunganDenganKK;
 use App\Models\DataMaster\RukunTetangga;
 use App\Models\Kependudukan\KartuKeluarga;
+use App\Models\Kependudukan\KartuKeluarga\Data;
 use App\Models\Kependudukan\KartuKeluargaList;
 use Illuminate\Http\Request;
 use League\Config\Exception\ValidationException;
@@ -31,7 +32,7 @@ class KartuKeluargaController extends Controller
         if (request()->ajax()) {
             // list table
             $table_kk = KartuKeluarga::tableName;
-            $table_kk_list = KartuKeluargaList::tableName;
+            $table_kk_list = Data::tableName;
             $table_hd_kk = HubunganDenganKK::tableName;
             $table_penduduk = Penduduk::tableName;
             $table_rt = RukunTetangga::tableName;
@@ -220,12 +221,12 @@ class KartuKeluargaController extends Controller
     {
         try {
             // table
-            $table_kk_list = KartuKeluargaList::tableName;
+            $table_kk_list = Data::tableName;
             $table_penduduk = Penduduk::tableName;
             $table_hd_kk = HubunganDenganKK::tableName;
 
             $id = $request->id;
-            $result = KartuKeluargaList::selectRaw("$table_kk_list.*, b.nik")
+            $result = Data::selectRaw("$table_kk_list.*, b.nik")
                 ->selectRaw("DATE_FORMAT($table_kk_list.created_at, '%W, %d %M %Y %H:%i:%s') as created")
                 ->selectRaw("b.nama as penduduk")
                 ->selectRaw("c.nama as hubungan_dengan_kk")
@@ -249,7 +250,7 @@ class KartuKeluargaController extends Controller
                 'hubungan_dengan_kk_id' => ['required', 'integer'],
             ]);
 
-            $model = new KartuKeluargaList();
+            $model = new Data();
             $model->penduduk_id = $request->penduduk_id;
             $model->kartu_keluarga_id = $request->kartu_keluarga_id;
             $model->hubungan_dengan_kk_id = $request->hubungan_dengan_kk_id;
@@ -264,7 +265,7 @@ class KartuKeluargaController extends Controller
         }
     }
 
-    public function anggota_delete(KartuKeluargaList $model)
+    public function anggota_delete(Data $model)
     {
         try {
             $model->delete();

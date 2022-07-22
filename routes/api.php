@@ -126,6 +126,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
         Route::controller(PendudukController::class)->prefix('penduduk')->group(function () {
             Route::post('/',  'insert')->name('admin.kependudukan.penduduk.insert');
             Route::post('/import',  'import_excel')->name('admin.kependudukan.penduduk.import');
+            Route::get('/datatable',  'datatable')->name('admin.kependudukan.penduduk.datatable');
 
             // Route::get('/',  'index')->name('admin.kependudukan.penduduk'); // page
             // Route::get('/find/{model}',  'getById')->name('admin.kependudukan.penduduk.find');
