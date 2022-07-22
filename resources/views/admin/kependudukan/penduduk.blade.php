@@ -7,26 +7,116 @@
             <div class="card" id="main-card">
                 <div class="card-header d-md-flex flex-row justify-content-between">
                     <h3 class="card-title">Penduduk</h3>
-                    <button type="button" class="btn btn-rounded btn-success" data-bs-effect="effect-scale"
-                        data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
-                        <i class="bi bi-plus-lg"></i> Tambah
-                    </button>
-                </div>
-                <div class="card-body">
-                    {{-- <h5 class="h5">Filter Data</h5>
-                    <form action="javascript:void(0)" class="form-inline ml-md-3 mb-md-3" id="FilterForm">
-                        <div class="form-group me-md-3">
-                            <label for="filter_status">Agama</label>
-                            <select class="form-control" id="filter_status" name="filter_status" style="max-width: 200px">
-                                <option value="">All Agama</option>
-                                <option value="1">Dipakai</option>
-                                <option value="0">Tidak Dipakai</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-rounded btn-md btn-info" title="Refresh Filter Table">
+                    <div>
+                        <button type="submit" form="FilterForm" class="btn btn-rounded btn-md btn-info" data-toggle="tooltip"
+                            title="Refresh Filter Table">
                             <i class="bi bi-arrow-repeat"></i> Refresh
                         </button>
-                    </form> --}}
+                        <button type="button" class="btn btn-rounded btn-success" data-bs-effect="effect-scale"
+                            data-bs-toggle="modal" href="#modal-default" onclick="add()" data-target="#modal-default">
+                            <i class="bi bi-plus-lg"></i> Tambah
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="h5">Filter Data</h5>
+                    <form action="javascript:void(0)" class="ml-md-3 mb-md-3" id="FilterForm">
+                        <div class="form-group float-start me-2">
+                            <label for="filter_rt">Rt</label>
+                            <select class="form-control" id="filter_rt" name="filter_rt" style="max-width: 200px">
+                                <option value="">Semua Rt</option>
+                                @foreach ($rts ?? [] as $v)
+                                    <option value="{{ $v->id }}" class="text-capitalize">
+                                        {{ $v->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_jenis_kelamin">Jenis Kelamin</label>
+                            <select class="form-control" id="filter_jenis_kelamin" name="filter_jenis_kelamin"
+                                style="max-width: 200px">
+                                <option value="">Semua JK</option>
+                                <option value="laki-laki" class="text-capitalize">laki-laki</option>
+                                <option value="perempuan" class="text-capitalize">perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_agama">Agama</label>
+                            <select class="form-control" id="filter_agama" name="filter_agama" style="max-width: 200px">
+                                <option value="">Semua Agama</option>
+                                @foreach ($agamas ?? [] as $v)
+                                    <option value="{{ $v->id }}" class="text-capitalize">
+                                        {{ $v->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_status_kawin">Status Kawin</label>
+                            <select class="form-control" id="filter_status_kawin" name="filter_status_kawin"
+                                style="max-width: 200px">
+                                <option value="">Semua SK</option>
+                                @foreach ($status_kawins ?? [] as $v)
+                                    <option value="{{ $v->id }}" class="text-capitalize">
+                                        {{ $v->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_pendidikan">Pendidikan</label>
+                            <select class="form-control" id="filter_pendidikan" name="filter_pendidikan"
+                                style="max-width: 200px">
+                                <option value="">Semua Pend</option>
+                                @foreach ($pendidikans ?? [] as $v)
+                                    <option value="{{ $v->id }}" class="text-capitalize">
+                                        {{ $v->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_Pekerjaan">Pekerjaan</label>
+                            <select class="form-control" id="filter_Pekerjaan" name="filter_Pekerjaan"
+                                style="max-width: 200px">
+                                <option value="">Semua Pek</option>
+                                @foreach ($pekerjaans ?? [] as $v)
+                                    <option value="{{ $v->id }}" class="text-capitalize">
+                                        {{ $v->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_status_penduduk">Jenis Penduduk</label>
+                            <select class="form-control" id="filter_status_penduduk" name="filter_status_penduduk"
+                                style="max-width: 200px">
+                                <option value="">Semua JP</option>
+                                @foreach ($status_penduduks ?? [] as $v)
+                                    <option value="{{ $v->id }}" class="text-capitalize">
+                                        {{ $v->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_ktp">Status KTP</label>
+                            <select class="form-control" id="filter_ktp" name="filter_ktp" style="max-width: 200px">
+                                <option value="">Semua Sts. KTP</option>
+                                <option value="1">Ada</option>
+                                <option value="0">Tidak Ada</option>
+                            </select>
+                        </div>
+                        <div class="form-group float-start me-2">
+                            <label for="filter_akte">Status Akte</label>
+                            <select class="form-control" id="filter_akte" name="filter_akte" style="max-width: 200px">
+                                <option value="">Semua Sts. Akte</option>
+                                <option value="1">Ada</option>
+                                <option value="0">Tidak Ada</option>
+                            </select>
+                        </div>
+                    </form>
                     <div class="table-responsive table-striped">
                         <table class="table table-bordered border-bottom" id="tbl_main">
                             <thead>
@@ -57,6 +147,10 @@
                                     </th>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         Umur
+                                    </th>
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Tanggal Meninggal">
+                                        Meninggal
                                     </th>
                                     <th class="text-center" style="vertical-align: middle" rowspan="2">
                                         Agama
@@ -92,6 +186,14 @@
                                     <th class="text-center" style="vertical-align: middle" rowspan="2"
                                         data-toggle="tooltip" title="Alamat Lengkap">
                                         Alamat
+                                    </th>
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Kewarganegaraan">
+                                        Asal
+                                    </th>
+                                    <th class="text-center" style="vertical-align: middle" rowspan="2"
+                                        data-toggle="tooltip" title="Asal Negara">
+                                        Negara
                                     </th>
                                 </tr>
                                 <tr>
@@ -406,7 +508,18 @@
                 ajax: {
                     url: "{{ route('admin.kependudukan.penduduk') }}",
                     data: function(d) {
-                        d['filter[status]'] = $('#filter_status').val();
+                        d['filter[rt_id]'] = $('#filter_rt').val();
+                        d['filter[jenis_kelamin]'] = $('#filter_jenis_kelamin').val();
+                        d['filter[agama]'] = $('#filter_agama').val();
+                        d['filter[status_kawin]'] = $('#filter_status_kawin').val();
+                        d['filter[pendidikan]'] = $('#filter_pendidikan').val();
+                        d['filter[Pekerjaan]'] = $('#filter_Pekerjaan').val();
+                        d['filter[status_penduduk]'] = $('#filter_status_penduduk').val();
+                        d['filter[ktp]'] = $('#filter_ktp').val();
+                        d['filter[akte]'] = $('#filter_akte').val();
+                        // asal negara
+                        // nama negara query distict ke penduduk negara
+                        // status meninggal [ya, tidak]
                     }
                 },
                 columns: [{
@@ -468,9 +581,17 @@
                         data: 'umur',
                         name: 'umur',
                         className: 'text-nowrap text-capitalize',
-                        render(data, type, full, meta) {
-                            return data ? `${data} Tahun` : '';
+                        render(data, type, row) {
+                            return (data && row.tanggal_mati == null) ? `${data} Tahun` : '';
                         },
+                    },
+                    {
+                        data: 'tanggal_mati_str',
+                        name: 'tanggal_mati_str',
+                        className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            return data ? `<span class="badge bg-warning">${data}</span>` : '';
+                        }
                     },
                     {
                         data: 'agama',
@@ -560,6 +681,33 @@
                         render: function(data, type, row) {
                             return ` <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${data}">
                                 ${String(data).substr(0, 100) + (String(data).length > 100 ? '...' : '')}
+                                </span> `;
+                        }
+                    },
+                    {
+                        data: 'negara',
+                        name: 'negara',
+                        className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            const status = data == 1 ? 'WNI' : 'WNA';
+                            const status_nama = data == 1 ? 'Warga Negara Indonesia' :
+                                'Warga Negara Asing';
+                            const bg = data == 1 ? 'bg-success' : 'bg-info';
+                            return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
+                                ${status}
+                                </span> `;
+                        }
+                    },
+                    {
+                        data: 'negara_nama',
+                        name: 'negara_nama',
+                        className: 'text-nowrap text-capitalize',
+                        render: function(data, type, row) {
+                            const status = row.negara == 1 ? 'IND' : data;
+                            const status_nama = row.negara == 1 ? 'Indonesia' : data;
+                            const bg = row.negara == 1 ? 'bg-success' : 'bg-info';
+                            return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
+                                ${status}
                                 </span> `;
                         }
                     },

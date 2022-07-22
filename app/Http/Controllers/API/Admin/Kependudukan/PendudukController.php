@@ -36,7 +36,6 @@ use App\Models\Kependudukan\Penduduk\Status as PendudukStatus;
 
 
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 
 class PendudukController extends Controller
 {

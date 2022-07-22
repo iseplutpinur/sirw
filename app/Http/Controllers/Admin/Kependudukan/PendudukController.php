@@ -21,6 +21,7 @@ use App\Models\Kependudukan\Penduduk;
 use App\Models\Kependudukan\Penduduk\Agama as PendudukAgama;
 use App\Models\Kependudukan\Penduduk\Akte;
 use App\Models\Kependudukan\Penduduk\Ktp;
+use App\Models\Kependudukan\Penduduk\Negara;
 use App\Models\Kependudukan\Penduduk\Rt;
 use App\Models\Kependudukan\Penduduk\Pendidikan as PendudukPendidikan;
 use App\Models\Kependudukan\Penduduk\Pekerjaan as PendudukPekerjaan;
@@ -93,6 +94,7 @@ class PendudukController extends Controller
 
     private function datatable(Request $request)
     {
+        $filter = $request->filter;
         // list table
         $table_penduduk = Penduduk::tableName;
 
@@ -112,6 +114,7 @@ class PendudukController extends Controller
         $table_status_kawin = StatusKawin::tableName;
         $table_penduduk_status_penduduk = PendudukStatus::tableName;
         $table_status_penduduk = StatusPenduduk::tableName;
+        $table_penduduk_negara = Negara::tableName;
 
         // cusotm query
         // get list anggota kk dengan no urut terendah
@@ -133,6 +136,14 @@ class PendudukController extends Controller
                                     order by $table_penduduk_rt.dari desc limit 1)
                         SQL;
         $this->query['rt_nama_alias'] = 'rt_nama';
+        $this->query['rt_id'] = <<<SQL
+                                (select $table_rt.id from $table_rt
+                                    join $table_penduduk_rt on
+                                        $table_rt.id = $table_penduduk_rt.rt_id
+                                    where $table_penduduk_rt.penduduk_id = $table_penduduk.id
+                                    order by $table_penduduk_rt.dari desc limit 1)
+                        SQL;
+        $this->query['rt_id_alias'] = 'rt_id';
 
         // ktp
         $this->query['ktp_ada'] = <<<SQL
@@ -239,15 +250,32 @@ class PendudukController extends Controller
         SQL;
         $this->query['status_penduduk_nama_alias'] = 'status_penduduk_nama';
 
+        // tanggal lahir
         $this->query['tanggal_lahir_str'] = <<<SQL
                 (DATE_FORMAT($table_penduduk.tanggal_lahir, '%d-%b-%Y'))
         SQL;
         $this->query['tanggal_lahir_str_alias'] = 'tanggal_lahir_str';
+        $this->query['tanggal_mati_str'] = <<<SQL
+                (DATE_FORMAT($table_penduduk.tanggal_mati, '%d-%b-%Y'))
+        SQL;
+        $this->query['tanggal_mati_str_alias'] = 'tanggal_mati_str';
 
         $this->query['umur'] = <<<SQL
                 (SELECT TIMESTAMPDIFF(YEAR, $table_penduduk.tanggal_lahir, CURDATE()))
         SQL;
         $this->query['umur_alias'] = 'umur';
+
+        // negara
+        $this->query['negara'] = <<<SQL
+                (select negara from $table_penduduk_negara where $table_penduduk_negara.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_negara.dari desc limit 1)
+        SQL;
+        $this->query['negara_alias'] = 'negara';
+        $this->query['negara_nama'] = <<<SQL
+                (select nama from $table_penduduk_negara where $table_penduduk_negara.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_negara.dari desc limit 1)
+        SQL;
+        $this->query['negara_nama_alias'] = 'negara_nama';
 
         // ========================================================================================================
         $model = Penduduk::select([
@@ -286,8 +314,17 @@ class PendudukController extends Controller
             DB::raw("{$this->query['status_penduduk_nama']} as {$this->query['status_penduduk_nama_alias']}"),
 
             DB::raw("{$this->query['tanggal_lahir_str']} as {$this->query['tanggal_lahir_str_alias']}"),
+            DB::raw("{$this->query['tanggal_mati_str']} as {$this->query['tanggal_mati_str_alias']}"),
             DB::raw("{$this->query['umur']} as {$this->query['umur_alias']}"),
+
+            DB::raw("{$this->query['negara']} as {$this->query['negara_alias']}"),
+            DB::raw("{$this->query['negara_nama']} as {$this->query['negara_nama_alias']}"),
         ]);
+
+        // filter
+        if ($filter['rt_id']) {
+            $model->whereRaw("{$this->query['rt_id']}='{$filter['rt_id']}'");
+        }
 
         return Datatables::of($model)
             ->addIndexColumn()
@@ -345,8 +382,18 @@ class PendudukController extends Controller
             ->filterColumn($this->query['tanggal_lahir_str_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['tanggal_lahir_str']} like '%$keyword%'");
             })
+            ->filterColumn($this->query['tanggal_mati_str_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['tanggal_mati_str']} like '%$keyword%'");
+            })
             ->filterColumn($this->query['umur_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['umur']} like '%$keyword%'");
+            })
+
+            ->filterColumn($this->query['negara_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['negara']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['negara_nama_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['negara_nama']} like '%$keyword%'");
             })
             ->make(true);
     }
