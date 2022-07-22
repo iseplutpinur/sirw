@@ -10,6 +10,7 @@ use League\Config\Exception\ValidationException;
 use Yajra\Datatables\Datatables;
 
 use App\Models\DataMaster\Agama;
+use App\Models\DataMaster\HubunganDenganKK;
 use App\Models\DataMaster\Pekerjaan;
 use App\Models\DataMaster\Pendidikan;
 use App\Models\DataMaster\StatusKawin;
@@ -18,6 +19,9 @@ use App\Models\DataMaster\RukunTetangga;
 use App\Models\Import\Excel;
 use App\Models\Import\ExcelDetail;
 use App\Models\Import\ExcelPendudukList;
+use App\Models\Kependudukan\KartuKeluarga;
+use App\Models\Kependudukan\KartuKeluarga\Data;
+use App\Models\Kependudukan\KartuKeluarga\Rt as KartuKeluargaRt;
 use App\Models\Kependudukan\Penduduk;
 use App\Models\Kependudukan\Penduduk\Agama as PendudukAgama;
 use App\Models\Kependudukan\Penduduk\Akte;
@@ -217,8 +221,10 @@ class PendudukController extends Controller
 
     public function import_excel(Request $request)
     {
-        // catatan
+        // catatan belum
         // - validasi ketika excel nya kosong
+        // - penduduk akte
+        // - penduduk ktp
 
         $folder = Excel::folder;
         $excel = null;
@@ -250,6 +256,14 @@ class PendudukController extends Controller
         $status_kawin_list = StatusKawin::get($status_kawin_map)->toArray();
         $status_penduduk_map = ['id', 'singkatan', 'nama'];
         $status_penduduk_list = StatusPenduduk::get($status_penduduk_map)->toArray();
+        $hub_dgn_kk_map = ['id', 'singkatan', 'nama'];
+        $hub_dgn_kk_list = HubunganDenganKK::get($hub_dgn_kk_map)->toArray();
+
+        $hub_ktp_akte_map = ['id', 'a', 'b', 'c', 'd'];
+        $hub_ktp_akte_list = [
+            ['id' => 0, 'a' => 'tidak ada', 'b' => 'tidak', 'c' => '0', 'd' => 't'],
+            ['id' => 1, 'a' => 'ada', 'b' => 'ya', 'c' => '1', 'd' => 'y'],
+        ];
 
         DB::beginTransaction();
         $db_excel = new Excel();
@@ -263,6 +277,10 @@ class PendudukController extends Controller
         $count = 0;
         $count_success = 0;
         $count_failed = 0;
+
+        // kartu keluarga
+        $recent_kk_no = '';
+        $recent_kk_id = '';
         foreach ($array_from_excel as $i => $v) {
             if ($i < $start) continue;
             $excel_penduduk_list = new ExcelPendudukList();
@@ -271,6 +289,7 @@ class PendudukController extends Controller
             $excel_details = new ExcelDetail();
             $excel_details->excel_id = $db_excel->id;
 
+            // data master
             $model = new Penduduk();
             $transaksi = new Transaksi();
             $rt = new Rt();
@@ -282,6 +301,7 @@ class PendudukController extends Controller
             $status_kawin = new PendudukStatusKawin();
             $negara = new PendudukNegara();
             $status = new PendudukStatus();
+            $kk_list = new Data();
 
             try {
                 $model->nama = $v[$map['nama']];
@@ -300,12 +320,38 @@ class PendudukController extends Controller
                 $excel_penduduk_list->penduduk_id = $model->id;
 
                 // insert data master =====================================================================================
+                // extract data from db
                 $agama_id = $this->master_check($agama_map, $agama_list, $v[$map['agama_id']]);
                 $rt_id = $this->master_check($rt_map, $rt_list, $v[$map['rt_id']]);
                 $pendidikan_id = $this->master_check($pendidikan_map, $pendidikan_list, $v[$map['pendidikan_id']]);
                 $pekerjaan_id = $this->master_check($pekerjaan_map, $pekerjaan_list, $v[$map['pekerjaan_id']]);
                 $status_kawin_id = $this->master_check($status_kawin_map, $status_kawin_list, $v[$map['status_kawin_id']]);
                 $status_penduduk_id = $this->master_check($status_penduduk_map, $status_penduduk_list, $v[$map['status_penduduk']]);
+                $hub_dgn_kk_id = $this->master_check($hub_dgn_kk_map, $hub_dgn_kk_list, $v[$map['hub_kk']]);
+                $ktp_status = $this->master_check($hub_ktp_akte_map, $hub_ktp_akte_list, $v[$map['ktp_status']]);
+                $akte_status = $this->master_check($hub_ktp_akte_map, $hub_ktp_akte_list, $v[$map['akte_status']]);
+
+                // insert kk
+                if ($v[$map['no_kk']]) {
+                    $recent_kk_no = $v[$map['no_kk']];
+                    $kk = new KartuKeluarga();
+                    $kk->no = $recent_kk_no;
+                    $kk->save();
+                    $recent_kk_id = $kk->id;
+
+                    $kk_rt = new KartuKeluargaRt();
+                    $kk_rt->kartu_keluarga_id = $recent_kk_id;
+                    $kk_rt->rt_id = $rt_id;
+                    $kk_rt->dari = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
+                    $kk_rt->save();
+                }
+
+                // insert penduduk ke kartu keluarga
+                $kk_list->penduduk_id = $model->id;
+                $kk_list->kartu_keluarga_id = $recent_kk_id;
+                $kk_list->hubungan_dengan_kk_id = $hub_dgn_kk_id;
+                $kk_list->dari = $v[$map['hub_kk_dari']] ?? date('Y-m-d');
+                $kk_list->save();
 
                 // rt
                 // jika kedatangan 1 maka tambahkan kedalam tabel penduudk rt transaksi
@@ -318,45 +364,57 @@ class PendudukController extends Controller
                     $transaksi->save();
                 }
 
+                // penduduk data master
+                // rt
                 $rt->penduduk_id = $model->id;
                 $rt->rt_id = $rt_id;
                 $rt->dari = $v[$map['tinggal_dari_tanggal']] ?? date('Y-m-d');
                 $rt->save();
 
+                // ktp
                 $ktp->penduduk_id = $model->id;
-                $ktp->status = $v[$map['ktp_status']];
+                $ktp->status = $ktp_status;
                 $ktp->dari = $v[$map['ktp_dari']] ?? (date('Y-m-d', strtotime($v[$map['tanggal_lahir']] . ' + 17 years')));
+                $ktp->save();
 
+                // akte
                 $akte->penduduk_id = $model->id;
-                $akte->status = $v[$map['akte_status']];
+                $akte->status = $akte_status;
                 $akte->dari = $v[$map['akte_dari']] ?? (date('Y-m-d', strtotime($v[$map['tanggal_lahir']] . ' + 17 years')));
+                $akte->save();
 
+                // agama
                 $agama->penduduk_id = $model->id;
                 $agama->agama_id = $agama_id;
                 $agama->dari = $v[$map['agama_dari']] ?? $v[$map['tanggal_lahir']];
                 $agama->save();
 
+                // pendidikan
                 $pendidikan->penduduk_id = $model->id;
                 $pendidikan->pendidikan_id = $pendidikan_id;
                 $pendidikan->dari = $v[$map['pendidikan_dari']] ?? $v[$map['tanggal_lahir']];
                 $pendidikan->save();
 
+                // pekerjaan
                 $pekerjaan->penduduk_id = $model->id;
                 $pekerjaan->pekerjaan_id = $pekerjaan_id;
                 $pekerjaan->dari = $v[$map['pekerjaan_dari']] ?? $v[$map['tanggal_lahir']];
                 $pekerjaan->save();
 
+                // status_kawin
                 $status_kawin->penduduk_id = $model->id;
                 $status_kawin->status_kawin_id = $status_kawin_id;
                 $status_kawin->dari = $v[$map['status_kawin_dari']] ?? $v[$map['tanggal_lahir']];
                 $status_kawin->save();
 
+                // negara
                 $negara->penduduk_id = $model->id;
                 $negara->negara = $v[$map['negara']];
                 $negara->negara_nama = $v[$map['negara_nama']];
                 $negara->dari = $v[$map['negara_dari']] ?? $v[$map['tanggal_lahir']];
                 $negara->save();
 
+                // status penduduk
                 $status->penduduk_id = $model->id;
                 $status->status = $status_penduduk_id;
                 $status->dari = $v[$map['status_penduduk_dari']] ?? $v[$map['tanggal_lahir']];
@@ -391,6 +449,7 @@ class PendudukController extends Controller
                 $count_success++;
             }
         }
+
         DB::commit();
 
         return ResponseFormatter::success(
