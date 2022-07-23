@@ -19,10 +19,11 @@ use App\Models\DataMaster\RukunTetangga;
 use App\Models\Kependudukan\KartuKeluarga;
 use App\Models\Kependudukan\Penduduk;
 use App\Models\Kependudukan\Penduduk\Agama as PendudukAgama;
-use App\Models\Kependudukan\Penduduk\Akte;
-use App\Models\Kependudukan\Penduduk\Ktp;
-use App\Models\Kependudukan\Penduduk\Negara;
-use App\Models\Kependudukan\Penduduk\Rt;
+use App\Models\Kependudukan\Penduduk\Akte as PendudukAkte;
+use App\Models\Kependudukan\Penduduk\Ktp as PendudukKtp;
+use App\Models\Kependudukan\Penduduk\Negara as PendudukNegara;
+use App\Models\Kependudukan\Penduduk\Rt as PendudukRt;
+use App\Models\Kependudukan\Penduduk\Transaksi as PendudukTransaksi;
 use App\Models\Kependudukan\Penduduk\Pendidikan as PendudukPendidikan;
 use App\Models\Kependudukan\Penduduk\Pekerjaan as PendudukPekerjaan;
 use App\Models\Kependudukan\Penduduk\StatusKawin as PendudukStatusKawin;
@@ -30,8 +31,8 @@ use App\Models\Kependudukan\Penduduk\Status as PendudukStatus;
 
 class PendudukController extends Controller
 {
-    private $folder_akte = Akte::image_folder;
-    private $folder_ktp = Ktp::image_folder;
+    private $folder_akte = PendudukAkte::image_folder;
+    private $folder_ktp = PendudukKtp::image_folder;
 
     private $validate_model = [
         'nama' => ['required', 'string', 'max:255'],
@@ -40,22 +41,46 @@ class PendudukController extends Controller
         'jenis_kelamin' => ['required', 'string', 'max:255'],
         'no_hp' => ['nullable', 'string', 'max:255'],
         'alamat_lengkap' => ['required', 'string'],
-        'tanggal_lahir' => ['required', 'string', 'max:255'],
-        'tanggal_mati' => ['nullable', 'string', 'max:255'],
-        'status' => ['required', 'int'],
+        'tanggal_lahir' => ['required', 'date'],
+        'tanggal_mati' => ['nullable', 'date'],
         'asal_data' => ['required', 'int'],
+        'tinggal_dari_tanggal' => ['required', 'date'],
 
-        // 'penduduk_negara' => ['required', 'int'],
-        // 'negara_asal' => ['nullable', 'string', 'max:255'],
+        // validasi rt
+        'rt_id' => ['required', 'int'],
 
-        // // data master
-        // 'agama_id' => ['required', 'int'],
-        // 'pendidikan_id' => ['required', 'int'],
-        // 'pekerjaan_id' => ['required', 'int'],
-        // 'status_penduduk_id' => ['required', 'int'],
-        // 'rt_id' => ['required', 'int'],
+        // validasi ktp
+        'ktp_status' => ['required', 'int'],
+        'ktp_dari' => ['required', 'date'],
 
-        // tanggal
+        // validasi akte
+        'akte_status' => ['required', 'int'],
+        'akte_dari' => ['required', 'date'],
+
+        // validasi agama
+        'agama_id' => ['required', 'int'],
+        'agama_dari' => ['required', 'date'],
+
+        // validasi pendidikan
+        'pendidikan_id' => ['required', 'int'],
+        'pendidikan_dari' => ['required', 'date'],
+
+        // validasi pekerjaan
+        'pekerjaan_id' => ['required', 'int'],
+        'pekerjaan_dari' => ['required', 'date'],
+
+        // validasi status_kawin
+        'status_kawin_id' => ['required', 'int'],
+        'status_kawin_dari' => ['required', 'date'],
+
+        // validasi negara
+        'negara' => ['required', 'int'],
+        'negara_nama' => ['nullable', 'string'],
+        'negara_dari' => ['required', 'date'],
+
+        // validasi status_penduduk
+        'status_penduduk' => ['required', 'int'],
+        'status_penduduk_dari' => ['required', 'date'],
     ];
 
     public function index(Request $request)
@@ -79,7 +104,7 @@ class PendudukController extends Controller
         $rts = RukunTetangga::all();
         $folder_akte = $this->folder_akte;
         $folder_ktp = $this->folder_ktp;
-        return view('admin.kependudukan.penduduk', compact(
+        $data = compact(
             'page_attr',
             'agamas',
             'pendidikans',
@@ -89,7 +114,8 @@ class PendudukController extends Controller
             'rts',
             'folder_akte',
             'folder_ktp'
-        ));
+        );
+        return view('admin.kependudukan.penduduk', array_merge($data, ['compact' => $data]));
     }
 
     private function datatable(Request $request)
@@ -100,10 +126,10 @@ class PendudukController extends Controller
 
         // data master ============================================================================================
         // rt
-        $table_penduduk_rt = Rt::tableName;
+        $table_penduduk_rt = PendudukRt::tableName;
         $table_rt = RukunTetangga::tableName;
-        $table_penduduk_ktp = Ktp::tableName;
-        $table_penduduk_akte = Akte::tableName;
+        $table_penduduk_ktp = PendudukKtp::tableName;
+        $table_penduduk_akte = PendudukAkte::tableName;
         $table_penduduk_agama = PendudukAgama::tableName;
         $table_agama = Agama::tableName;
         $table_penduduk_pendidikan = PendudukPendidikan::tableName;
@@ -114,7 +140,7 @@ class PendudukController extends Controller
         $table_status_kawin = StatusKawin::tableName;
         $table_penduduk_status_penduduk = PendudukStatus::tableName;
         $table_status_penduduk = StatusPenduduk::tableName;
-        $table_penduduk_negara = Negara::tableName;
+        $table_penduduk_negara = PendudukNegara::tableName;
 
         // cusotm query
         // get list anggota kk dengan no urut terendah
@@ -178,6 +204,15 @@ class PendudukController extends Controller
         SQL;
         $this->query['agama_nama_alias'] = 'agama_nama';
 
+        $this->query['agama_id'] = <<<SQL
+                (select $table_agama.id from $table_agama
+                    join $table_penduduk_agama on
+                        $table_agama.id = $table_penduduk_agama.agama_id
+                    where $table_penduduk_agama.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_agama.dari desc limit 1)
+        SQL;
+        $this->query['agama_id_alias'] = 'agama_id';
+
         // pendidikan
         $this->query['pendidikan'] = <<<SQL
                 (select $table_pendidikan.singkatan from $table_pendidikan
@@ -195,6 +230,14 @@ class PendudukController extends Controller
                     order by $table_penduduk_pendidikan.dari desc limit 1)
         SQL;
         $this->query['pendidikan_nama_alias'] = 'pendidikan_nama';
+        $this->query['pendidikan_id'] = <<<SQL
+                (select $table_pendidikan.id from $table_pendidikan
+                    join $table_penduduk_pendidikan on
+                        $table_pendidikan.id = $table_penduduk_pendidikan.pendidikan_id
+                    where $table_penduduk_pendidikan.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_pendidikan.dari desc limit 1)
+        SQL;
+        $this->query['pendidikan_id_alias'] = 'pendidikan_id';
 
         // pekerjaan
         $this->query['pekerjaan'] = <<<SQL
@@ -213,6 +256,14 @@ class PendudukController extends Controller
                     order by $table_penduduk_pekerjaan.dari desc limit 1)
         SQL;
         $this->query['pekerjaan_nama_alias'] = 'pekerjaan_nama';
+        $this->query['pekerjaan_id'] = <<<SQL
+                (select $table_pekerjaan.id from $table_pekerjaan
+                    join $table_penduduk_pekerjaan on
+                        $table_pekerjaan.id = $table_penduduk_pekerjaan.pekerjaan_id
+                    where $table_penduduk_pekerjaan.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_pekerjaan.dari desc limit 1)
+        SQL;
+        $this->query['pekerjaan_id_alias'] = 'pekerjaan_id';
 
         // status_kawin
         $this->query['status_kawin'] = <<<SQL
@@ -231,6 +282,14 @@ class PendudukController extends Controller
                     order by $table_penduduk_status_kawin.dari desc limit 1)
         SQL;
         $this->query['status_kawin_nama_alias'] = 'status_kawin_nama';
+        $this->query['status_kawin_id'] = <<<SQL
+                (select $table_status_kawin.id from $table_status_kawin
+                    join $table_penduduk_status_kawin on
+                        $table_status_kawin.id = $table_penduduk_status_kawin.status_kawin_id
+                    where $table_penduduk_status_kawin.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_status_kawin.dari desc limit 1)
+        SQL;
+        $this->query['status_kawin_id_alias'] = 'status_kawin_id';
 
         // status_penduduk
         $this->query['status_penduduk'] = <<<SQL
@@ -249,6 +308,14 @@ class PendudukController extends Controller
                     order by $table_penduduk_status_penduduk.dari desc limit 1)
         SQL;
         $this->query['status_penduduk_nama_alias'] = 'status_penduduk_nama';
+        $this->query['status_penduduk_id'] = <<<SQL
+                (select $table_status_penduduk.id from $table_status_penduduk
+                    join $table_penduduk_status_penduduk on
+                        $table_status_penduduk.id = $table_penduduk_status_penduduk.status_penduduk_id
+                    where $table_penduduk_status_penduduk.penduduk_id = $table_penduduk.id
+                    order by $table_penduduk_status_penduduk.dari desc limit 1)
+        SQL;
+        $this->query['status_penduduk_id_alias'] = 'status_penduduk_id';
 
         // tanggal lahir
         $this->query['tanggal_lahir_str'] = <<<SQL
@@ -261,9 +328,19 @@ class PendudukController extends Controller
         $this->query['tanggal_mati_str_alias'] = 'tanggal_mati_str';
 
         $this->query['umur'] = <<<SQL
-                (SELECT TIMESTAMPDIFF(YEAR, $table_penduduk.tanggal_lahir, CURDATE()))
+                (SELECT TIMESTAMPDIFF(YEAR, $table_penduduk.tanggal_lahir, (ifnull( $table_penduduk.tanggal_mati , CURDATE()))))
         SQL;
         $this->query['umur_alias'] = 'umur';
+
+        $this->query['umur_bulan'] = <<<SQL
+                (SELECT TIMESTAMPDIFF(MONTH, $table_penduduk.tanggal_lahir, (ifnull( $table_penduduk.tanggal_mati , CURDATE()))))
+        SQL;
+        $this->query['umur_bulan_alias'] = 'umur_bulan';
+
+        $this->query['umur_hari'] = <<<SQL
+                (SELECT TIMESTAMPDIFF(DAY, $table_penduduk.tanggal_lahir, (ifnull( $table_penduduk.tanggal_mati , CURDATE()))))
+        SQL;
+        $this->query['umur_hari_alias'] = 'umur_hari';
 
         // negara
         $this->query['negara'] = <<<SQL
@@ -316,6 +393,8 @@ class PendudukController extends Controller
             DB::raw("{$this->query['tanggal_lahir_str']} as {$this->query['tanggal_lahir_str_alias']}"),
             DB::raw("{$this->query['tanggal_mati_str']} as {$this->query['tanggal_mati_str_alias']}"),
             DB::raw("{$this->query['umur']} as {$this->query['umur_alias']}"),
+            DB::raw("{$this->query['umur_bulan']} as {$this->query['umur_bulan_alias']}"),
+            DB::raw("{$this->query['umur_hari']} as {$this->query['umur_hari_alias']}"),
 
             DB::raw("{$this->query['negara']} as {$this->query['negara_alias']}"),
             DB::raw("{$this->query['negara_nama']} as {$this->query['negara_nama_alias']}"),
@@ -324,6 +403,30 @@ class PendudukController extends Controller
         // filter
         if ($filter['rt_id']) {
             $model->whereRaw("{$this->query['rt_id']}='{$filter['rt_id']}'");
+        }
+        if ($filter['jenis_kelamin']) {
+            $model->whereRaw("$table_penduduk.jenis_kelamin='{$filter['jenis_kelamin']}'");
+        }
+        if ($filter['agama']) {
+            $model->whereRaw("{$this->query['agama_id']}='{$filter['agama']}'");
+        }
+        if ($filter['status_kawin']) {
+            $model->whereRaw("{$this->query['status_kawin_id']}='{$filter['status_kawin']}'");
+        }
+        if ($filter['pendidikan']) {
+            $model->whereRaw("{$this->query['pendidikan_id']}='{$filter['pendidikan']}'");
+        }
+        if ($filter['pekerjaan']) {
+            $model->whereRaw("{$this->query['pekerjaan_id']}='{$filter['pekerjaan']}'");
+        }
+        if ($filter['status_penduduk']) {
+            $model->whereRaw("{$this->query['status_penduduk_id']}='{$filter['status_penduduk']}'");
+        }
+        if ($filter['ktp']) {
+            $model->whereRaw("{$this->query['ktp_ada']}='{$filter['ktp']}'");
+        }
+        if ($filter['akte']) {
+            $model->whereRaw("{$this->query['akte_ada']}='{$filter['akte']}'");
         }
 
         return Datatables::of($model)
@@ -388,6 +491,12 @@ class PendudukController extends Controller
             ->filterColumn($this->query['umur_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['umur']} like '%$keyword%'");
             })
+            ->filterColumn($this->query['umur_bulan_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['umur_bulan']} like '%$keyword%'");
+            })
+            ->filterColumn($this->query['umur_hari_alias'], function ($query, $keyword) {
+                $query->whereRaw("{$this->query['umur_hari']} like '%$keyword%'");
+            })
 
             ->filterColumn($this->query['negara_alias'], function ($query, $keyword) {
                 $query->whereRaw("{$this->query['negara']} like '%$keyword%'");
@@ -403,7 +512,8 @@ class PendudukController extends Controller
         try {
             DB::beginTransaction();
             $request->validate($this->validate_model);
-            // insert data model penduduk
+
+            // insert data model penduduk =============================================================================
             $model = new Penduduk();
             $model->nama = $request->nama;
             $model->nik = $request->nik;
@@ -414,148 +524,107 @@ class PendudukController extends Controller
             $model->tanggal_lahir = $request->tanggal_lahir;
             $model->tanggal_mati = $request->tanggal_mati;
 
-            // 0 Tidak ada di lingkungan rw, 1 ada di lingkungan rw
-            $model->status = $request->status;
-
             // 0 kelahiran, 1 kedatangan
             $model->asal_data = $request->asal_data;
 
             // get id
             $model->save();
 
-            dd($model);
+            // insert data master =====================================================================================
+            // rt
+            // jika kedatangan 1 maka tambahkan kedalam tabel penduudk rt transaksi
+            if ($model->asal_data == 1) {
+                $transaksi = new PendudukTransaksi();
+                $transaksi->penduduk_id = $model->id;
+                $transaksi->rt_id = $request->rt_id;
+                $transaksi->keterangan = $request->datang_keterangan;
+                $transaksi->tanggal = $request->tinggal_dari_tanggal ?? date('Y-m-d');
+                $transaksi->jenis = 2;
+                $transaksi->save();
+            }
 
+            // simpan ke tanggal di rt sekarang
+            $rt = new PendudukRt();
+            $rt->penduduk_id = $model->id;
+            $rt->rt_id = $request->rt_id;
+            $rt->dari = $request->tinggal_dari_tanggal ?? date('Y-m-d');
+            $rt->save();
 
-
-            // upload foto ktp dan akta
+            // simpan ktp
+            $ktp = new PendudukKtp();
+            $ktp->penduduk_id = $model->id;
+            $ktp->status = $request->ktp_status;
+            $ktp->dari = $request->ktp_dari ?? (date('Y-m-d', strtotime($request->tanggal_lahir . ' + 17 years')));
+            // simpan ktp foto
             $foto_ktp = '';
             if ($image = $request->file('file_ktp')) {
                 $foto_ktp = $request->nik . AppHelper::slugify($request->nama)  .  '.' .  $image->getClientOriginalExtension();
-                $image->move($this->folder_ktp, $foto_ktp);
-                $model->file_ktp = $foto_ktp;
-                $model->ada_ktp = 1;
-            } else {
-                $model->ada_ktp = 0;
+                $image->move('./' . $this->folder_ktp, $foto_ktp);
+                $ktp->foto = $foto_ktp;
             }
 
+            // simpan akte
+            $akte = new PendudukAkte();
+            $akte->penduduk_id = $model->id;
+            $akte->status = $request->akte_status;
+            $akte->dari = $request->akte_dari ?? (date('Y-m-d', strtotime($request->tanggal_lahir . ' + 17 years')));
+            // simpan akte foto
             $foto_akte = '';
             if ($image = $request->file('file_akte')) {
                 $foto_akte = $request->nik . AppHelper::slugify($request->nama)  .  '.' .  $image->getClientOriginalExtension();
-                $image->move($this->folder_akte, $foto_akte);
-                $model->file_akte = $foto_akte;
-                $model->ada_akte = 1;
-            } else {
-                $model->ada_akte = 0;
+                $image->move('./' . $this->folder_akte, $foto_akte);
+                $akte->foto = $foto_akte;
             }
 
-            // set peristiwa
-            $model->save();
-            // Peristiwa::create([
-            //     'penduduk_id' => $model->id,
-            //     'tanggal' => $request->tanggal_lahir,
-            //     'peristiwa' => 1
-            // ]);
+            $akte->save();
 
-            // // warga pindahan dari luar
-            // if ($request->asal_data == 1) {
-            //     Peristiwa::create([
-            //         'penduduk_id' => $model->id,
-            //         'tanggal' => $request->tanggal_datang,
-            //         'peristiwa' => 4
-            //     ]);
-            // }
+            // agama
+            $agama = new PendudukAgama();
+            $agama->penduduk_id = $model->id;
+            $agama->agama_id = $request->agama_id;
+            $agama->dari = $request->agama_dari ?? $request->tanggal_lahir;
+            $agama->save();
+
+            // pendidikan
+            $pendidikan = new PendudukPendidikan();
+            $pendidikan->penduduk_id = $model->id;
+            $pendidikan->pendidikan_id = $request->pendidikan_id;
+            $pendidikan->dari = $request->pendidikan_dari ?? $request->tanggal_lahir;
+            $pendidikan->save();
+
+            // pekerjaan
+            $pekerjaan = new PendudukPekerjaan();
+            $pekerjaan->penduduk_id = $model->id;
+            $pekerjaan->pekerjaan_id = $request->pekerjaan_id;
+            $pekerjaan->dari = $request->pekerjaan_dari ?? $request->tanggal_lahir;
+            $pekerjaan->save();
+
+            // status_kawin
+            $status_kawin = new PendudukStatusKawin();
+            $status_kawin->penduduk_id = $model->id;
+            $status_kawin->status_kawin_id = $request->status_kawin_id;
+            $status_kawin->dari = $request->status_kawin_dari ?? $request->tanggal_lahir;
+            $status_kawin->save();
+
+            // negara 0 wna, 1 wni
+            $negara = new PendudukNegara();
+            $negara->penduduk_id = $model->id;
+            $negara->negara = $request->negara;
+            $negara->negara_nama = $request->negara_nama;
+            $negara->dari = $request->negara_dari ?? $request->tanggal_lahir;
+            $negara->save();
+
+            // status
+            $status = new PendudukStatus();
+            $status->penduduk_id = $model->id;
+            $status->status = $request->status_penduduk;
+            $status->dari = $request->status_dari ?? $request->tanggal_lahir;
+            $status->save();
 
             DB::commit();
-            return response()->json();
-        } catch (ValidationException $error) {
             return response()->json([
-                'message' => 'Something went wrong',
-                'error' => $error,
-            ], 500);
-        }
-    }
-
-    public function update(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-            $model = Penduduk::find($request->id);
-            $request->validate(array_merge(['id' => ['required', 'int']], $this->validate_model));
-
-            $model->agama_id = $request->agama_id;
-            $model->pendidikan_id = $request->pendidikan_id;
-            $model->pekerjaan_id = $request->pekerjaan_id;
-            $model->status_kawin_id = $request->status_kawin_id;
-            $model->status_penduduk_id = $request->status_penduduk_id;
-            $model->rt_id = $request->rt_id;
-
-            $model->status = $request->status;
-            $model->penduduk_negara = $request->penduduk_negara;
-            $model->negara_asal = $request->negara_asal;
-
-            $model->nik = $request->nik;
-            $model->nama = $request->nama;
-            $model->kota_lahir = $request->kota_lahir;
-            $model->jenis_kelamin = $request->jenis_kelamin;
-            $model->alamat_lengkap = $request->alamat_lengkap;
-            $model->tanggal_lahir = $request->tanggal_lahir;
-
-            $model->asal_data = $request->asal_data;
-
-            // upload foto ktp dan akta
-            if ($image = $request->file('file_ktp')) {
-                if (file_exists("{$this->folder_ktp}/{$model->file_ktp}")) {
-                    $date_time = date('Y-m-d-H-i-s');
-                    rename("{$this->folder_ktp}/{$model->file_ktp}", "{$this->folder_ktp}/delete/{$date_time}-{$model->file_ktp}");
-                }
-
-                $foto_ktp = $request->nik . AppHelper::slugify($request->nama) . '.' . $image->getClientOriginalExtension();
-                $image->move($this->folder_ktp, $foto_ktp);
-                // move file to delete
-
-                $model->file_ktp = $foto_ktp;
-                $model->ada_ktp = 1;
-            }
-
-            if ($image = $request->file('file_akte')) {
-                if (file_exists("{$this->folder_akte}/{$model->file_akte}")) {
-                    $date_time = date('Y-m-d-H-i-s');
-                    rename("{$this->folder_akte}/{$model->file_akte}", "{$this->folder_akte}/delete/{$date_time}-{$model->file_akte}");
-                }
-
-                $foto_akte = $request->nik . AppHelper::slugify($request->nama) . '.' . $image->getClientOriginalExtension();
-                $image->move($this->folder_akte, $foto_akte);
-                $model->file_akte = $foto_akte;
-                $model->ada_akte = 1;
-            }
-
-            // update peristiwa
-            // Peristiwa::updateOrCreate([
-            //     'id' => $request->tanggal_lahir_id,
-            //     'penduduk_id' => $model->id,
-            //     'tanggal' => $request->tanggal_lahir,
-            //     'peristiwa' => 1
-            // ]);
-
-            if ($request->asal_data == 1) {
-                // Peristiwa::updateOrCreate([
-                //     'id' => $request->tanggal_datang_id,
-                //     'penduduk_id' => $model->id,
-                //     'tanggal' => $request->tanggal_datang,
-                //     'peristiwa' => 4
-                // ]);
-            } else {
-                // $asal = Peristiwa::where('penduduk_id', '=', $model->id)
-                //     ->where('peristiwa', '=', 4)
-                //     ->orderBy('tanggal', 'desc')->get()->first();
-                // if ($asal) {
-                //     $asal->delete();
-                // }
-            }
-
-            $model->save();
-            DB::commit();
-            return response()->json();
+                'data' => $model,
+            ], 200);
         } catch (ValidationException $error) {
             return response()->json([
                 'message' => 'Something went wrong',
@@ -610,35 +679,6 @@ class PendudukController extends Controller
             }
 
             return response()->json(['results' => $result]);
-        } catch (\Exception $error) {
-            return response()->json($error, 500);
-        }
-    }
-
-    public function getById(Penduduk $model)
-    {
-        try {
-            if ($model->asal_data == 1) {
-                // tanggal datang
-                // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
-                //     ->where('peristiwa', '=', 4)
-                //     ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
-                // if ($peristiwa) {
-                //     $model->tanggal_datang = $peristiwa->tanggal;
-                //     $model->tanggal_datang_id = $peristiwa->id;
-                // }
-            }
-
-            // tanggal lahir
-            // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)
-            //     ->where('peristiwa', '=', 1)
-            //     ->orderBy('tanggal', 'desc')->get(['tanggal', 'id'])->first();
-            // if ($peristiwa) {
-            //     $model->tanggal_lahir = $peristiwa->tanggal;
-            //     $model->tanggal_lahir_id = $peristiwa->id;
-            // }
-
-            return response()->json($model);
         } catch (\Exception $error) {
             return response()->json($error, 500);
         }
