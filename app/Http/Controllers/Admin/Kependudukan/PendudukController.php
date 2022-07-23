@@ -44,43 +44,43 @@ class PendudukController extends Controller
         'tanggal_lahir' => ['required', 'date'],
         'tanggal_mati' => ['nullable', 'date'],
         'asal_data' => ['required', 'int'],
-        'tinggal_dari_tanggal' => ['required', 'date'],
+        'tinggal_dari_tanggal' => ['nullable', 'date'],
 
         // validasi rt
         'rt_id' => ['required', 'int'],
 
         // validasi ktp
         'ktp_status' => ['required', 'int'],
-        'ktp_dari' => ['required', 'date'],
+        'ktp_dari' => ['nullable', 'date'],
 
         // validasi akte
         'akte_status' => ['required', 'int'],
-        'akte_dari' => ['required', 'date'],
+        'akte_dari' => ['nullable', 'date'],
 
         // validasi agama
         'agama_id' => ['required', 'int'],
-        'agama_dari' => ['required', 'date'],
+        'agama_dari' => ['nullable', 'date'],
 
         // validasi pendidikan
         'pendidikan_id' => ['required', 'int'],
-        'pendidikan_dari' => ['required', 'date'],
+        'pendidikan_dari' => ['nullable', 'date'],
 
         // validasi pekerjaan
         'pekerjaan_id' => ['required', 'int'],
-        'pekerjaan_dari' => ['required', 'date'],
+        'pekerjaan_dari' => ['nullable', 'date'],
 
         // validasi status_kawin
         'status_kawin_id' => ['required', 'int'],
-        'status_kawin_dari' => ['required', 'date'],
+        'status_kawin_dari' => ['nullable', 'date'],
 
         // validasi negara
         'negara' => ['required', 'int'],
         'negara_nama' => ['nullable', 'string'],
-        'negara_dari' => ['required', 'date'],
+        'negara_dari' => ['nullable', 'date'],
 
         // validasi status_penduduk
-        'status_penduduk' => ['required', 'int'],
-        'status_penduduk_dari' => ['required', 'date'],
+        'status_penduduk_id' => ['required', 'int'],
+        'status_penduduk_dari' => ['nullable', 'date'],
     ];
 
     public function index(Request $request)
@@ -536,9 +536,9 @@ class PendudukController extends Controller
             if ($model->asal_data == 1) {
                 $transaksi = new PendudukTransaksi();
                 $transaksi->penduduk_id = $model->id;
-                $transaksi->rt_id = $request->rt_id;
+                $transaksi->rt_id = $request->datang_rt_id;
                 $transaksi->keterangan = $request->datang_keterangan;
-                $transaksi->tanggal = $request->tinggal_dari_tanggal ?? date('Y-m-d');
+                $transaksi->tanggal = $request->tinggal_dari_tanggal ?? $request->tanggal_lahir;
                 $transaksi->jenis = 2;
                 $transaksi->save();
             }
@@ -547,7 +547,11 @@ class PendudukController extends Controller
             $rt = new PendudukRt();
             $rt->penduduk_id = $model->id;
             $rt->rt_id = $request->rt_id;
-            $rt->dari = $request->tinggal_dari_tanggal ?? date('Y-m-d');
+            $rt_dari = $request->rt_dari;
+            $rt_dari = $rt_dari ?? $request->tinggal_dari_tanggal;
+            $rt_dari = $rt_dari ?? $request->negara_dari;
+            $rt_dari = $rt_dari ?? $request->tanggal_lahir;
+            $rt->dari = $rt_dari;
             $rt->save();
 
             // simpan ktp
@@ -557,7 +561,7 @@ class PendudukController extends Controller
             $ktp->dari = $request->ktp_dari ?? (date('Y-m-d', strtotime($request->tanggal_lahir . ' + 17 years')));
             // simpan ktp foto
             $foto_ktp = '';
-            if ($image = $request->file('file_ktp')) {
+            if ($image = $request->file('ktp_file')) {
                 $foto_ktp = $request->nik . AppHelper::slugify($request->nama)  .  '.' .  $image->getClientOriginalExtension();
                 $image->move('./' . $this->folder_ktp, $foto_ktp);
                 $ktp->foto = $foto_ktp;
@@ -570,7 +574,7 @@ class PendudukController extends Controller
             $akte->dari = $request->akte_dari ?? (date('Y-m-d', strtotime($request->tanggal_lahir . ' + 17 years')));
             // simpan akte foto
             $foto_akte = '';
-            if ($image = $request->file('file_akte')) {
+            if ($image = $request->file('akte_file')) {
                 $foto_akte = $request->nik . AppHelper::slugify($request->nama)  .  '.' .  $image->getClientOriginalExtension();
                 $image->move('./' . $this->folder_akte, $foto_akte);
                 $akte->foto = $foto_akte;
@@ -617,7 +621,7 @@ class PendudukController extends Controller
             // status
             $status = new PendudukStatus();
             $status->penduduk_id = $model->id;
-            $status->status = $request->status_penduduk;
+            $status->status_penduduk_id = $request->status_penduduk_id;
             $status->dari = $request->status_dari ?? $request->tanggal_lahir;
             $status->save();
 

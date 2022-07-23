@@ -9,16 +9,10 @@
 <script src="{{ asset('assets/templates/admin/plugins/sweet-alert/sweetalert2.all.js') }}"></script>
 
 <script>
-    let global_is_edit = true;
+    let global_is_insert = true;
     const table_html = $('#tbl_main');
     $(document).ready(function() {
-        $('#penduduk_negara').change(() => {
-            wn_refresh();
-        })
-        $('#asal_data').change(() => {
-            tanggal_datang_refresh();
-        })
-        // datatable ====================================================================================
+        // datatable =================================================================================================
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -264,6 +258,24 @@
             });
 
         });
+        // datatable =================================================================================================
+
+        // asal data ==================================================================================================
+        $('#negara').change(() => {
+            refresh_input_view();
+        })
+        $('#asal_data').change(() => {
+            refresh_input_view();
+        })
+        $('#ktp_status').change(() => {
+            refresh_input_view();
+        })
+        $('#akte_status').change(() => {
+            refresh_input_view();
+        })
+        // asal data ==================================================================================================
+
+
 
         $('#FilterForm').submit(function(e) {
             e.preventDefault();
@@ -277,12 +289,9 @@
             resetErrorAfterInput();
             var formData = new FormData(this);
             setBtnLoading('#btn-save', 'Save Changes');
-            const route = ($('#id').val() == '') ?
-                "{{ route('admin.kependudukan.penduduk.insert') }}" :
-                "{{ route('admin.kependudukan.penduduk.update') }}";
             $.ajax({
                 type: "POST",
-                url: route,
+                url: "{{ route('admin.kependudukan.penduduk.insert') }}",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -301,7 +310,10 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    global_is_edit = true;
+
+                    resetErrorAfterInput();
+                    refresh_input_view();
+                    $('#MainForm').trigger("reset");
                 },
                 error: function(data) {
                     const res = data.responseJSON ?? {};
@@ -328,75 +340,10 @@
     });
 
     function add() {
-        if (global_is_edit) {
-            $('#MainForm').trigger("reset");
-            $('#modal-default-title').html("Tambah Data Penduduk");
-            $('#modal-default').modal('show');
-            $('#id').val('');
-            resetErrorAfterInput();
-            global_is_edit = false;
-            wn_refresh();
-            tanggal_datang_refresh();
-        }
+        $('#modal-default-title').html("Tambah Data Penduduk");
+        resetErrorAfterInput();
     }
 
-
-    function editFunc(id) {
-        $('#main-card').LoadingOverlay("show");
-        $.ajax({
-            type: "GET",
-            url: `{{ url('admin/kependudukan/penduduk/find') }}/${id}`,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: null,
-            success: (data) => {
-                $('#id').val(data.id);
-                $('#nik').val(data.nik);
-                $('#nama').val(data.nama);
-                $('#penduduk_negara').val(data.penduduk_negara);
-                $('#negara_asal').val(data.negara_asal);
-                $('#kota_lahir').val(data.kota_lahir);
-                $('#tanggal_lahir').val(data.tanggal_lahir);
-                $('#tanggal_lahir_id').val(data.tanggal_lahir_id);
-                $('#jenis_kelamin').val(data.jenis_kelamin);
-                $('#agama_id').val(data.agama_id);
-                $('#pendidikan_id').val(data.pendidikan_id);
-                $('#pekerjaan_id').val(data.pekerjaan_id);
-                $('#status_kawin_id').val(data.status_kawin_id);
-                $('#status_penduduk_id').val(data.status_penduduk_id);
-                $('#rt_id').val(data.rt_id);
-                $('#asal_data').val(data.asal_data);
-                $('#tanggal_datang').val(data.tanggal_datang);
-                $('#tanggal_datang_id').val(data.tanggal_datang_id);
-                $('#alamat_lengkap').val(data.alamat_lengkap);
-                $('#file_ktp').val('');
-                $('#file_akte').val('');
-
-                $('#modal-default-title').html("Ubah Data Penduduk");
-                $('#modal-default').modal('show');
-                resetErrorAfterInput();
-                global_is_edit = true;
-                wn_refresh();
-                // perlu revisi
-                // asal_data
-                // tanggal_datang
-                tanggal_datang_refresh();
-            },
-            error: function(data) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Something went wrong',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            },
-            complete: function() {
-                $('#main-card').LoadingOverlay("hide");
-            }
-        });
-    }
 
     function deleteFunc(id) {
         swal.fire({
@@ -490,27 +437,63 @@
         }
     }
 
-    function tanggal_datang_refresh() {
+    function refresh_input_view() {
         const asal_data = $('#asal_data');
-        const file_ktp = $('#file_ktp');
-        const file_akte = $('#file_akte');
-        const tanggal_datang = $('#tanggal_datang');
+        const tinggal_dari_tanggal = $('#tinggal_dari_tanggal');
+        const datang_keterangan = $('#datang_keterangan');
 
-
+        // asal data
         if (asal_data.val() == 0) {
-            tanggal_datang.parent().parent().hide();
-            tanggal_datang.removeAttr('required')
-
-            asal_data.parent().parent().attr('class', 'col-md-4');
-            file_ktp.parent().parent().attr('class', 'col-md-4');
-            file_akte.parent().parent().attr('class', 'col-md-4');
+            tinggal_dari_tanggal.parent().parent().hide();
+            tinggal_dari_tanggal.removeAttr('required');
+            datang_keterangan.parent().parent().hide();
+            datang_keterangan.removeAttr('required');
         } else {
-            tanggal_datang.parent().parent().fadeIn();
-            tanggal_datang.attr('required', '');
+            tinggal_dari_tanggal.parent().parent().fadeIn();
+            tinggal_dari_tanggal.attr('required', '');
 
-            asal_data.parent().parent().attr('class', 'col-md-6');
-            file_ktp.parent().parent().attr('class', 'col-md-6');
-            file_akte.parent().parent().attr('class', 'col-md-6');
+            datang_keterangan.parent().parent().fadeIn();
         }
+
+        // asal negara
+        const negara = $('#negara');
+        const negara_nama = $('#negara_nama');
+        const negara_dari = $('#negara_dari');
+        if (negara.val() == 1) {
+            negara_nama.parent().parent().hide();
+            negara_nama.removeAttr('required');
+            negara_dari.parent().parent().hide();
+            negara_dari.removeAttr('required');
+        } else {
+            negara_nama.parent().parent().fadeIn();
+            negara_nama.attr('required', '');
+            negara_dari.parent().parent().fadeIn();
+            negara_dari.attr('required', '');
+        }
+
+        // ktp
+        const ktp_status = $('#ktp_status');
+        const ktp_dari = $('#ktp_dari');
+        const ktp_file = $('#ktp_file');
+        if (ktp_status.val() == 0) {
+            ktp_dari.parent().parent().hide();
+            ktp_file.parent().parent().hide();
+        } else {
+            ktp_dari.parent().parent().fadeIn();
+            ktp_file.parent().parent().fadeIn();
+        }
+
+        // akte
+        const akte_status = $('#akte_status');
+        const akte_dari = $('#akte_dari');
+        const akte_file = $('#akte_file');
+        if (akte_status.val() == 0) {
+            akte_dari.parent().parent().hide();
+            akte_file.parent().parent().hide();
+        } else {
+            akte_dari.parent().parent().fadeIn();
+            akte_file.parent().parent().fadeIn();
+        }
+
     }
 </script>
