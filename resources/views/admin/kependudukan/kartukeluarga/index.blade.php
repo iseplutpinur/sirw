@@ -23,5 +23,5 @@
 @endsection
 
 @section('javascript')
-    @include('admin.kependudukan.kartukeluarga.javascript', $compact)
+    @include('admin.kependudukan.kartukeluarga.js', $compact)
 @endsection

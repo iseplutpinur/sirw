@@ -40,7 +40,7 @@ class PendudukController extends Controller
             'title' => 'Manage List Penduduk',
             'breadcrumbs' => [
                 ['name' => 'Dashboard'],
-                ['name' => 'Data Master'],
+                ['name' => 'Kependudukan'],
             ]
         ];
 
@@ -66,6 +66,23 @@ class PendudukController extends Controller
         return view('admin.kependudukan.penduduk.index', array_merge($data, ['compact' => $data]));
     }
 
+    public function detail(Penduduk $model)
+    {
+        $penduduk = $model;
+        $page_attr = [
+            'title' => 'Detail Penduduk',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard'],
+                ['name' => 'Kependudukan', 'url' => 'admin.kependudukan.penduduk'],
+            ]
+        ];
+        $data = compact(
+            'page_attr',
+            'penduduk',
+        );
+        return view('admin.kependudukan.penduduk.detail.index', array_merge($data, ['compact' => $data]));
+    }
+
     public function insert(Request $request)
     {
         return $this->repo->insert($request);
@@ -73,52 +90,11 @@ class PendudukController extends Controller
 
     public function delete(Penduduk $model)
     {
-        try {
-            DB::beginTransaction();
-            // delete peristiwa
-            // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)->get(['id']);
-            // if ($peristiwa) {
-            // Peristiwa::destroy($peristiwa->toArray());
-            // }
-
-            // delete file ktp akte
-            if (file_exists("{$this->folder_ktp}/{$model->file_ktp}")) {
-                $date_time = date('Y-m-d-H-i-s');
-                rename("{$this->folder_ktp}/{$model->file_ktp}", "{$this->folder_ktp}/delete/{$date_time}-{$model->file_ktp}");
-            }
-
-            if (file_exists("{$this->folder_akte}/{$model->file_akte}")) {
-                $date_time = date('Y-m-d-H-i-s');
-                rename("{$this->folder_akte}/{$model->file_akte}", "{$this->folder_akte}/delete/{$date_time}-{$model->file_akte}");
-            }
-
-            // delete data
-            $model->delete();
-            DB::commit();
-            return response()->json();
-        } catch (ValidationException $error) {
-            return response()->json([
-                'message' => 'Something went wrong',
-                'error' => $error,
-            ], 500);
-        }
+        return $this->repo->delete($model);
     }
 
     public function select2(Request $request)
     {
-        try {
-            $model = Penduduk::select(['id', DB::raw('nama as text')])
-                ->whereRaw("(`nama` like '%$request->search%' or `id` like '%$request->search%')")
-                ->limit(10);
-
-            $result = $model->get()->toArray();
-            if ($request->with_empty && $request->search) {
-                $result = array_merge([['id' => $request->search, 'text' => $request->search . ' (Buat Data Penduduk)']], $result);
-            }
-
-            return response()->json(['results' => $result]);
-        } catch (\Exception $error) {
-            return response()->json($error, 500);
-        }
+        return $this->repo->select2($request);
     }
 }

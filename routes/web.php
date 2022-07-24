@@ -166,9 +166,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
         Route::controller(PendudukController::class)->prefix('penduduk')->group(function () {
             Route::get('/',  'index')->name('admin.kependudukan.penduduk'); // page
             Route::post('/',  'insert')->name('admin.kependudukan.penduduk.insert'); // insert
+            Route::get('/detail/{model}',  'detail')->name('admin.kependudukan.penduduk.detail'); // page
 
-
-
+            // detail
             Route::get('/find/{model}',  'getById')->name('admin.kependudukan.penduduk.find');
             Route::delete('/{model}',  'delete')->name('admin.kependudukan.penduduk.delete');
             Route::post('/update',  'update')->name('admin.kependudukan.penduduk.update');

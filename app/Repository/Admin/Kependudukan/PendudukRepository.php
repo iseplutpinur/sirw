@@ -36,8 +36,6 @@ use App\Models\Kependudukan\Penduduk\Pekerjaan as PendudukPekerjaan;
 use App\Models\Kependudukan\Penduduk\StatusKawin as PendudukStatusKawin;
 use App\Models\Kependudukan\Penduduk\Status as PendudukStatus;
 
-
-
 class PendudukRepository
 {
     private $folder_akte = PendudukAkte::image_folder;
@@ -797,5 +795,56 @@ class PendudukRepository
 
         // create datatable
         return $datatable->make(true);
+    }
+
+    public function delete(Penduduk $model)
+    {
+        try {
+            DB::beginTransaction();
+            // delete peristiwa
+            // $peristiwa = Peristiwa::where('penduduk_id', '=', $model->id)->get(['id']);
+            // if ($peristiwa) {
+            // Peristiwa::destroy($peristiwa->toArray());
+            // }
+
+            // delete file ktp akte
+            if (file_exists("{$this->folder_ktp}/{$model->file_ktp}")) {
+                $date_time = date('Y-m-d-H-i-s');
+                rename("{$this->folder_ktp}/{$model->file_ktp}", "{$this->folder_ktp}/delete/{$date_time}-{$model->file_ktp}");
+            }
+
+            if (file_exists("{$this->folder_akte}/{$model->file_akte}")) {
+                $date_time = date('Y-m-d-H-i-s');
+                rename("{$this->folder_akte}/{$model->file_akte}", "{$this->folder_akte}/delete/{$date_time}-{$model->file_akte}");
+            }
+
+            // delete data
+            $model->delete();
+            DB::commit();
+            return response()->json();
+        } catch (ValidationException $error) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $error,
+            ], 500);
+        }
+    }
+
+    public function select2(Request $request)
+    {
+        try {
+            $model = Penduduk::select(['id', DB::raw('nama as text')])
+                ->whereRaw("(`nama` like '%$request->search%' or `id` like '%$request->search%')")
+                ->limit(10);
+
+            $result = $model->get()->toArray();
+            if ($request->with_empty && $request->search) {
+                $result = array_merge([['id' => $request->search, 'text' => $request->search . ' (Buat Data Penduduk)']], $result);
+            }
+
+            return response()->json(['results' => $result]);
+        } catch (\Exception $error) {
+            return response()->json($error, 500);
+        }
     }
 }

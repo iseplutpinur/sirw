@@ -57,9 +57,9 @@
                     data: 'id',
                     name: 'id',
                     render(data, type, full, meta) {
-                        return ` <button type="button" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" onClick="editFunc('${data}')" data-toggle="tooltip" title="Ubah Data">
+                        return ` <a href="{{ url('admin/kependudukan/penduduk/detail') }}/${data}" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" data-toggle="tooltip" title="Ubah Data">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
+                        </a>
                         <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')"  data-toggle="tooltip" title="Hapus Data">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
@@ -82,6 +82,9 @@
                     data: 'nama',
                     name: 'nama',
                     className: 'text-nowrap text-capitalize',
+                    render(data, type, row, meta) {
+                        return `<a target="_blank" href="{{ url('admin/kependudukan/penduduk/detail') }}/${row.id}">${data}</a>`;
+                    }
                 },
                 {
                     data: 'nik',
