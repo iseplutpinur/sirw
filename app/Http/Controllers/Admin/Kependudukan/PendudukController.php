@@ -63,7 +63,7 @@ class PendudukController extends Controller
             'folder_akte',
             'folder_ktp'
         );
-        return view('admin.kependudukan.penduduk', array_merge($data, ['compact' => $data]));
+        return view('admin.kependudukan.penduduk.index', array_merge($data, ['compact' => $data]));
     }
 
     public function insert(Request $request)

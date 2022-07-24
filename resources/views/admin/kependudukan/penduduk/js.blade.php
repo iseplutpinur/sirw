@@ -33,14 +33,14 @@
                 url: "{{ route('admin.kependudukan.penduduk') }}",
                 data: function(d) {
                     d['filter[rt_id]'] = $('#filter_rt').val();
+                    d['filter[agama_id]'] = $('#filter_agama').val();
+                    d['filter[status_kawin_id]'] = $('#filter_status_kawin').val();
+                    d['filter[pendidikan_id]'] = $('#filter_pendidikan').val();
+                    d['filter[pekerjaan_id]'] = $('#filter_pekerjaan').val();
+                    d['filter[status_penduduk_id]'] = $('#filter_status_penduduk').val();
                     d['filter[jenis_kelamin]'] = $('#filter_jenis_kelamin').val();
-                    d['filter[agama]'] = $('#filter_agama').val();
-                    d['filter[status_kawin]'] = $('#filter_status_kawin').val();
-                    d['filter[pendidikan]'] = $('#filter_pendidikan').val();
-                    d['filter[pekerjaan]'] = $('#filter_pekerjaan').val();
-                    d['filter[status_penduduk]'] = $('#filter_status_penduduk').val();
-                    d['filter[ktp]'] = $('#filter_ktp').val();
-                    d['filter[akte]'] = $('#filter_akte').val();
+                    d['filter[ktp_ada]'] = $('#filter_ktp').val();
+                    d['filter[akte_ada]'] = $('#filter_akte').val();
                     // asal negara
                     // nama negara query distict ke penduduk negara
                     // status meninggal [ya, tidak]
@@ -212,27 +212,28 @@
                             </span> `;
                     }
                 },
-                {
-                    data: 'negara',
-                    name: 'negara',
-                    className: 'text-nowrap text-capitalize',
-                    render: function(data, type, row) {
-                        const status = data == 1 ? 'WNI' : 'WNA';
-                        const status_nama = data == 1 ? 'Warga Negara Indonesia' :
-                            'Warga Negara Asing';
-                        const bg = data == 1 ? 'bg-success' : 'bg-info';
-                        return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
-                            ${status}
-                            </span> `;
-                    }
-                },
+                // {
+                //     data: 'negara',
+                //     name: 'negara',
+                //     className: 'text-nowrap text-capitalize',
+                //     render: function(data, type, row) {
+                //         const status = data == 1 ? 'WNI' : 'WNA';
+                //         const status_nama = data == 1 ? 'Warga Negara Indonesia' :
+                //             'Warga Negara Asing';
+                //         const bg = data == 1 ? 'bg-success' : 'bg-info';
+                //         return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
+                //             ${status}
+                //             </span> `;
+                //     }
+                // },
                 {
                     data: 'negara_nama',
                     name: 'negara_nama',
                     className: 'text-nowrap text-capitalize',
                     render: function(data, type, row) {
-                        const status = row.negara == 1 ? 'IND' : data;
-                        const status_nama = row.negara == 1 ? 'Indonesia' : data;
+                        const status = row.negara == 1 ? 'WNI' : `WNA | ${data}`;
+                        const status_nama = row.negara == 1 ?
+                            'Warga negara Indonesia' : data;
                         const bg = row.negara == 1 ? 'bg-success' : 'bg-info';
                         return ` <span class="badge ${bg}" tabindex="0" data-toggle="tooltip" title="${status_nama}">
                             ${status}

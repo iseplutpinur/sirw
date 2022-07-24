@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Kependudukan;
 
 use Illuminate\Http\Request;
 use League\Config\Exception\ValidationException;
-use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 
 use App\Helpers\AppHelper;
@@ -13,10 +12,7 @@ use App\Models\DataMaster\HubunganDenganKK;
 use App\Models\DataMaster\RukunTetangga;
 use App\Models\Kependudukan\Penduduk;
 use App\Models\Kependudukan\KartuKeluarga;
-use App\Models\Kependudukan\KartuKeluarga\Rt as KartuKeluargaRt;
 use App\Models\Kependudukan\KartuKeluarga\Data as KartuKeluargaData;
-use App\Models\Kependudukan\KartuKeluarga\Transaksi as KartuKeluargaTransaksi;
-use App\Models\Kependudukan\KartuKeluarga\Negara as KartuKeluargaNegara;
 use App\Repository\Admin\Kependudukan\KartuKeluargaRepository;
 
 class KartuKeluargaController extends Controller
@@ -36,8 +32,6 @@ class KartuKeluargaController extends Controller
         'negara_dari' => ['nullable', 'date'],
     ];
 
-    private $query = [];
-
     public function __construct(KartuKeluargaRepository $repo)
     {
         $this->repo = $repo;
@@ -46,69 +40,7 @@ class KartuKeluargaController extends Controller
     public function index(Request $request)
     {
         if (request()->ajax()) {
-            // list table
-            $table_kk = KartuKeluarga::tableName;
-            $table_kk_list = KartuKeluargaData::tableName;
-            $table_hd_kk = HubunganDenganKK::tableName;
-            $table_penduduk = Penduduk::tableName;
-            $table_rt = RukunTetangga::tableName;
-
-            // cusotm query
-            // get list anggota kk dengan no urut terendah
-            // ========================================================================================================
-            $this->query['jumlah_anggota'] = <<<SQL
-                (select count(*) from $table_kk_list where $table_kk_list.kartu_keluarga_id = $table_kk.id)
-            SQL;
-            $this->query['jumlah_anggota_alias'] = 'jumlah_anggota';
-
-
-            $this->query['anggota'] = <<<SQL
-                (select concat($table_penduduk.nama, '[', $table_hd_kk.singkatan , ']') from $table_penduduk
-                    join $table_kk_list on $table_penduduk.id = $table_kk_list.penduduk_id
-                    join $table_hd_kk on $table_kk_list.hubungan_dengan_kk_id = $table_hd_kk.id
-                    where $table_kk_list.kartu_keluarga_id = $table_kk.id
-                    order by $table_hd_kk.urut asc limit 1)
-            SQL;
-            $this->query['anggota_alias'] = 'anggota';
-            // ========================================================================================================
-
-            // get key from validate
-            $select = [];
-            foreach ($this->validate_model as $k => $val) $select[] = "$table_kk.$k";
-            $base_url_image_folder = url(str_replace('./', '', $this->image_folder)) . '/';
-
-            $model = KartuKeluarga::select(array_merge([
-                "$table_kk.id",
-                DB::raw("rt.nama as rt"),
-                DB::raw("{$this->query['anggota']} as {$this->query['anggota_alias']}"),
-                DB::raw("{$this->query['jumlah_anggota']} as {$this->query['jumlah_anggota_alias']}"),
-            ], $select))
-                ->selectRaw("concat('{$base_url_image_folder}',$table_kk.foto) as foto_link")
-                ->selectRaw("DATE_FORMAT($table_kk.created_at, '%W, %d %M %Y %H:%i:%s') as created")
-                ->selectRaw("DATE_FORMAT($table_kk.updated_at, '%W, %d %M %Y %H:%i:%s') as updated")
-                // join
-                ->leftJoin("$table_rt as rt", 'rt.id', '=', "$table_kk.rt_id");
-
-            return Datatables::of($model)
-                ->addIndexColumn()
-                ->filterColumn('rt', function ($query, $keyword) {
-                    $query->whereRaw("(rt.nama like '%$keyword%')");
-                })
-                ->filterColumn('created', function ($query, $keyword) {
-                    $table_kk = KartuKeluarga::tableName;
-                    $query->whereRaw("(DATE_FORMAT($table_kk.created_at, '%W, %d %M %Y %H:%i:%s') like '%$keyword%')");
-                })
-                ->filterColumn('updated', function ($query, $keyword) {
-                    $table_kk = KartuKeluarga::tableName;
-                    $query->whereRaw("(DATE_FORMAT($table_kk.updated_at, '%W, %d %M %Y %H:%i:%s') like '%$keyword%')");
-                })
-                ->filterColumn($this->query['anggota_alias'], function ($query, $keyword) {
-                    $query->whereRaw("{$this->query['anggota']} like '%$keyword%'");
-                })
-                ->filterColumn($this->query['jumlah_anggota_alias'], function ($query, $keyword) {
-                    $query->whereRaw("{$this->query['jumlah_anggota']} like '%$keyword%'");
-                })
-                ->make(true);
+            return $this->repo->datatable($request);
         }
         $page_attr = [
             'title' => 'Manage List Kartu Keluarga',
@@ -121,12 +53,13 @@ class KartuKeluargaController extends Controller
         $rts = RukunTetangga::all();
         $hub_kks = HubunganDenganKK::all();
         $image_folder = $this->image_folder;
-        return view('admin.kependudukan.kartukeluarga', compact(
+        $data = compact(
             'page_attr',
             'rts',
             'hub_kks',
             'image_folder',
-        ));
+        );
+        return view('admin.kependudukan.kartukeluarga.index', array_merge($data, ['compact' => $data]));
     }
 
     public function insert(Request $request)

@@ -68,10 +68,6 @@
                     title="Kewarganegaraan">
                     Asal
                 </th>
-                <th class="text-center" style="vertical-align: middle" rowspan="2" data-toggle="tooltip"
-                    title="Asal Negara">
-                    Negara
-                </th>
             </tr>
             <tr>
                 <th class="text-nowrap text-center">Kota</th>

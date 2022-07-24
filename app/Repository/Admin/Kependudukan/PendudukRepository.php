@@ -784,7 +784,7 @@ class PendudukRepository
         // filter other
         $f = $c_jk;
         if ($f_c($f)) {
-            $model->whereRaw("$table_penduduk.$f='$f_c($f)}'");
+            $model->whereRaw("$table_penduduk.$f='{$f_c($f)}'");
         }
 
         $datatable = Datatables::of($model)->addIndexColumn();

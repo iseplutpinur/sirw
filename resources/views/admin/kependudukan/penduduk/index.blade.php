@@ -1,7 +1,6 @@
 @extends('templates.admin.master')
 
 @section('content')
-    <!-- Row -->
     <div class="row row-sm">
         <div class="col-lg-12">
             <div class="card" id="main-card">
@@ -15,10 +14,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        @include('admin.kependudukan.penduduk.filter', $compact)
-                        @include('admin.kependudukan.penduduk.table', $compact)
-                    </div>
+                    @include('admin.kependudukan.penduduk.filter', $compact)
+                    @include('admin.kependudukan.penduduk.table', $compact)
                 </div>
             </div>
         </div>
