@@ -8,7 +8,7 @@
                 </a>
             </h4>
         </div>
-        <div id="collapse1" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne1">
+        <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1">
             <div class="panel-body">
                 <form action="javascript:void(0)" class="ml-md-3 mb-md-3" id="FilterForm">
                     <div class="form-group float-start me-2">
