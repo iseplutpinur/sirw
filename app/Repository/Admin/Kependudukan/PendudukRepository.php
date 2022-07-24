@@ -712,7 +712,38 @@ class PendudukRepository
         };
 
         $c_jk = 'jenis_kelamin';
-        $model = Penduduk::select([
+
+        // register filter search datatable
+        $model_filter = [
+            $c_rt,
+            $c_rt_nama,
+            $c_ktp_ada,
+            $c_akte_ada,
+            $c_agama,
+            $c_agama_nama,
+            $c_pendidikan,
+            $c_pendidikan_nama,
+            $c_pekerjaan,
+            $c_pekerjaan_nama,
+            $c_status_kawin,
+            $c_status_kawin_nama,
+            $c_status_penduduk,
+            $c_status_penduduk_nama,
+            $c_tanggal_lahir_str,
+            $c_tanggal_mati_str,
+            $c_umur,
+            $c_umur_bulan,
+            $c_umur_hari,
+            $c_negara,
+            $c_negara_nama,
+        ];
+
+
+        $to_db_raw = array_map(function ($a) use ($sraa) {
+            return DB::raw($sraa($a));
+        }, $model_filter);
+
+        $model = Penduduk::select(array_merge([
             // penduduk
             "$table_penduduk.id",
             "$table_penduduk.nama",
@@ -724,38 +755,7 @@ class PendudukRepository
             "$table_penduduk.tanggal_lahir",
             "$table_penduduk.tanggal_mati",
             "$table_penduduk.asal_data",
-
-            // data master
-            DB::raw($sraa($c_rt)),
-            DB::raw($sraa($c_rt_nama)),
-
-            DB::raw($sraa($c_ktp_ada)),
-            DB::raw($sraa($c_akte_ada)),
-
-            DB::raw($sraa($c_agama)),
-            DB::raw($sraa($c_agama_nama)),
-
-            DB::raw($sraa($c_pendidikan)),
-            DB::raw($sraa($c_pendidikan_nama)),
-
-            DB::raw($sraa($c_pekerjaan)),
-            DB::raw($sraa($c_pekerjaan_nama)),
-
-            DB::raw($sraa($c_status_kawin)),
-            DB::raw($sraa($c_status_kawin_nama)),
-
-            DB::raw($sraa($c_status_penduduk)),
-            DB::raw($sraa($c_status_penduduk_nama)),
-
-            DB::raw($sraa($c_tanggal_lahir_str)),
-            DB::raw($sraa($c_tanggal_mati_str)),
-            DB::raw($sraa($c_umur)),
-            DB::raw($sraa($c_umur_bulan)),
-            DB::raw($sraa($c_umur_hari)),
-
-            DB::raw($sraa($c_negara)),
-            DB::raw($sraa($c_negara_nama)),
-        ]);
+        ], $to_db_raw));
 
         // filter check
         $f_c = function (string $param) use ($filter): mixed {
@@ -787,35 +787,8 @@ class PendudukRepository
             $model->whereRaw("$table_penduduk.$f='$f_c($f)}'");
         }
 
-        // register filter search datatable
-        $fd = [
-            $c_rt,
-            $c_rt_nama,
-            $c_ktp_ada,
-            $c_akte_ada,
-            $c_agama,
-            $c_agama_nama,
-            $c_pendidikan,
-            $c_pendidikan_nama,
-            $c_pekerjaan,
-            $c_pekerjaan_nama,
-            $c_status_kawin,
-            $c_status_kawin_nama,
-            $c_status_penduduk,
-            $c_status_penduduk_nama,
-            $c_tanggal_lahir_str,
-            $c_tanggal_mati_str,
-            $c_umur,
-            $c_umur_bulan,
-            $c_umur_hari,
-            $c_negara,
-            $c_negara_nama,
-        ];
-
-        $datatable = Datatables::of($model)
-            ->addIndexColumn();
-        foreach ($fd as $v) {
-
+        $datatable = Datatables::of($model)->addIndexColumn();
+        foreach ($model_filter as $v) {
             // custom pencarian
             $datatable->filterColumn($this->query["{$v}_alias"], function ($query, $keyword) use ($v) {
                 $query->whereRaw("({$this->query[$v]} like '%$keyword%')");

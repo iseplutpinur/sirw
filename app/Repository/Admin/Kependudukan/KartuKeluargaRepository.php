@@ -100,6 +100,7 @@ class KartuKeluargaRepository
 
     public function datatable(Request $request)
     {
+        $filter = $request->filter;
         // list table
         $table_kk = KartuKeluarga::tableName;
         $table_kk_list = KartuKeluargaData::tableName;
@@ -188,50 +189,54 @@ class KartuKeluargaRepository
         $sraa = function (string $col): string {
             return $this->query[$col] . ' as ' . $this->query[$col . '_alias'];
         };
-        $model = KartuKeluarga::select([
+        $model_filter = [
+            $col_foto_link,
+            $col_created,
+            $col_created_str,
+            $col_updated,
+            $col_updated_str,
+            $col_jumlah_anggota,
+            $col_anggota,
+            $col_rt,
+            $col_rt_nama,
+        ];
+
+        $to_db_raw = array_map(function ($a) use ($sraa) {
+            return DB::raw($sraa($a));
+        }, $model_filter);
+
+        $model = KartuKeluarga::select(array_merge([
             "$table_kk.id",
             "$table_kk.no",
             "$table_kk.alamat_lengkap",
             "$table_kk.tanggal_dibuat",
             "$table_kk.tanggal_hapus",
-            "$table_kk.asal_data",
-            DB::raw($sraa($col_foto_link)),
-            DB::raw($sraa($col_created)),
-            DB::raw($sraa($col_created_str)),
-            DB::raw($sraa($col_updated)),
-            DB::raw($sraa($col_updated_str)),
-            DB::raw($sraa($col_jumlah_anggota)),
-            DB::raw($sraa($col_anggota)),
-            DB::raw($sraa($col_rt)),
-            DB::raw($sraa($col_rt_nama)),
-        ]);
+            "$table_kk.asal_data"
+        ], $to_db_raw));
 
-        return Datatables::of($model)
-            ->addIndexColumn()
-            ->filterColumn($this->query["{$col_foto_link}_alias"], function ($query, $keyword) use ($col_foto_link) {
-                $query->whereRaw("({$this->query[$col_foto_link]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_created}_alias"], function ($query, $keyword) use ($col_created) {
-                $query->whereRaw("({$this->query[$col_created]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_created_str}_alias"], function ($query, $keyword) use ($col_created_str) {
-                $query->whereRaw("({$this->query[$col_created_str]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_updated}_alias"], function ($query, $keyword) use ($col_updated) {
-                $query->whereRaw("({$this->query[$col_updated]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_updated_str}_alias"], function ($query, $keyword) use ($col_updated_str) {
-                $query->whereRaw("({$this->query[$col_updated_str]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_jumlah_anggota}_alias"], function ($query, $keyword) use ($col_jumlah_anggota) {
-                $query->whereRaw("({$this->query[$col_jumlah_anggota]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_anggota}_alias"], function ($query, $keyword) use ($col_anggota) {
-                $query->whereRaw("({$this->query[$col_anggota]} like '%$keyword%')");
-            })
-            ->filterColumn($this->query["{$col_rt}_alias"], function ($query, $keyword) use ($col_rt) {
-                $query->whereRaw("({$this->query[$col_rt]} like '%$keyword%')");
-            })
-            ->make(true);
+        // filter check
+        $f_c = function (string $param) use ($filter): mixed {
+            return isset($filter[$param]) ? $filter[$param] : false;
+        };
+
+        $f = [$col_rt_id];
+
+        // loop filter
+        foreach ($f as $v) {
+            if ($f_c($v)) {
+                $model->whereRaw("{$this->query[$v]}='{$f_c($v)}'");
+            }
+        }
+
+        $datatable = Datatables::of($model)->addIndexColumn();
+        foreach ($model_filter as $v) {
+            // custom pencarian
+            $datatable->filterColumn($this->query["{$v}_alias"], function ($query, $keyword) use ($v) {
+                $query->whereRaw("({$this->query[$v]} like '%$keyword%')");
+            });
+        }
+
+        // create datatable
+        return $datatable->make(true);
     }
 }
