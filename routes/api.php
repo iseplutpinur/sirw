@@ -130,9 +130,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
         });
         Route::controller(KartuKeluargaController::class)->prefix('kk')->group(function () {
             Route::post('/',  'insert')->name('admin.kependudukan.kk.insert');
-            Route::delete('/{model}',  'delete')->name('admin.kependudukan.kk.delete');
-            Route::post('/update',  'update')->name('admin.kependudukan.kk.update');
-            Route::get('/find/{model}',  'getById')->name('admin.kependudukan.kk.find');
+            Route::get('/datatable',  'datatable')->name('admin.kependudukan.kk.datatable');
 
             // kk anggota
             Route::prefix('anggota')->group(function () {
