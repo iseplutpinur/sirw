@@ -16,7 +16,6 @@ use App\Models\DataMaster\Pendidikan;
 use App\Models\DataMaster\StatusKawin;
 use App\Models\DataMaster\StatusPenduduk;
 use App\Models\DataMaster\RukunTetangga;
-use App\Models\Kependudukan\KartuKeluarga;
 use App\Models\Kependudukan\Penduduk;
 use App\Models\Kependudukan\Penduduk\Agama as PendudukAgama;
 use App\Models\Kependudukan\Penduduk\Akte as PendudukAkte;

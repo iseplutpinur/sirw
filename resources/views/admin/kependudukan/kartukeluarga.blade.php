@@ -13,20 +13,6 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    {{-- <h5 class="h5">Filter Data</h5>
-                    <form action="javascript:void(0)" class="form-inline ml-md-3 mb-md-3" id="FilterForm">
-                        <div class="form-group me-md-3">
-                            <label for="filter_status">Agama</label>
-                            <select class="form-control" id="filter_status" name="filter_status" style="max-width: 200px">
-                                <option value="">All Agama</option>
-                                <option value="1">Dipakai</option>
-                                <option value="0">Tidak Dipakai</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-rounded btn-md btn-info" title="Refresh Filter Table">
-                            <i class="bi bi-arrow-repeat"></i> Refresh
-                        </button>
-                    </form> --}}
                     <div class="table-responsive table-striped">
                         <table class="table table-bordered border-bottom" id="tbl_main">
                             <thead>

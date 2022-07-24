@@ -13,22 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penduduk_hub_kk', function (Blueprint $table) {
+        Schema::create('kartu_keluarga_negara', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('penduduk_id', false, true)->nullable()->default(null);
-            $table->bigInteger('master_hub_dgn_kk_id', false, true)->nullable()->default(null);
+            $table->bigInteger('kartu_keluarga_id', false, true)->nullable()->default(null);
+            $table->boolean('negara')->nullable()->default(1)->comment('0 wna, 1 wni');
+            $table->string('negara_nama')->nullable()->default(null);
             $table->date('dari')->nullable()->default(null);
             $table->date('sampai')->nullable()->default(null);
             $table->timestamps();
 
-            $table->foreign('penduduk_id')
-                ->references('id')->on('penduduks')
+            $table->foreign('kartu_keluarga_id')
+                ->references('id')->on('kartu_keluargas')
                 ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('master_hub_dgn_kk_id')
-                ->references('id')->on('master_hub_dgn_kk')
-                ->nullOnDelete()
                 ->cascadeOnUpdate();
         });
     }
@@ -40,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penduduk_hub_kk');
+        Schema::dropIfExists('penduduk_negara');
     }
 };

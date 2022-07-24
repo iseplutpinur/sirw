@@ -2,27 +2,36 @@
 
 namespace App\Http\Controllers\Admin\Kependudukan;
 
+use Illuminate\Http\Request;
+use League\Config\Exception\ValidationException;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
+
 use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
 use App\Models\DataMaster\HubunganDenganKK;
 use App\Models\DataMaster\RukunTetangga;
-use App\Models\Kependudukan\KartuKeluarga;
-use App\Models\Kependudukan\KartuKeluarga\Data;
-use App\Models\Kependudukan\KartuKeluargaList;
-use Illuminate\Http\Request;
-use League\Config\Exception\ValidationException;
-use Yajra\Datatables\Datatables;
 use App\Models\Kependudukan\Penduduk;
-use Illuminate\Support\Facades\DB;
+use App\Models\Kependudukan\KartuKeluarga;
+use App\Models\Kependudukan\KartuKeluarga\Rt as KartuKeluargaRt;
+use App\Models\Kependudukan\KartuKeluarga\Data as KartuKeluargaData;
+use App\Models\Kependudukan\KartuKeluarga\Transaksi as KartuKeluargaTransaksi;
+use App\Models\Kependudukan\KartuKeluarga\Negara as KartuKeluargaNegara;
 
 class KartuKeluargaController extends Controller
 {
     private $image_folder = KartuKeluarga::image_folder;
-
     private $validate_model = [
-        'no' => ['required', 'string', 'max:16'],
-        'alamat' => ['nullable', 'string'],
-        'rt_id' => ['required', 'integer'],
+        'no' => ['nullable', 'string', 'max:16'],
+        'alamat_lengkap' => ['required', 'string'],
+        'tanggal_dibuat' => ['required', 'date'],
+        'asal_data' => ['required', 'int'],
+        // validasi rt
+        'rt_id' => ['required', 'int'],
+        // validasi negara
+        'negara' => ['required', 'int'],
+        'negara_nama' => ['nullable', 'string'],
+        'negara_dari' => ['nullable', 'date'],
     ];
 
     private $query = [];
@@ -32,7 +41,7 @@ class KartuKeluargaController extends Controller
         if (request()->ajax()) {
             // list table
             $table_kk = KartuKeluarga::tableName;
-            $table_kk_list = Data::tableName;
+            $table_kk_list = KartuKeluargaData::tableName;
             $table_hd_kk = HubunganDenganKK::tableName;
             $table_penduduk = Penduduk::tableName;
             $table_rt = RukunTetangga::tableName;
@@ -118,10 +127,13 @@ class KartuKeluargaController extends Controller
         try {
             $request->validate($this->validate_model);
 
+            // kartu keluarga
             $model = new KartuKeluarga();
             $model->no = $request->no;
-            $model->rt_id = $request->rt_id;
-            $model->alamat = $request->alamat;
+            $model->alamat_lengkap = $request->alamat_lengkap;
+            // tanggal masuk ke lingkungan rw
+
+            $model->tanggal_dibuat = $request->tanggal_dibuat;
 
             if ($image = $request->file('foto')) {
                 $foto_kk = AppHelper::slugify($request->no) . substr($request->slug, 0, 10) . date('YmdHis') . "." . $image->getClientOriginalExtension();
@@ -130,6 +142,36 @@ class KartuKeluargaController extends Controller
             }
 
             $model->save();
+
+            // kartu keluarga rt
+            $rt = new KartuKeluargaRt();
+            $rt->kartu_keluarga_id = $model->id;
+            $rt->rt_id = $request->rt_id;
+            $rt_dari = $request->rt_dari;
+            $rt_dari = $rt_dari ?? $request->tanggal_dibuat;
+            $rt->dari = $rt_dari;
+            $rt->save();
+
+            // kartu keluarga transaksi
+            // asal data 0 dibuat di rt stempat. 1 pendatang
+            if ($model->asal_data == 1) {
+                $transaksi = new KartuKeluargaTransaksi();
+                $transaksi->kartu_keluarga_id = $model->id;
+                $transaksi->rt_id = $request->datang_rt_id;
+                $transaksi->keterangan = $request->datang_keterangan;
+                $transaksi->tanggal = $request->tanggal_dibuat ?? date('Y-m-d');
+                $transaksi->jenis = 2;
+                $transaksi->save();
+            }
+
+            // negara 0 wna, 1 wni
+            $negara = new KartuKeluargaNegara();
+            $negara->kartu_keluarga_id = $model->id;
+            $negara->negara = $request->negara;
+            $negara->negara_nama = $request->negara_nama;
+            $negara->dari = $request->negara_dari ?? $request->tanggal_dibuat;
+            $negara->save();
+
             return response()->json();
         } catch (ValidationException $error) {
             return response()->json([
@@ -221,12 +263,12 @@ class KartuKeluargaController extends Controller
     {
         try {
             // table
-            $table_kk_list = Data::tableName;
+            $table_kk_list = KartuKeluargaData::tableName;
             $table_penduduk = Penduduk::tableName;
             $table_hd_kk = HubunganDenganKK::tableName;
 
             $id = $request->id;
-            $result = Data::selectRaw("$table_kk_list.*, b.nik")
+            $result = KartuKeluargaData::selectRaw("$table_kk_list.*, b.nik")
                 ->selectRaw("DATE_FORMAT($table_kk_list.created_at, '%W, %d %M %Y %H:%i:%s') as created")
                 ->selectRaw("b.nama as penduduk")
                 ->selectRaw("c.nama as hubungan_dengan_kk")
@@ -250,7 +292,7 @@ class KartuKeluargaController extends Controller
                 'hubungan_dengan_kk_id' => ['required', 'integer'],
             ]);
 
-            $model = new Data();
+            $model = new KartuKeluargaData();
             $model->penduduk_id = $request->penduduk_id;
             $model->kartu_keluarga_id = $request->kartu_keluarga_id;
             $model->hubungan_dengan_kk_id = $request->hubungan_dengan_kk_id;
@@ -265,7 +307,7 @@ class KartuKeluargaController extends Controller
         }
     }
 
-    public function anggota_delete(Data $model)
+    public function anggota_delete(KartuKeluargaData $model)
     {
         try {
             $model->delete();
