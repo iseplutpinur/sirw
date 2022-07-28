@@ -1,0 +1,35 @@
+Set data master [get all, get one, add, edit, delete]
+    penduduk_agama [done]
+    penduduk_pekerjaan [done]
+    penduduk_pendidikan [done]
+    penduduk_status_kawin [done]
+    penduduk_status [done]
+    penduduk_akte[done]
+    penduduk_ktp[done]
+    penduduk_negara[done]
+
+    // nanti
+    penduduk_rt[done]
+    penduduk_transaksi[done]
+    penduduk_pindah_konfirmasi
+
+
+// sekenario rt
+insert penduduk asal data pendatang
+    - insert data ke table penduduk_transaksi
+    - penduduk_id: model->id
+    - rt_id: null
+    - keterangan: datang_keterangan
+    - tanggal: tinggal_dari_tanggal
+    - keterangan: datang_keterangan
+
+penduduk pindah
+    sekenario di aplikasi
+    -> penduduk detail -> Rukun Tetangga -> Pindah
+        penduduk_id: penduduk_id
+        rt_id: rt_id
+
+    sekenario di coding
+
+
+

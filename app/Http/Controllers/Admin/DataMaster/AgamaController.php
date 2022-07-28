@@ -41,6 +41,8 @@ class AgamaController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+        $prefix_uri = trim(explode('?', $_SERVER['REQUEST_URI'])[0], '/');
+        $prefix = str_replace('/', '.', $prefix_uri);
         $page_attr = [
             'title' => 'Manage List Agama',
             'breadcrumbs' => [
@@ -48,7 +50,7 @@ class AgamaController extends Controller
                 ['name' => 'Data Master'],
             ]
         ];
-        return view('admin.data_master.agama', compact('page_attr'));
+        return view('admin.data_master.agama', compact('page_attr', 'prefix', 'prefix_uri'));
     }
 
     public function insert(Request $request)

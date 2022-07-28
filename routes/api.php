@@ -38,7 +38,9 @@ Route::group(['prefix' => 'public'], function () {
 
 
 // Admin route ========================================================================================================
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 'admin']], function () {
+$name = 'admin';
+$prefix = "api.$name"; // api.admin
+Route::group(['prefix' => $name, 'middleware' => ['auth:sanctum', 'verified', 'admin']], function () use ($prefix) {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     // user
     Route::controller(UserController::class)->prefix('user')->group(function () {
@@ -51,14 +53,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
 
     // data master
     // ================================================================================================================
-    Route::prefix('data_master')->group(function () {
-        // agama
-        Route::controller(AgamaController::class)->prefix('agama')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.agama'); // page
-            Route::post('/',  'insert')->name('admin.data_master.agama.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.agama.delete');
-            Route::post('/update',  'update')->name('admin.data_master.agama.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.agama.select2');
+    $name = 'data_master';
+    $prefix = "$prefix.$name"; // admin.data_master
+    Route::prefix($name)->group(function () use ($prefix) {
+        $name = 'agama';
+        $prefix = "$prefix.$name"; // admin.data_master.agama
+        Route::controller(AgamaController::class)->prefix($name)->group(function () use ($prefix) {
+            Route::get('/',  'index')->name($prefix); // page
+            Route::post('/',  'insert')->name("$prefix.insert");
+            Route::delete('/{model}',  'delete')->name("$prefix.delete");
+            Route::post('/update',  'update')->name("$prefix.update");
+            Route::get('/select2',  'select2')->name("$prefix.select2");
         });
         // pekerjaan
         Route::controller(PekerjaanController::class)->prefix('pekerjaan')->group(function () {
@@ -120,14 +125,133 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 
     // ================================================================================================================
 
 
-    // data Kependudukan
-    Route::prefix('kependudukan')->group(function () {
-        // penduduk
-        Route::controller(PendudukController::class)->prefix('penduduk')->group(function () {
-            Route::post('/',  'insert')->name('admin.kependudukan.penduduk.insert');
-            Route::post('/import',  'import_excel')->name('admin.kependudukan.penduduk.import');
-            Route::get('/datatable',  'datatable')->name('admin.kependudukan.penduduk.datatable');
+    $name = 'kependudukan';
+    $prefix = "$prefix.$name"; // api.admin.kependudukan.kependudukan
+    Route::prefix($name)->group(function () use ($prefix) {
+
+        $name = 'penduduk';
+        $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk
+        Route::controller(PendudukController::class)->prefix($name)->group(function () use ($prefix) {
+            Route::post('/',  'insert')->name("$prefix.insert");
+            Route::post('/import',  'import_excel')->name("$prefix.import");
+            Route::get('/datatable',  'datatable')->name("$prefix.datatable");
+
+            $name = 'detail';
+            $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail
+            Route::prefix($name)->group(function () use ($prefix) {
+
+                $name = 'agama';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.agama
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\AgamaController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'pendidikan';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.pendidikan
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\PendidikanController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'pekerjaan';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.pekerjaan
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\PekerjaanController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'status_kawin';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.status_kawin
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\StatusKawinController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'status_penduduk';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.status_penduduk
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\StatusPendudukController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'rt';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.rt
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\RtController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'ktp';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.ktp
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\KtpController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'akte';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.akte
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\AkteController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'negara';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.negara
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\NegaraController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::get('/refresh', 'refresh')->name("$prefix.refresh");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+
+                $name = 'transaksi';
+                $prefix = "$prefix.$name"; // api.admin.kependudukan.penduduk.detail.transaksi
+                Route::controller(\App\Http\Controllers\API\Admin\Kependudukan\Detail\TransaksiController::class)->prefix($name)->group(function () use ($prefix) {
+                    Route::get('/', 'index')->name($prefix);
+                    Route::get('/find', 'find')->name("$prefix.find");
+                    Route::post('/', 'insert')->name("$prefix.insert");
+                    Route::post('/update', 'update')->name("$prefix.update");
+                    Route::delete('/{model}', 'delete')->name("$prefix.update");
+                });
+            });
         });
+
+
         Route::controller(KartuKeluargaController::class)->prefix('kk')->group(function () {
             Route::post('/',  'insert')->name('admin.kependudukan.kk.insert');
             Route::get('/datatable',  'datatable')->name('admin.kependudukan.kk.datatable');

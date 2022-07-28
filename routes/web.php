@@ -33,6 +33,12 @@ use App\Http\Controllers\Admin\DataMaster\StatusTamuController;
 use App\Http\Controllers\Admin\Kependudukan\KartuKeluargaController;
 use App\Http\Controllers\Admin\Kependudukan\PendudukController;
 
+// penduduk detail
+use \App\Http\Controllers\Admin\Kependudukan\Detail\AgamaController as DetailAgamaController;
+use \App\Http\Controllers\Admin\Kependudukan\Detail\PekerjaanController as DetailPekerjaanController;
+use \App\Http\Controllers\Admin\Kependudukan\Detail\PendidikanController as DetailPendidikanController;
+use \App\Http\Controllers\Admin\Kependudukan\Detail\StatusKawinController as DetailStatusKawinController;
+use \App\Http\Controllers\Admin\Kependudukan\Detail\StatusPendudukController as DetailStatusPendudukController;
 
 
 
@@ -78,115 +84,117 @@ Route::get('/dashboard', function () {
 
 
 // Admin route ========================================================================================================
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'verified', 'admin']], function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+$name = 'admin';
+Route::group(['prefix' => $name, 'middleware' => ['auth:sanctum', 'verified', 'admin']], function () use ($name) {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name("admin.dashboard");
     // user
-    Route::controller(UserController::class)->prefix('user')->group(function () {
-        Route::get('/', 'index')->name('admin.user');
-        Route::get('/excel', 'excel')->name('admin.user.excel');
-        Route::post('/', 'store')->name('admin.user.store');
-        Route::delete('/{id}', 'delete')->name('admin.user.delete');
-        Route::post('/update', 'update')->name('admin.user.update');
+    $prefix = 'user';
+    Route::controller(UserController::class)->prefix($prefix)->group(function () use ($name, $prefix) {
+        $name = "$name.$prefix";
+        Route::get('/', 'index')->name($name);
+        Route::get('/excel', 'excel')->name("$name.excel");
+        Route::post('/', 'store')->name("$name.store");
+        Route::delete('/{id}', 'delete')->name("$name.delete");
+        Route::post('/update', 'update')->name("$name.update");
     });
 
     // data master
     // ================================================================================================================
-    Route::prefix('data_master')->group(function () {
-        // agama
-        Route::controller(AgamaController::class)->prefix('agama')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.agama'); // page
-            Route::post('/',  'insert')->name('admin.data_master.agama.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.agama.delete');
-            Route::post('/update',  'update')->name('admin.data_master.agama.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.agama.select2');
-        });
-        // pekerjaan
-        Route::controller(PekerjaanController::class)->prefix('pekerjaan')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.pekerjaan'); // page
-            Route::post('/',  'insert')->name('admin.data_master.pekerjaan.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.pekerjaan.delete');
-            Route::post('/update',  'update')->name('admin.data_master.pekerjaan.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.pekerjaan.select2');
-        });
-        // pendidikan
-        Route::controller(PendidikanController::class)->prefix('pendidikan')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.pendidikan'); // page
-            Route::post('/',  'insert')->name('admin.data_master.pendidikan.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.pendidikan.delete');
-            Route::post('/update',  'update')->name('admin.data_master.pendidikan.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.pendidikan.select2');
-        });
-        // status_kawin
-        Route::controller(StatusKawinController::class)->prefix('status_kawin')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.status_kawin'); // page
-            Route::post('/',  'insert')->name('admin.data_master.status_kawin.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.status_kawin.delete');
-            Route::post('/update',  'update')->name('admin.data_master.status_kawin.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.status_kawin.select2');
-        });
-        // status_penduduk
-        Route::controller(StatusPendudukController::class)->prefix('status_penduduk')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.status_penduduk'); // page
-            Route::post('/',  'insert')->name('admin.data_master.status_penduduk.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.status_penduduk.delete');
-            Route::post('/update',  'update')->name('admin.data_master.status_penduduk.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.status_penduduk.select2');
-        });
-        // status_tamu
-        Route::controller(StatusTamuController::class)->prefix('status_tamu')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.status_tamu'); // page
-            Route::post('/',  'insert')->name('admin.data_master.status_tamu.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.status_tamu.delete');
-            Route::post('/update',  'update')->name('admin.data_master.status_tamu.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.status_tamu.select2');
-        });
-        // hubungan_dengan_kk
-        Route::controller(HubunganDenganKKController::class)->prefix('hubungan_dengan_kk')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.hubungan_dengan_kk'); // page
-            Route::post('/',  'insert')->name('admin.data_master.hubungan_dengan_kk.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.hubungan_dengan_kk.delete');
-            Route::post('/update',  'update')->name('admin.data_master.hubungan_dengan_kk.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.hubungan_dengan_kk.select2');
-        });
-        // rukun_tetangga
-        Route::controller(RukunTetanggaController::class)->prefix('rukun_tetangga')->group(function () {
-            Route::get('/',  'index')->name('admin.data_master.rukun_tetangga'); // page
-            Route::post('/',  'insert')->name('admin.data_master.rukun_tetangga.insert');
-            Route::delete('/{model}',  'delete')->name('admin.data_master.rukun_tetangga.delete');
-            Route::post('/update',  'update')->name('admin.data_master.rukun_tetangga.update');
-            Route::get('/select2',  'select2')->name('admin.data_master.rukun_tetangga.select2');
-        });
+    $prefix = 'data_master';
+    Route::prefix($prefix)->group(function () use ($name, $prefix) {
+        $name = "$name.$prefix"; // admin.data_master
+        foreach ([
+            ['prefix' => 'agama', 'class' => AgamaController::class],
+            ['prefix' => 'pekerjaan', 'class' => PekerjaanController::class],
+            ['prefix' => 'pendidikan', 'class' => PendidikanController::class],
+            ['prefix' => 'status_kawin', 'class' => StatusKawinController::class],
+            ['prefix' => 'status_penduduk', 'class' => StatusPendudukController::class],
+            ['prefix' => 'status_tamu', 'class' => StatusTamuController::class],
+            ['prefix' => 'hubungan_dengan_kk', 'class' => HubunganDenganKKController::class],
+            ['prefix' => 'rukun_tetangga', 'class' => RukunTetanggaController::class],
+        ] as $master) {
+            $prefix = $master['prefix'];
+            Route::controller($master['class'])->prefix($prefix)->group(function () use ($name, $prefix) {
+                $name = "$name.$prefix"; // admin.data_master.agama
+                Route::get('/',  'index')->name($name); // page
+                Route::post('/',  'insert')->name("$name.insert");
+                Route::delete('/{model}',  'delete')->name("$name.delete");
+                Route::post('/update',  'update')->name("$name.update");
+                Route::get('/select2',  'select2')->name("$name.select2");
+            });
+        }
     });
     // ================================================================================================================
 
 
     // data Kependudukan
-    Route::prefix('kependudukan')->group(function () {
+    $prefix = 'kependudukan';
+    Route::prefix($prefix)->group(function () use ($name, $prefix) {
+        $name = "$name.$prefix"; // admin.kependudukan
+
         // penduduk
-        Route::controller(PendudukController::class)->prefix('penduduk')->group(function () {
-            Route::get('/',  'index')->name('admin.kependudukan.penduduk'); // page
-            Route::post('/',  'insert')->name('admin.kependudukan.penduduk.insert'); // insert
-            Route::get('/detail/{model}',  'detail')->name('admin.kependudukan.penduduk.detail'); // page
+        $prefix = 'penduduk';
+        Route::controller(PendudukController::class)->prefix($prefix)->group(function () use ($name, $prefix) {
+            $name = "$name.$prefix"; // admin.kependudukan.penduduk
+
+            Route::get('/',  'index')->name($name); // page
+            Route::post('/',  'insert')->name("$name.insert"); // insert
+
+            Route::get('/find/{model}',  'getById')->name("$name.find");
+            Route::delete('/{model}',  'delete')->name("$name.delete");
+            Route::post('/update',  'update')->name("$name.update");
+            Route::get('/select2',  'select2')->name("$name.select2");
+
 
             // detail
-            Route::get('/find/{model}',  'getById')->name('admin.kependudukan.penduduk.find');
-            Route::delete('/{model}',  'delete')->name('admin.kependudukan.penduduk.delete');
-            Route::post('/update',  'update')->name('admin.kependudukan.penduduk.update');
-            Route::get('/select2',  'select2')->name('admin.kependudukan.penduduk.select2');
+            Route::get('/detail/{model}',  'detail')->name("$name.detail"); // page
+            Route::post('/detail/update/{model}',  'update')->name("$name.detail.update"); // update
+            // set data master
+            $prefix = 'detail';
+            Route::prefix($prefix)->group(function () use ($name, $prefix) {
+                $name = "$name.$prefix"; // admin.kependudukan.penduduk.detail
+
+                foreach ([
+                    ['prefix' => 'agama', 'class' => DetailAgamaController::class],
+                    ['prefix' => 'pekerjaan', 'class' => DetailPekerjaanController::class],
+                    ['prefix' => 'pendidikan', 'class' => DetailPendidikanController::class],
+                    ['prefix' => 'status_kawin', 'class' => DetailStatusKawinController::class],
+                    ['prefix' => 'status_penduduk', 'class' => DetailStatusPendudukController::class],
+                ] as $master) {
+                    $prefix = $master['prefix'];
+                    Route::controller($master['class'])->prefix($prefix)->group(function () use ($name, $prefix) {
+                        $name = "$name.$prefix";
+                        Route::get('/all', 'all')->name($name);
+                        Route::get('/find', 'find')->name("$name.find");
+                        Route::get('/refresh', 'refresh')->name("$name.refresh");
+                        Route::post('/insert', 'insert')->name("$name.insert");
+                        Route::post('/update', 'update')->name("$name.update");
+                        Route::delete('/{model}', 'delete')->name("$name.update");
+                    });
+                }
+            });
         });
-        Route::controller(KartuKeluargaController::class)->prefix('kk')->group(function () {
-            Route::get('/',  'index')->name('admin.kependudukan.kk'); // page
-            Route::post('/',  'insert')->name('admin.kependudukan.kk.insert');
-            Route::delete('/{model}',  'delete')->name('admin.kependudukan.kk.delete');
-            Route::post('/update',  'update')->name('admin.kependudukan.kk.update');
-            Route::get('/find/{model}',  'getById')->name('admin.kependudukan.kk.find');
+
+        // kk
+        $prefix = 'kk';
+        Route::controller(KartuKeluargaController::class)->prefix($prefix)->group(function () use ($name, $prefix) {
+            $name = "$name.$prefix"; // admin.kependudukan.kk
+
+            Route::get('/',  'index')->name($name); // page
+            Route::post('/',  'insert')->name("$name.insert");
+            Route::delete('/{model}',  'delete')->name("$name.delete");
+            Route::post('/update',  'update')->name("$name.update");
+            Route::get('/find/{model}',  'getById')->name("$name.find");
 
             // kk anggota
-            Route::prefix('anggota')->group(function () {
-                Route::get('/select2',  'anggota_select2')->name('admin.kependudukan.kk.anggota.select2');
-                Route::post('/',  'anggota_insert')->name('admin.kependudukan.kk.anggota.insert');
-                Route::get('/list',  'anggota_list')->name('admin.kependudukan.kk.anggota.list');
-                Route::delete('/{model}',  'anggota_delete')->name('admin.kependudukan.kk.anggota.delete');
+            $prefix = 'anggota';
+            Route::prefix('anggota')->group(function () use ($name, $prefix) {
+                $name = "$name.$prefix"; // admin.kependudukan.kk.anggota
+
+                Route::get('/select2',  'anggota_select2')->name("$name.select2");
+                Route::post('/',  'anggota_insert')->name("$name.insert");
+                Route::get('/list',  'anggota_list')->name("$name.list");
+                Route::delete('/{model}',  'anggota_delete')->name("$name.delete");
             });
         });
     });

@@ -51,8 +51,8 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="modal-default-title"></h6><button aria-label="Close"
-                        class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <h6 class="modal-title" id="modal-default-title"></h6><button aria-label="Close" class="btn-close"
+                        data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <form action="javascript:void(0)" id="MainForm" name="MainForm" method="POST"
@@ -60,8 +60,8 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label class="form-label" for="nama">Nama <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Enter Nama"
-                                required="" />
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                placeholder="Enter Nama" required="" />
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="singkatan">Singkatan</label>
@@ -127,7 +127,7 @@
                 bAutoWidth: false,
                 type: 'GET',
                 ajax: {
-                    url: "{{ route('admin.data_master.agama') }}",
+                    url: "{{ route($prefix) }}",
                     data: function(d) {
                         d['filter[status]'] = $('#filter_status').val();
                     }
@@ -211,8 +211,8 @@
                 var formData = new FormData(this);
                 setBtnLoading('#btn-save', 'Save Changes');
                 const route = ($('#id').val() == '') ?
-                    "{{ route('admin.data_master.agama.insert') }}" :
-                    "{{ route('admin.data_master.agama.update') }}";
+                    "{{ route($prefix . '.insert') }}" :
+                    "{{ route($prefix . '.update') }}";
                 $.ajax({
                     type: "POST",
                     url: route,
@@ -291,7 +291,7 @@
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        url: `{{ url('admin/data_master/agama') }}/${id}`,
+                        url: `{{ url($prefix_uri) }}/${id}`,
                         type: 'DELETE',
                         dataType: 'json',
                         headers: {

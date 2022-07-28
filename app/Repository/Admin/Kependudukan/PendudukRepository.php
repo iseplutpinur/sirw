@@ -847,4 +847,25 @@ class PendudukRepository
             return response()->json($error, 500);
         }
     }
+
+    public function update(Request $request)
+    {
+        $model = Penduduk::find($request->id);
+        $model->nama = $request->nama;
+        $model->nik = $request->nik;
+        $model->kota_lahir = $request->kota_lahir;
+        $model->jenis_kelamin = $request->jenis_kelamin;
+        $model->no_hp = $request->no_hp;
+        $model->alamat_lengkap = $request->alamat_lengkap;
+        $model->tanggal_lahir = $request->tanggal_lahir;
+        $model->tanggal_mati = $request->tanggal_mati;
+
+        // 0 kelahiran, 1 kedatangan
+        $model->asal_data = $request->asal_data;
+
+        // get id
+        $model->save();
+
+        return response()->json();
+    }
 }

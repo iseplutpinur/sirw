@@ -44,4 +44,17 @@ class ResponseFormatter
 
         return response()->json(self::$response, self::$response['meta']['code']);
     }
+
+    /**
+     * Give getdata response.
+     */
+    public static function getdata($data = null)
+    {
+        self::$response['meta']['status'] = count($data) > 0;
+        self::$response['meta']['code'] = count($data) ? 200 : 404;
+        self::$response['meta']['message'] = count($data) ? "Success" : "Not Found";
+        self::$response['data'] = $data;
+
+        return response()->json(self::$response, self::$response['meta']['code']);
+    }
 }

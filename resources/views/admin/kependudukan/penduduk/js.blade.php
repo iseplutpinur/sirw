@@ -30,7 +30,7 @@
             bAutoWidth: false,
             type: 'GET',
             ajax: {
-                url: "{{ route('admin.kependudukan.penduduk') }}",
+                url: "{{ route($prefix) }}",
                 data: function(d) {
                     d['filter[rt_id]'] = $('#filter_rt').val();
                     d['filter[agama_id]'] = $('#filter_agama').val();
@@ -57,7 +57,7 @@
                     data: 'id',
                     name: 'id',
                     render(data, type, full, meta) {
-                        return ` <a href="{{ url('admin/kependudukan/penduduk/detail') }}/${data}" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" data-toggle="tooltip" title="Ubah Data">
+                        return ` <a href="{{ url("$prefix_uri/detail") }}/${data}" class="btn btn-rounded btn-primary btn-sm" title="Edit Data" data-toggle="tooltip" title="Ubah Data">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>
                         <button type="button" class="btn btn-rounded btn-danger btn-sm" title="Delete Data" onClick="deleteFunc('${data}')"  data-toggle="tooltip" title="Hapus Data">
@@ -83,7 +83,7 @@
                     name: 'nama',
                     className: 'text-nowrap text-capitalize',
                     render(data, type, row, meta) {
-                        return `<a target="_blank" href="{{ url('admin/kependudukan/penduduk/detail') }}/${row.id}">${data}</a>`;
+                        return `<a class="text-dark" target="_blank" href="{{ url("$prefix_uri/detail") }}/${row.id}">${data}</a>`;
                     }
                 },
                 {
@@ -295,7 +295,7 @@
             setBtnLoading('#btn-save', 'Save Changes');
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.kependudukan.penduduk.insert') }}",
+                url: '{{ route("$prefix.insert") }}',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -359,7 +359,7 @@
         }).then(function(result) {
             if (result.value) {
                 $.ajax({
-                    url: `{{ url('admin/kependudukan/penduduk') }}/${id}`,
+                    url: `{{ url($prefix_uri) }}/${id}`,
                     type: 'DELETE',
                     dataType: 'json',
                     headers: {

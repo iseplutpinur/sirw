@@ -1,0 +1,7 @@
+# menambah data penduduk
+    - baru lahir
+    - pindah dari rt luar
+    - pindah dari rt luar tapi data sudah ada di aplikasi
+    - mengubah data rt sebelumnya
+        tidak bisa mengubah data rt sebelumnya kecuali menghapus data setelahnya
+        data rt cuman bisa di tambah dan di hapus

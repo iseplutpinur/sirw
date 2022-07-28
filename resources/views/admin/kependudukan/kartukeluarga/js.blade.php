@@ -441,7 +441,7 @@
                                     </button>
                                 </td>
                                 <td class="text-nowrap">${e.nik}</td>
-                                <td class="text-nowrap"><a target="_blank" href="{{ url('admin/kependudukan/penduduk/detail') }}/${e.id}">${e.penduduk}</a></td>
+                                <td class="text-nowrap"><a  class="text-dark" target="_blank" href="{{ url('admin/kependudukan/penduduk/detail') }}/${e.id}">${e.penduduk}</a></td>
                                 <td class="text-nowrap">${e.hubungan_dengan_kk}</td>
                                 <td class="text-nowrap">${e.created ?? ''}</td>
                             </tr>
