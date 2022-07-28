@@ -83,7 +83,7 @@
                     name: 'nama',
                     className: 'text-nowrap text-capitalize',
                     render(data, type, row, meta) {
-                        return `<a class="text-dark" target="_blank" href="{{ url("$prefix_uri/detail") }}/${row.id}">${data}</a>`;
+                        return `<a class="text-dark" href="{{ url("$prefix_uri/detail") }}/${row.id}">${data}</a>`;
                     }
                 },
                 {
